@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summer Programs Explorer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            animation: fadeInDown 0.5s ease;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            animation: fadeInUp 0.5s ease 0.2s both;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.5s ease 0.4s both;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .filters-panel {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .filter-section {
+            margin-bottom: 25px;
+        }
+
+        .filter-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .reset-btn {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .programs-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .search-bar {
+            background: var(--white);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+        }
+
+        .view-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .view-btn {
+            padding: 8px 12px;
+            background: var(--light);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .view-btn.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .program-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease;
+            border: 2px solid transparent;
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .program-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .program-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            flex: 1;
+        }
+
+        .cost-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .cost-free {
+            background: #10b981;
+            color: white;
+        }
+
+        .cost-stipend {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .cost-paid {
+            background: #ef4444;
+            color: white;
+        }
+
+        .cost-low {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .program-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .detail-icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+
+        .program-description {
+            color: #374151;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .program-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .deadline-info {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .deadline-urgent {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .learn-more-btn {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 3px solid var(--light);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-panel {
+                position: static;
+            }
+
+            .programs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Summer Programs Explorer</h1>
+            <p class="subtitle">Discover amazing summer opportunities tailored for high school students</p>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-number" id="totalPrograms">0</div>
+                    <div class="stat-label">Total Programs</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="freePrograms">0</div>
+                    <div class="stat-label">Free Programs</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="stipendPrograms">0</div>
+                    <div class="stat-label">With Stipends</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="filteredCount">0</div>
+                    <div class="stat-label">Filtered Results</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <aside class="filters-panel">
+                <div class="filter-section">
+                    <div class="filter-title">
+                        <span class="filter-icon">💰</span>
+                        Cost Category
+                    </div>
+                    <div class="checkbox-group" id="costFilters">
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="FREE" checked>
+                            <span>Free</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="FREE_PLUS_STIPEND" checked>
+                            <span>Free + Stipend</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="FREE_PLUS_SCHOLARSHIP" checked>
+                            <span>Free + Scholarship</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="LOW_COST" checked>
+                            <span>Low Cost</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="PAID" checked>
+                            <span>Paid (Aid Available)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">
+                        <span class="filter-icon">📚</span>
+                        Subject Area
+                    </div>
+                    <select id="subjectFilter">
+                        <option value="">All Subjects</option>
+                    </select>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">
+                        <span class="filter-icon">📍</span>
+                        Location
+                    </div>
+                    <select id="locationFilter">
+                        <option value="">All Locations</option>
+                    </select>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">
+                        <span class="filter-icon">🏠</span>
+                        Program Type
+                    </div>
+                    <select id="residentialFilter">
+                        <option value="">All Types</option>
+                        <option value="Residential">Residential</option>
+                        <option value="Day">Day Program</option>
+                        <option value="Virtual">Virtual</option>
+                        <option value="Both">Both Options</option>
+                        <option value="Hybrid">Hybrid</option>
+                    </select>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">
+                        <span class="filter-icon">📅</span>
+                        Duration (weeks)
+                    </div>
+                    <select id="durationFilter">
+                        <option value="">Any Duration</option>
+                        <option value="1">1 week</option>
+                        <option value="2-3">2-3 weeks</option>
+                        <option value="4-6">4-6 weeks</option>
+                        <option value="7+">7+ weeks</option>
+                    </select>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">
+                        <span class="filter-icon">🎯</span>
+                        Selectivity
+                    </div>
+                    <select id="selectivityFilter">
+                        <option value="">Any Selectivity</option>
+                        <option value="highly">Highly Selective (<5%)</option>
+                        <option value="selective">Selective (5-15%)</option>
+                        <option value="moderate">Moderate (15-30%)</option>
+                        <option value="accessible">Accessible (>30%)</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-danger reset-btn" onclick="resetFilters()">
+                    🔄 Reset Filters
+                </button>
+            </aside>
+
+            <section class="programs-section">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search programs by name, description, or requirements...">
+                    <div class="view-controls">
+                        <button class="view-btn active" id="gridView" onclick="setView('grid')">Grid</button>
+                        <button class="view-btn" id="listView" onclick="setView('list')">List</button>
+                    </div>
+                </div>
+
+                <div id="programsContainer" class="programs-grid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Loading programs...</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        let allPrograms = [];
+        let filteredPrograms = [];
+        let currentView = 'grid';
+
+        // Load data when page loads
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadPrograms();
+            setupEventListeners();
+        });
+
+        async function loadPrograms() {
+            try {
+                const response = await window.fs.readFile('Summer Programs many programs are free but the paid ones usually have Financial Aid.xlsx');
+                const XLSX = await loadXLSX();
+                
+                const workbook = XLSX.read(response, {
+                    cellDates: true,
+                    cellNF: true,
+                    cellStyles: true
+                });
+
+                // Combine all sheets
+                allPrograms = [];
+                workbook.SheetNames.forEach(sheetName => {
+                    const worksheet = workbook.Sheets[sheetName];
+                    const data = XLSX.utils.sheet_to_json(worksheet);
+                    data.forEach(program => {
+                        program.Source_Sheet = sheetName;
+                        allPrograms.push(program);
+                    });
+                });
+
+                // Process and clean data
+                allPrograms = allPrograms.map(program => {
+                    // Parse dates
+                    if (program.Application_Deadline) {
+                        program.Application_Deadline = new Date(program.Application_Deadline);
+                    }
+                    if (program.App_Opens) {
+                        program.App_Opens = new Date(program.App_Opens);
+                    }
+                    
+                    // Parse grade level if it's a date string
+                    if (program.Grade_Level && typeof program.Grade_Level === 'string' && program.Grade_Level.includes('T')) {
+                        const date = new Date(program.Grade_Level);
+                        program.Grade_Level = date.getMonth() + 9; // Convert to grade
+                    }
+                    
+                    return program;
+                });
+
+                populateFilters();
+                updateStats();
+                filterPrograms();
+            } catch (error) {
+                console.error('Error loading programs:', error);
+                document.getElementById('programsContainer').innerHTML = `
+                    <div class="no-results">
+                        <p>Error loading programs. Please refresh the page.</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadXLSX() {
+            return new Promise((resolve) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+                script.onload = () => resolve(XLSX);
+                document.head.appendChild(script);
+            });
+        }
+
+        function populateFilters() {
+            // Subject filter
+            const subjects = [...new Set(allPrograms.map(p => p.Subject_Area).filter(Boolean))].sort();
+            const subjectSelect = document.getElementById('subjectFilter');
+            subjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject.replace(/_/g, ' ');
+                subjectSelect.appendChild(option);
+            });
+
+            // Location filter
+            const locations = [...new Set(allPrograms.map(p => p.Location_State).filter(Boolean))].sort();
+            const locationSelect = document.getElementById('locationFilter');
+            locations.forEach(location => {
+                const option = document.createElement('option');
+                option.value = location;
+                option.textContent = location;
+                locationSelect.appendChild(option);
+            });
+        }
+
+        function setupEventListeners() {
+            // Search
+            document.getElementById('searchInput').addEventListener('input', filterPrograms);
+            
+            // Filters
+            document.getElementById('subjectFilter').addEventListener('change', filterPrograms);
+            document.getElementById('locationFilter').addEventListener('change', filterPrograms);
+            document.getElementById('residentialFilter').addEventListener('change', filterPrograms);
+            document.getElementById('durationFilter').addEventListener('change', filterPrograms);
+            document.getElementById('selectivityFilter').addEventListener('change', filterPrograms);
+            
+            // Cost checkboxes
+            document.querySelectorAll('#costFilters input').forEach(checkbox => {
+                checkbox.addEventListener('change', filterPrograms);
+            });
+        }
+
+        function filterPrograms() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const subject = document.getElementById('subjectFilter').value;
+            const location = document.getElementById('locationFilter').value;
+            const residential = document.getElementById('residentialFilter').value;
+            const duration = document.getElementById('durationFilter').value;
+            const selectivity = document.getElementById('selectivityFilter').value;
+            
+            // Get selected cost categories
+            const selectedCosts = Array.from(document.querySelectorAll('#costFilters input:checked'))
+                .map(cb => cb.value);
+
+            filteredPrograms = allPrograms.filter(program => {
+                // Search filter
+                if (searchTerm) {
+                    const searchFields = [
+                        program.Program_Name,
+                        program.Key_Benefits,
+                        program.Application_Requirements,
+                        program.Subject_Area
+                    ].filter(Boolean).join(' ').toLowerCase();
+                    
+                    if (!searchFields.includes(searchTerm)) return false;
+                }
+
+                // Cost filter
+                if (selectedCosts.length > 0 && !selectedCosts.includes(program.Cost_Category)) {
+                    return false;
+                }
+
+                // Subject filter
+                if (subject && program.Subject_Area !== subject) return false;
+
+                // Location filter
+                if (location && program.Location_State !== location) return false;
+
+                // Residential filter
+                if (residential && program.Residential_Day !== residential) return false;
+
+                // Duration filter
+                if (duration) {
+                    const weeks = parseInt(program.Duration_Weeks);
+                    if (duration === '1' && weeks !== 1) return false;
+                    if (duration === '2-3' && (weeks < 2 || weeks > 3)) return false;
+                    if (duration === '4-6' && (weeks < 4 || weeks > 6)) return false;
+                    if (duration === '7+' && weeks < 7) return false;
+                }
+
+                // Selectivity filter
+                if (selectivity) {
+                    const rate = parseFloat(program.Selectivity_Percent);
+                    if (selectivity === 'highly' && rate >= 5) return false;
+                    if (selectivity === 'selective' && (rate < 5 || rate > 15)) return false;
+                    if (selectivity === 'moderate' && (rate < 15 || rate > 30)) return false;
+                    if (selectivity === 'accessible' && rate <= 30) return false;
+                }
+
+                return true;
+            });
+
+            // Sort by deadline
+            filteredPrograms.sort((a, b) => {
+                if (!a.Application_Deadline) return 1;
+                if (!b.Application_Deadline) return -1;
+                return a.Application_Deadline - b.Application_Deadline;
+            });
+
+            displayPrograms();
+            updateFilteredCount();
+        }
+
+        function displayPrograms() {
+            const container = document.getElementById('programsContainer');
+            
+            if (filteredPrograms.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <h3>No programs found</h3>
+                        <p>Try adjusting your filters or search terms</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredPrograms.map(program => createProgramCard(program)).join('');
+        }
+
+        function createProgramCard(program) {
+            const costClass = getCostClass(program.Cost_Category);
+            const costLabel = getCostLabel(program.Cost_Category);
+            const deadline = formatDeadline(program.Application_Deadline);
+            const isUrgent = isDeadlineUrgent(program.Application_Deadline);
+            
+            return `
+                <div class="program-card">
+                    <div class="program-header">
+                        <h3 class="program-name">${program.Program_Name || 'Unnamed Program'}</h3>
+                        <span class="cost-badge ${costClass}">${costLabel}</span>
+                    </div>
+                    
+                    <div class="program-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">📚</span>
+                            <span>${formatSubject(program.Subject_Area)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📍</span>
+                            <span>${program.Location_State || 'TBD'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">⏱️</span>
+                            <span>${program.Duration_Weeks ? program.Duration_Weeks + ' weeks' : 'Varies'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">🏠</span>
+                            <span>${program.Residential_Day || 'N/A'}</span>
+                        </div>
+                    </div>
+                    
+                    <p class="program-description">
+                        ${program.Key_Benefits || 'Exciting summer opportunity for high school students.'}
+                    </p>
+                    
+                    <div class="program-footer">
+                        <span class="deadline-info ${isUrgent ? 'deadline-urgent' : ''}">
+                            ${deadline}
+                        </span>
+                        ${program.Website ? `
+                            <a href="${program.Website}" target="_blank" class="btn btn-primary learn-more-btn">
+                                Learn More →
+                            </a>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function getCostClass(category) {
+            if (!category) return 'cost-free';
+            if (category.includes('STIPEND') || category.includes('SCHOLARSHIP')) return 'cost-stipend';
+            if (category === 'FREE') return 'cost-free';
+            if (category.includes('LOW')) return 'cost-low';
+            if (category === 'PAID') return 'cost-paid';
+            return 'cost-free';
+        }
+
+        function getCostLabel(category) {
+            if (!category) return 'Free';
+            if (category === 'FREE_PLUS_STIPEND') return '💰 Stipend';
+            if (category === 'FREE_PLUS_SCHOLARSHIP') return '🎓 Scholarship';
+            if (category === 'FREE') return 'Free';
+            if (category === 'LOW_COST') return 'Low Cost';
+            if (category === 'FREE_TO_LOW') return 'Free/Low';
+            if (category === 'PAID') return 'Paid';
+            return category.replace(/_/g, ' ');
+        }
+
+        function formatSubject(subject) {
+            if (!subject) return 'General';
+            return subject.replace(/_/g, ' ');
+        }
+
+        function formatDeadline(deadline) {
+            if (!deadline) return '📅 Rolling/TBD';
+            
+            const now = new Date();
+            const daysUntil = Math.ceil((deadline - now) / (1000 * 60 * 60 * 24));
+            
+            if (daysUntil < 0) return '📅 Deadline passed';
+            if (daysUntil < 7) return `⚠️ ${daysUntil} days left!`;
+            if (daysUntil < 30) return `📅 Deadline: ${deadline.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+            
+            return `📅 Deadline: ${deadline.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+        }
+
+        function isDeadlineUrgent(deadline) {
+            if (!deadline) return false;
+            const daysUntil = Math.ceil((deadline - new Date()) / (1000 * 60 * 60 * 24));
+            return daysUntil >= 0 && daysUntil < 30;
+        }
+
+        function updateStats() {
+            document.getElementById('totalPrograms').textContent = allPrograms.length;
+            
+            const free = allPrograms.filter(p => 
+                p.Cost_Category === 'FREE' || 
+                p.Cost_Category === 'FREE_TO_LOW'
+            ).length;
+            document.getElementById('freePrograms').textContent = free;
+            
+            const stipend = allPrograms.filter(p => 
+                p.Cost_Category === 'FREE_PLUS_STIPEND' || 
+                p.Cost_Category === 'FREE_PLUS_SCHOLARSHIP'
+            ).length;
+            document.getElementById('stipendPrograms').textContent = stipend;
+        }
+
+        function updateFilteredCount() {
+            document.getElementById('filteredCount').textContent = filteredPrograms.length;
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('subjectFilter').value = '';
+            document.getElementById('locationFilter').value = '';
+            document.getElementById('residentialFilter').value = '';
+            document.getElementById('durationFilter').value = '';
+            document.getElementById('selectivityFilter').value = '';
+            
+            document.querySelectorAll('#costFilters input').forEach(cb => cb.checked = true);
+            
+            filterPrograms();
+        }
+
+        function setView(view) {
+            currentView = view;
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(view + 'View').classList.add('active');
+            
+            const container = document.getElementById('programsContainer');
+            if (view === 'list') {
+                container.classList.remove('programs-grid');
+                container.style.display = 'flex';
+                container.style.flexDirection = 'column';
+            } else {
+                container.classList.add('programs-grid');
+                container.style.display = '';
+                container.style.flexDirection = '';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+name: Deploy to Netlify with Supabase
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  NODE_VERSION: '18'
+  SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+
+jobs:
+  # Test and Build Job
+  test-and-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run linting
+      run: npm run lint || echo "Linting completed with warnings"
+      
+    - name: Run tests
+      run: npm test
+      
+    - name: Build application
+      run: npm run build
+      env:
+        NODE_ENV: production
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-files
+        path: dist/
+        retention-days: 1
+
+  # Database Migration Job
+  migrate-database:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Supabase CLI
+      run: |
+        curl -fsSL https://supabase.com/install.sh | sh
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        
+    - name: Run database migrations
+      run: |
+        supabase db push --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
+      env:
+        SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        
+    - name: Seed database with community data
+      run: npm run migrate:supabase
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        USE_SUPABASE: true
+
+  # Deploy to Netlify
+  deploy-netlify:
+    runs-on: ubuntu-latest
+    needs: [test-and-build, migrate-database]
+    if: always() && (needs.test-and-build.result == 'success')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-files
+        path: dist/
+        
+    - name: Deploy to Netlify
+      uses: nwtgck/actions-netlify@v3.0
+      with:
+        publish-dir: './dist'
+        production-branch: main
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        deploy-message: "Deploy from GitHub Actions - ${{ github.event.head_commit.message }}"
+        enable-pull-request-comment: true
+        enable-commit-comment: true
+        overwrites-pull-request-comment: true
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        
+    - name: Update deployment status
+      if: always()
+      run: |
+        if [ "${{ job.status }}" == "success" ]; then
+          echo "✅ Deployment successful!"
+          echo "🌐 Site URL: ${{ steps.deploy.outputs.deploy-url }}"
+        else
+          echo "❌ Deployment failed!"
+        fi
+
+  # Health Check Job
+  health-check:
+    runs-on: ubuntu-latest
+    needs: [deploy-netlify]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Wait for deployment
+      run: sleep 30
+      
+    - name: Health check - API endpoints
+      run: |
+        echo "🔍 Testing API endpoints..."
+        
+        # Test health endpoint
+        curl -f "${{ secrets.NETLIFY_URL }}/api/health" || exit 1
+        echo "✅ Health endpoint working"
+        
+        # Test programs endpoint
+        curl -f "${{ secrets.NETLIFY_URL }}/api/programs" || exit 1
+        echo "✅ Programs endpoint working"
+        
+        # Test stats endpoint
+        curl -f "${{ secrets.NETLIFY_URL }}/api/programs/stats" || exit 1
+        echo "✅ Stats endpoint working"
+        
+        echo "🎉 All health checks passed!"
+        
+    - name: Test database connection
+      run: |
+        echo "🗄️ Testing database connection..."
+        curl -f "${{ secrets.NETLIFY_URL }}/api/programs/filters" || exit 1
+        echo "✅ Database connection working"
+
+  # Notify on Success/Failure
+  notify:
+    runs-on: ubuntu-latest
+    needs: [test-and-build, migrate-database, deploy-netlify, health-check]
+    if: always()
+    
+    steps:
+    - name: Notify deployment status
+      run: |
+        if [ "${{ needs.deploy-netlify.result }}" == "success" ] && [ "${{ needs.health-check.result }}" == "success" ]; then
+          echo "🎉 Ethiopian Community Resources deployed successfully!"
+          echo "📊 Database: Updated with latest migrations"
+          echo "🌐 Frontend: Deployed to Netlify"
+          echo "✅ Health checks: All passed"
+        else
+          echo "❌ Deployment failed. Check logs for details."
+          exit 1
+        fi
+

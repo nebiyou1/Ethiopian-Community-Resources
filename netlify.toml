@@ -1,0 +1,94 @@
+[build]
+  command = "npm run netlify:build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_VERSION = "9"
+  USE_SUPABASE = "true"
+
+[dev]
+  command = "npm run dev"
+  port = 3000
+  publish = "dist"
+  functions = "netlify/functions"
+
+# API Routes
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# Auth Routes
+[[redirects]]
+  from = "/auth/*"
+  to = "/.netlify/functions/auth/:splat"
+  status = 200
+
+# SPA Fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Production Environment
+[context.production]
+  command = "npm run build:production"
+  [context.production.environment]
+    NODE_ENV = "production"
+    USE_SUPABASE = "true"
+    SECURE_COOKIES = "true"
+
+# Deploy Preview Environment
+[context.deploy-preview]
+  command = "npm run build:preview"
+  [context.deploy-preview.environment]
+    NODE_ENV = "preview"
+    USE_SUPABASE = "true"
+    SECURE_COOKIES = "false"
+
+# Branch Deploy Environment
+[context.branch-deploy]
+  command = "npm run build:development"
+  [context.branch-deploy.environment]
+    NODE_ENV = "development"
+    USE_SUPABASE = "true"
+    SECURE_COOKIES = "false"
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+
+# Cache static assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

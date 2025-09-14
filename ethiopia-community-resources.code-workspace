@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.fixAll": true
+		},
+		"files.exclude": {
+			"**/node_modules": true,
+			"**/.git": true,
+			"**/.DS_Store": true
+		}
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-vscode.vscode-json",
+			"bradlc.vscode-tailwindcss",
+			"esbenp.prettier-vscode"
+		]
+	}
+}
+

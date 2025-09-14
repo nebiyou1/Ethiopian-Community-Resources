@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summer Programs Database - Find Your Perfect Program</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-sun"></i>
+                <span>Summer Programs</span>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#programs" class="nav-link">Programs</a>
+                <a href="#about" class="nav-link">About</a>
+            </div>
+            <div class="nav-auth">
+                <button id="loginBtn" class="btn btn-primary">
+                    <i class="fab fa-google"></i>
+                    Sign In
+                </button>
+                <div id="userMenu" class="user-menu" style="display: none;">
+                    <img id="userAvatar" src="" alt="User" class="user-avatar">
+                    <span id="userName"></span>
+                    <button id="logoutBtn" class="btn btn-outline">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Find Your Perfect <span class="highlight">Summer Program</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Discover amazing summer opportunities from our database of 176+ programs. 
+                    From free programs to prestigious competitions, find the perfect fit for your interests and goals.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number" id="totalPrograms">176</div>
+                        <div class="stat-label">Total Programs</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="freePrograms">37</div>
+                        <div class="stat-label">Free Programs</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="subjects">15+</div>
+                        <div class="stat-label">Subject Areas</div>
+                    </div>
+                </div>
+                <button class="btn btn-hero" onclick="scrollToPrograms()">
+                    <i class="fas fa-search"></i>
+                    Explore Programs
+                </button>
+            </div>
+            <div class="hero-image">
+                <div class="hero-graphic">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs" class="programs-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Summer Programs Database</h2>
+                <p class="section-subtitle">Filter and search through our comprehensive database</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-container">
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label for="costFilter">Cost Category</label>
+                        <select id="costFilter" class="filter-select">
+                            <option value="">All Cost Categories</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="typeFilter">Program Type</label>
+                        <select id="typeFilter" class="filter-select">
+                            <option value="">All Program Types</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="gradeFilter">Grade Level</label>
+                        <select id="gradeFilter" class="filter-select">
+                            <option value="">All Grade Levels</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="stateFilter">Location</label>
+                        <select id="stateFilter" class="filter-select">
+                            <option value="">All Locations</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="search-row">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Search programs, organizations, or subjects..." class="search-input">
+                    </div>
+                    <button id="clearFilters" class="btn btn-outline">
+                        <i class="fas fa-times"></i>
+                        Clear All
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Summary -->
+            <div class="results-summary">
+                <div class="results-count">
+                    Showing <span id="resultsCount">0</span> programs
+                </div>
+                <div class="sort-options">
+                    <label for="sortSelect">Sort by:</label>
+                    <select id="sortSelect" class="sort-select">
+                        <option value="name">Program Name</option>
+                        <option value="deadline">Application Deadline</option>
+                        <option value="cost">Cost Category</option>
+                        <option value="selectivity">Selectivity</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Programs Grid -->
+            <div id="programsGrid" class="programs-grid">
+                <!-- Programs will be loaded here -->
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state">
+                <div class="spinner"></div>
+                <p>Loading programs...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>No programs found</h3>
+                <p>Try adjusting your filters or search terms</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program Modal -->
+    <div id="programModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()">Close</button>
+                <button id="favoriteBtn" class="btn btn-primary">
+                    <i class="fas fa-heart"></i>
+                    Add to Favorites
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-sun"></i>
+                    <span>Summer Programs Database</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                    <a href="#privacy">Privacy</a>
+                </div>
+                <div class="footer-stats">
+                    <span id="footerStats">176+ Programs Available</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
