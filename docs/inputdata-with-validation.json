@@ -53,7 +53,13 @@
       "special_eligibility": "Underrepresented groups focus",
       "website": "https://www.fredhutch.org/",
       "key_benefits": "Free coding camps for girls/non-binary",
-      "application_requirements": "Application, essays"
+      "application_requirements": "Application, essays",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 129,
@@ -73,7 +79,13 @@
       "special_eligibility": "Young men of color",
       "website": "https://www.allstarcode.org/",
       "key_benefits": "CS training for young men of color",
-      "application_requirements": "Application, essays, interview"
+      "application_requirements": "Application, essays, interview",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 130,
@@ -93,7 +105,13 @@
       "special_eligibility": "Underrepresented students",
       "website": "https://codenation.org/",
       "key_benefits": "Year-long CS education",
-      "application_requirements": "Application through school"
+      "application_requirements": "Application through school",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 131,
@@ -113,7 +131,13 @@
       "special_eligibility": "Underrepresented in AI",
       "website": "https://ai-4-all.org/",
       "key_benefits": "AI education at top universities",
-      "application_requirements": "Application, essays, recommendations"
+      "application_requirements": "Application, essays, recommendations",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 132,
@@ -133,7 +157,13 @@
       "special_eligibility": "Exceptional STEM students",
       "website": "https://www.simonsfoundation.org/",
       "key_benefits": "Full ride to college for STEM",
-      "application_requirements": "Nomination required"
+      "application_requirements": "Nomination required",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 133,
@@ -153,7 +183,13 @@
       "special_eligibility": "Leadership and service",
       "website": "https://www.coca-colascholarsfoundation.org/",
       "key_benefits": "$20K scholarship for leaders",
-      "application_requirements": "Application, essays, activities"
+      "application_requirements": "Application, essays, activities",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 134,
@@ -173,7 +209,13 @@
       "special_eligibility": "Pell-eligible minorities",
       "website": "https://www.thegatesscholarship.org/",
       "key_benefits": "Full college funding for minorities",
-      "application_requirements": "Application, essays, FAFSA"
+      "application_requirements": "Application, essays, FAFSA",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 135,
@@ -193,7 +235,13 @@
       "special_eligibility": "Low-income high achievers",
       "website": "https://www.questbridge.org/",
       "key_benefits": "Full scholarships to top colleges",
-      "application_requirements": "Application, essays, financial docs"
+      "application_requirements": "Application, essays, financial docs",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 136,
@@ -213,7 +261,13 @@
       "special_eligibility": "High-achieving low-income",
       "website": "https://www.jkcf.org/",
       "key_benefits": "Major scholarship for low-income students",
-      "application_requirements": "Application, essays, recommendations"
+      "application_requirements": "Application, essays, recommendations",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 137,
@@ -233,7 +287,13 @@
       "special_eligibility": "None",
       "website": "https://www.elks.org/scholars/",
       "key_benefits": "Merit-based national scholarship",
-      "application_requirements": "Application, essays, activities"
+      "application_requirements": "Application, essays, activities",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 138,
@@ -253,7 +313,13 @@
       "special_eligibility": "Exceptional leadership",
       "website": "https://www.bryancameroneducationfoundation.org/",
       "key_benefits": "Full tuition for exceptional leaders",
-      "application_requirements": "Application, essays, interview"
+      "application_requirements": "Application, essays, interview",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 139,
@@ -273,7 +339,13 @@
       "special_eligibility": "Interest in public policy",
       "website": "https://coolidgescholars.org/",
       "key_benefits": "Full ride for students interested in public service",
-      "application_requirements": "Application, essays, transcript"
+      "application_requirements": "Application, essays, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 140,
@@ -293,7 +365,13 @@
       "special_eligibility": "Nomination by partner schools",
       "website": "https://www.stampsfoundation.org/",
       "key_benefits": "Full ride plus enrichment funds",
-      "application_requirements": "Nomination through partner colleges"
+      "application_requirements": "Nomination through partner colleges",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 141,
@@ -313,7 +391,13 @@
       "special_eligibility": "Nomination required",
       "website": "https://www.possefoundation.org/",
       "key_benefits": "Full tuition in supportive cohort",
-      "application_requirements": "Nomination, group interviews"
+      "application_requirements": "Nomination, group interviews",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 142,
@@ -333,7 +417,13 @@
       "special_eligibility": "African American students",
       "website": "https://www.ronbrown.org/",
       "key_benefits": "$40K for African American leaders",
-      "application_requirements": "Application, essays, recommendations"
+      "application_requirements": "Application, essays, recommendations",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 143,
@@ -354,7 +444,13 @@
       "special_eligibility": "None",
       "website": "https://www.nsliforyouth.org/",
       "key_benefits": "Free language immersion abroad",
-      "application_requirements": "Application, essays, recommendations"
+      "application_requirements": "Application, essays, recommendations",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 144,
@@ -375,7 +471,13 @@
       "special_eligibility": "None",
       "website": "https://www.usagermanyscholarship.org/",
       "key_benefits": "Free year in Germany",
-      "application_requirements": "Application, essays, interview"
+      "application_requirements": "Application, essays, interview",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 145,
@@ -396,7 +498,13 @@
       "special_eligibility": "None",
       "website": "https://www.yesabroad.org/",
       "key_benefits": "Free year abroad in select countries",
-      "application_requirements": "Application, essays, interview"
+      "application_requirements": "Application, essays, interview",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": null,
+        "error": "getaddrinfo ENOTFOUND www.yesabroad.org"
+      }
     },
     {
       "id": 146,
@@ -417,7 +525,13 @@
       "special_eligibility": "None",
       "website": "https://www.uwc.org/",
       "key_benefits": "2-year international IB program",
-      "application_requirements": "Application, essays, interview"
+      "application_requirements": "Application, essays, interview",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 147,
@@ -437,7 +551,13 @@
       "special_eligibility": "None",
       "website": "https://www.sya.org/",
       "key_benefits": "Junior year abroad",
-      "application_requirements": "Application, transcript, recommendations"
+      "application_requirements": "Application, transcript, recommendations",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 148,
@@ -458,7 +578,13 @@
       "special_eligibility": "None",
       "website": "https://www.rotary.org/",
       "key_benefits": "Affordable year abroad",
-      "application_requirements": "Application through local Rotary"
+      "application_requirements": "Application through local Rotary",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 302,
+        "error": null
+      }
     },
     {
       "id": 149,
@@ -479,7 +605,13 @@
       "special_eligibility": "None",
       "website": "https://www.afsusa.org/",
       "key_benefits": "Cultural exchange programs",
-      "application_requirements": "Application, essays, interview"
+      "application_requirements": "Application, essays, interview",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 150,
@@ -499,7 +631,13 @@
       "special_eligibility": "International students welcome",
       "website": "https://globalscholars.yale.edu/",
       "key_benefits": "Global leadership at Yale",
-      "application_requirements": "Application, essays, transcript"
+      "application_requirements": "Application, essays, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 151,
@@ -519,7 +657,13 @@
       "special_eligibility": "None",
       "website": "https://www.tellurideassociation.org/",
       "key_benefits": "Elite humanities seminar",
-      "application_requirements": "Application, essays, recommendations"
+      "application_requirements": "Application, essays, recommendations",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 152,
@@ -539,7 +683,13 @@
       "special_eligibility": "Focus on African American studies",
       "website": "https://www.tellurideassociation.org/",
       "key_benefits": "Critical Black studies seminar",
-      "application_requirements": "Application, essays"
+      "application_requirements": "Application, essays",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 153,
@@ -559,7 +709,13 @@
       "special_eligibility": "None",
       "website": "https://jcamp.com/",
       "key_benefits": "Free entrepreneurship camp",
-      "application_requirements": "Application, essays"
+      "application_requirements": "Application, essays",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 154,
@@ -579,7 +735,13 @@
       "special_eligibility": "None",
       "website": "https://launchx.com/",
       "key_benefits": "Start a real company",
-      "application_requirements": "Application, pitch video"
+      "application_requirements": "Application, pitch video",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 155,
@@ -599,7 +761,13 @@
       "special_eligibility": "DECA member",
       "website": "https://www.deca.org/",
       "key_benefits": "International business competition",
-      "application_requirements": "Qualify through regional/state"
+      "application_requirements": "Qualify through regional/state",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 156,
@@ -619,7 +787,13 @@
       "special_eligibility": "FBLA member",
       "website": "https://www.fbla-pbl.org/",
       "key_benefits": "National business competition",
-      "application_requirements": "Qualify through state"
+      "application_requirements": "Qualify through state",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 157,
@@ -639,7 +813,13 @@
       "special_eligibility": "HOSA member",
       "website": "https://hosa.org/",
       "key_benefits": "Health sciences competition",
-      "application_requirements": "Qualify through state"
+      "application_requirements": "Qualify through state",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 159,
@@ -659,7 +839,13 @@
       "special_eligibility": "SkillsUSA member",
       "website": "https://www.skillsusa.org/",
       "key_benefits": "Career and technical skills competition",
-      "application_requirements": "Qualify through state"
+      "application_requirements": "Qualify through state",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.007Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 160,
@@ -679,7 +865,13 @@
       "special_eligibility": "FIRST team member",
       "website": "https://www.firstinspires.org/",
       "key_benefits": "World robotics championship",
-      "application_requirements": "Qualify through regional"
+      "application_requirements": "Qualify through regional",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 163,
@@ -699,7 +891,13 @@
       "special_eligibility": "Mock trial team",
       "website": "https://www.nationalmocktrial.org/",
       "key_benefits": "National law competition",
-      "application_requirements": "Qualify through state"
+      "application_requirements": "Qualify through state",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 164,
@@ -719,7 +917,13 @@
       "special_eligibility": "We the People team",
       "website": "https://www.civiced.org/",
       "key_benefits": "Constitutional knowledge competition",
-      "application_requirements": "Qualify through state"
+      "application_requirements": "Qualify through state",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 165,
@@ -739,7 +943,13 @@
       "special_eligibility": "None",
       "website": "https://www.un.org/en/mun",
       "key_benefits": "International relations simulation",
-      "application_requirements": "Registration through school"
+      "application_requirements": "Registration through school",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 169,
@@ -759,7 +969,13 @@
       "special_eligibility": "Girl Scout member",
       "website": "https://www.girlscouts.org/",
       "key_benefits": "Highest Girl Scout achievement",
-      "application_requirements": "Project proposal and completion"
+      "application_requirements": "Project proposal and completion",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 170,
@@ -779,7 +995,13 @@
       "special_eligibility": "Boy Scout member",
       "website": "https://www.scouting.org/",
       "key_benefits": "Highest Boy Scout rank",
-      "application_requirements": "Merit badges, project, board review"
+      "application_requirements": "Merit badges, project, board review",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 171,
@@ -799,7 +1021,13 @@
       "special_eligibility": "School nomination",
       "website": "https://www.hoby.org/",
       "key_benefits": "Leadership development weekend",
-      "application_requirements": "School nomination"
+      "application_requirements": "School nomination",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": null,
+        "error": "Timeout"
+      }
     },
     {
       "id": 172,
@@ -819,7 +1047,13 @@
       "special_eligibility": "None",
       "website": "https://www.rotary.org/",
       "key_benefits": "Rotary leadership training",
-      "application_requirements": "Application through local Rotary"
+      "application_requirements": "Application through local Rotary",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 302,
+        "error": null
+      }
     },
     {
       "id": 173,
@@ -839,7 +1073,13 @@
       "special_eligibility": "Male students",
       "website": "https://www.legion.org/",
       "key_benefits": "Government simulation program",
-      "application_requirements": "School nomination, interview"
+      "application_requirements": "School nomination, interview",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 174,
@@ -859,7 +1099,13 @@
       "special_eligibility": "Female students",
       "website": "https://www.alaforveterans.org/",
       "key_benefits": "Government simulation for girls",
-      "application_requirements": "School nomination, interview"
+      "application_requirements": "School nomination, interview",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": null,
+        "error": "certificate has expired"
+      }
     },
     {
       "id": 175,
@@ -879,7 +1125,13 @@
       "special_eligibility": "Boys/Girls State delegates",
       "website": "https://www.legion.org/",
       "key_benefits": "Elite government program in DC",
-      "application_requirements": "Selection from Boys/Girls State"
+      "application_requirements": "Selection from Boys/Girls State",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 176,
@@ -890,7 +1142,13 @@
       "program_type": "Summer_Program",
       "subject_area": "Career_Exploration",
       "duration_weeks": "Cancer research with stipend for underrepresented students",
-      "application_requirements": "Transcript, recommendations, essays"
+      "application_requirements": "Transcript, recommendations, essays",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": null,
+        "error": "Empty URL"
+      }
     },
     {
       "id": 2,
@@ -911,7 +1169,13 @@
       "special_eligibility": "Age 16+ by start",
       "website": "https://www.cmu.edu/pre-college/",
       "key_benefits": "Free CS program at CMU",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 3,
@@ -931,7 +1195,13 @@
       "special_eligibility": "Female/non-binary students",
       "website": "https://wtp.mit.edu/",
       "key_benefits": "Engineering immersion for female/non-binary students at MIT",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 4,
@@ -951,7 +1221,13 @@
       "special_eligibility": "NJ residents only",
       "website": "https://njgss.org/",
       "key_benefits": "Free engineering program for NJ students",
-      "application_requirements": "Application, essays, recommendations, test scores"
+      "application_requirements": "Application, essays, recommendations, test scores",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": null,
+        "error": "getaddrinfo ENOTFOUND njgss.org"
+      }
     },
     {
       "id": 5,
@@ -971,7 +1247,13 @@
       "special_eligibility": "Must complete online prerequisite course",
       "website": "https://beaverworks.ll.mit.edu/CMS/bw/bwsi",
       "key_benefits": "Advanced tech/engineering projects at MIT",
-      "application_requirements": "Complete online course, application, recommendations"
+      "application_requirements": "Complete online course, application, recommendations",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": null,
+        "error": "Timeout"
+      }
     },
     {
       "id": 6,
@@ -991,7 +1273,13 @@
       "special_eligibility": "Underrepresented students focus",
       "website": "https://mathroots.mit.edu/",
       "key_benefits": "Free math program for underrepresented students at MIT",
-      "application_requirements": "Application, essays, recommendations, AMC scores"
+      "application_requirements": "Application, essays, recommendations, AMC scores",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 7,
@@ -1011,7 +1299,13 @@
       "special_eligibility": "Low-income or underrepresented students",
       "website": "https://smysp.stanford.edu/",
       "key_benefits": "Medical school prep with stipend at Stanford",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": null,
+        "error": "getaddrinfo ENOTFOUND smysp.stanford.edu"
+      }
     },
     {
       "id": 8,
@@ -1031,7 +1325,13 @@
       "special_eligibility": "Strong research interest",
       "website": "https://simr.stanford.edu/",
       "key_benefits": "Biomedical research internship at Stanford",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 9,
@@ -1051,7 +1351,13 @@
       "special_eligibility": "NYC area students, multi-year commitment",
       "website": "https://ps.columbia.edu/education/academic-programs/college-programs/science-research-program-s-prep",
       "key_benefits": "Multi-year STEM enrichment at Columbia",
-      "application_requirements": "Application, essays, recommendations, interview"
+      "application_requirements": "Application, essays, recommendations, interview",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 10,
@@ -1071,7 +1377,13 @@
       "special_eligibility": "NC residents only",
       "website": "https://www.ncgovschool.org/",
       "key_benefits": "Academic enrichment for NC students",
-      "application_requirements": "Application, essays, recommendations, test scores"
+      "application_requirements": "Application, essays, recommendations, test scores",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 11,
@@ -1091,7 +1403,13 @@
       "special_eligibility": "Boston area students",
       "website": "https://zumerinstitute.org/",
       "key_benefits": "Music and neuroscience research program",
-      "application_requirements": "Application, essays, recommendations"
+      "application_requirements": "Application, essays, recommendations",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": null,
+        "error": "getaddrinfo ENOTFOUND zumerinstitute.org"
+      }
     },
     {
       "id": 12,
@@ -1111,7 +1429,13 @@
       "special_eligibility": "Low-income students",
       "website": "https://ledascholars.org/",
       "key_benefits": "College prep and leadership development at Princeton",
-      "application_requirements": "Application, essays, recommendations, financial documents"
+      "application_requirements": "Application, essays, recommendations, financial documents",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 13,
@@ -1131,7 +1455,13 @@
       "special_eligibility": "International students welcome",
       "website": "https://globalscholars.yale.edu/",
       "key_benefits": "Global perspective and Yale experience",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 14,
@@ -1151,7 +1481,13 @@
       "special_eligibility": "Strong STEM background",
       "website": "https://www.bu.edu/summer/high-school-programs/rise/",
       "key_benefits": "Research internship at Boston University",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 15,
@@ -1171,7 +1507,13 @@
       "special_eligibility": "Strong STEM background",
       "website": "https://summerscience.org/",
       "key_benefits": "Research project in astrophysics or biochemistry",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": null,
+        "error": "unable to get local issuer certificate"
+      }
     },
     {
       "id": 16,
@@ -1191,7 +1533,13 @@
       "special_eligibility": "Focus on African American and ethnic studies",
       "website": "https://www.tellurideassociation.org/our-programs/tass/",
       "key_benefits": "Humanities seminar with diverse perspectives",
-      "application_requirements": "Application, essays, recommendations"
+      "application_requirements": "Application, essays, recommendations",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 17,
@@ -1211,7 +1559,13 @@
       "special_eligibility": "Strong research interest",
       "website": "https://www.depts.ttu.edu/honors/academicsandenrichment/affiliatedandhighschool/clarks/",
       "key_benefits": "Research mentorship with TTU faculty and stipend",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 18,
@@ -1231,7 +1585,13 @@
       "special_eligibility": "Strong STEM background",
       "website": "https://www.stonybrook.edu/commcms/garcia/",
       "key_benefits": "Materials science research at Stony Brook",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 19,
@@ -1251,7 +1611,13 @@
       "special_eligibility": "Strong STEM background",
       "website": "https://education.msu.edu/hshsp/",
       "key_benefits": "Research with MSU faculty",
-      "application_requirements": "Application, essays, recommendations, test scores"
+      "application_requirements": "Application, essays, recommendations, test scores",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 20,
@@ -1271,7 +1637,13 @@
       "special_eligibility": "Strong STEM background",
       "website": "https://belinblank.education.uiowa.edu/students/sstp/",
       "key_benefits": "Research at University of Iowa",
-      "application_requirements": "Application, essays, recommendations, test scores"
+      "application_requirements": "Application, essays, recommendations, test scores",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 21,
@@ -1291,7 +1663,13 @@
       "special_eligibility": "None",
       "website": "https://jcamp.com/",
       "key_benefits": "Free entrepreneurship camp",
-      "application_requirements": "Application, essays"
+      "application_requirements": "Application, essays",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 22,
@@ -1311,7 +1689,13 @@
       "special_eligibility": "None",
       "website": "https://launchx.com/",
       "key_benefits": "Start a real company",
-      "application_requirements": "Application, essays, pitch video"
+      "application_requirements": "Application, essays, pitch video",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 23,
@@ -1331,7 +1715,13 @@
       "special_eligibility": "None",
       "website": "https://mitlaunch.com/",
       "key_benefits": "Entrepreneurship at MIT",
-      "application_requirements": "Application, essays, pitch"
+      "application_requirements": "Application, essays, pitch",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 24,
@@ -1352,7 +1742,13 @@
       "special_eligibility": "Age 17+ by June",
       "website": "https://www.training.nih.gov/programs/sip",
       "key_benefits": "Research at NIH with stipend",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 25,
@@ -1372,7 +1768,13 @@
       "special_eligibility": "Commuting distance to Stony Brook",
       "website": "https://www.stonybrook.edu/simons/",
       "key_benefits": "Research with Stony Brook faculty and stipend",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 28,
@@ -1392,7 +1794,13 @@
       "special_eligibility": "Female and non-binary students",
       "website": "https://girlswhocode.com/",
       "key_benefits": "CS training with stipend for girls/non-binary",
-      "application_requirements": "Application, essays"
+      "application_requirements": "Application, essays",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 29,
@@ -1412,7 +1820,13 @@
       "special_eligibility": "Community service experience",
       "website": "https://about.bankofamerica.com/en/making-an-impact/student-leaders",
       "key_benefits": "Paid internship and leadership summit",
-      "application_requirements": "Application, essays, recommendations"
+      "application_requirements": "Application, essays, recommendations",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 30,
@@ -1432,7 +1846,13 @@
       "special_eligibility": "Underrepresented minorities focus",
       "website": "https://www.leadprogram.org/",
       "key_benefits": "Business education for diverse students",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": null,
+        "error": "Hostname/IP does not match certificate's altnames: Host: www.leadprogram.org. is not in the cert's altnames: DNS:*.enschool.org, DNS:enschool.org"
+      }
     },
     {
       "id": 31,
@@ -1452,7 +1872,13 @@
       "special_eligibility": "None",
       "website": "https://globalyouth.wharton.upenn.edu/",
       "key_benefits": "Sports business at Wharton",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 32,
@@ -1472,7 +1898,13 @@
       "special_eligibility": "None",
       "website": "https://globalyouth.wharton.upenn.edu/",
       "key_benefits": "Business education at Wharton",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 33,
@@ -1492,7 +1924,13 @@
       "special_eligibility": "None",
       "website": "https://www.fte.org/students/economics-for-leaders/",
       "key_benefits": "Economics and leadership training",
-      "application_requirements": "Application, essays, recommendations"
+      "application_requirements": "Application, essays, recommendations",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 34,
@@ -1512,7 +1950,13 @@
       "special_eligibility": "None",
       "website": "https://precollege.nd.edu/",
       "key_benefits": "College-level courses at Notre Dame",
-      "application_requirements": "Application, transcript, recommendation"
+      "application_requirements": "Application, transcript, recommendation",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 35,
@@ -1532,7 +1976,13 @@
       "special_eligibility": "None",
       "website": "https://summer.georgetown.edu/",
       "key_benefits": "Various courses at Georgetown",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 36,
@@ -1552,7 +2002,13 @@
       "special_eligibility": "None",
       "website": "https://precollege.brown.edu/",
       "key_benefits": "College experience at Brown",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 37,
@@ -1572,7 +2028,13 @@
       "special_eligibility": "None",
       "website": "https://precollege.sps.columbia.edu/",
       "key_benefits": "Academic courses at Columbia",
-      "application_requirements": "Application, transcript, recommendation"
+      "application_requirements": "Application, transcript, recommendation",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 38,
@@ -1592,7 +2054,13 @@
       "special_eligibility": "None",
       "website": "https://sce.cornell.edu/precollege",
       "key_benefits": "College courses at Cornell",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 39,
@@ -1612,7 +2080,13 @@
       "special_eligibility": "None",
       "website": "https://summersession.duke.edu/",
       "key_benefits": "College credit at Duke",
-      "application_requirements": "Application, transcript, recommendation"
+      "application_requirements": "Application, transcript, recommendation",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 40,
@@ -1632,7 +2106,13 @@
       "special_eligibility": "None",
       "website": "https://summer.harvard.edu/",
       "key_benefits": "College courses at Harvard",
-      "application_requirements": "Application, transcript, recommendation"
+      "application_requirements": "Application, transcript, recommendation",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 51,
@@ -1653,7 +2133,13 @@
       "special_eligibility": "Audition required",
       "website": "https://www.bso.org/tanglewood-learning-institute",
       "key_benefits": "Elite music training with BSO",
-      "application_requirements": "Application, audition"
+      "application_requirements": "Application, audition",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 52,
@@ -1673,7 +2159,13 @@
       "special_eligibility": "Portfolio required",
       "website": "https://www.mica.edu/",
       "key_benefits": "Art and design at MICA",
-      "application_requirements": "Application, portfolio"
+      "application_requirements": "Application, portfolio",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 53,
@@ -1693,7 +2185,13 @@
       "special_eligibility": "None",
       "website": "https://www.newschool.edu/parsons/",
       "key_benefits": "Design and fashion at Parsons",
-      "application_requirements": "Application, portfolio optional"
+      "application_requirements": "Application, portfolio optional",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 54,
@@ -1713,7 +2211,13 @@
       "special_eligibility": "Portfolio required",
       "website": "https://precollege.risd.edu/",
       "key_benefits": "Intensive art/design at RISD",
-      "application_requirements": "Application, portfolio, transcript"
+      "application_requirements": "Application, portfolio, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 55,
@@ -1733,7 +2237,13 @@
       "special_eligibility": "CA residents priority, audition required",
       "website": "https://www.csssa.org/",
       "key_benefits": "Arts training for CA students",
-      "application_requirements": "Application, audition/portfolio"
+      "application_requirements": "Application, audition/portfolio",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 56,
@@ -1753,7 +2263,13 @@
       "special_eligibility": "Writing sample required",
       "website": "https://kenyonreview.org/",
       "key_benefits": "Creative writing at Kenyon",
-      "application_requirements": "Application, writing sample"
+      "application_requirements": "Application, writing sample",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 57,
@@ -1773,7 +2289,13 @@
       "special_eligibility": "Writing sample required",
       "website": "https://iyws.clas.uiowa.edu/",
       "key_benefits": "Writing at Iowa Writers' Workshop",
-      "application_requirements": "Application, writing portfolio"
+      "application_requirements": "Application, writing portfolio",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 58,
@@ -1793,7 +2315,13 @@
       "special_eligibility": "Writing sample required",
       "website": "https://www.sewanee.edu/",
       "key_benefits": "Writing workshops at Sewanee",
-      "application_requirements": "Application, writing sample"
+      "application_requirements": "Application, writing sample",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 59,
@@ -1813,7 +2341,13 @@
       "special_eligibility": "None",
       "website": "https://tisch.nyu.edu/",
       "key_benefits": "Film and drama at NYU",
-      "application_requirements": "Application, creative submission"
+      "application_requirements": "Application, creative submission",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 60,
@@ -1833,7 +2367,13 @@
       "special_eligibility": "None",
       "website": "https://summerprograms.usc.edu/",
       "key_benefits": "Various programs at USC",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 61,
@@ -1853,7 +2393,13 @@
       "special_eligibility": "None",
       "website": "https://summer.ucla.edu/",
       "key_benefits": "College courses at UCLA",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 62,
@@ -1873,7 +2419,13 @@
       "special_eligibility": "None",
       "website": "https://summer.berkeley.edu/",
       "key_benefits": "College courses at UC Berkeley",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 63,
@@ -1893,7 +2445,13 @@
       "special_eligibility": "None",
       "website": "https://summer.stanford.edu/",
       "key_benefits": "College courses at Stanford",
-      "application_requirements": "Application, transcript, test scores"
+      "application_requirements": "Application, transcript, test scores",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 64,
@@ -1913,7 +2471,13 @@
       "special_eligibility": "None",
       "website": "https://summer.uchicago.edu/",
       "key_benefits": "Intensive courses at UChicago",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 65,
@@ -1933,7 +2497,13 @@
       "special_eligibility": "None",
       "website": "https://www.math.lsa.umich.edu/mmss/",
       "key_benefits": "STEM courses at Michigan",
-      "application_requirements": "Application, transcript, recommendation"
+      "application_requirements": "Application, transcript, recommendation",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 302,
+        "error": null
+      }
     },
     {
       "id": 66,
@@ -1953,7 +2523,13 @@
       "special_eligibility": "None",
       "website": "https://www.bostonleadershipinstitute.com/",
       "key_benefits": "STEM and medicine programs",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 67,
@@ -1973,7 +2549,13 @@
       "special_eligibility": "None",
       "website": "https://precollege.emory.edu/",
       "key_benefits": "College experience at Emory",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 68,
@@ -1993,7 +2575,13 @@
       "special_eligibility": "None",
       "website": "https://summerexperiences.wustl.edu/",
       "key_benefits": "Various programs at WashU",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": null,
+        "error": "read ECONNRESET"
+      }
     },
     {
       "id": 69,
@@ -2013,7 +2601,13 @@
       "special_eligibility": "None",
       "website": "https://www.cmu.edu/pre-college/",
       "key_benefits": "Intensive programs at CMU",
-      "application_requirements": "Application, transcript, portfolio for arts"
+      "application_requirements": "Application, transcript, portfolio for arts",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 70,
@@ -2033,7 +2627,13 @@
       "special_eligibility": "Strong math background required",
       "website": "https://sumac.spcs.stanford.edu/",
       "key_benefits": "Advanced mathematics at Stanford",
-      "application_requirements": "Application, essays, recommendation, coursework"
+      "application_requirements": "Application, essays, recommendation, coursework",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 71,
@@ -2053,7 +2653,13 @@
       "special_eligibility": "None",
       "website": "https://promys.org/",
       "key_benefits": "6-week number theory immersion",
-      "application_requirements": "Problem set, essays, recommendation"
+      "application_requirements": "Problem set, essays, recommendation",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 73,
@@ -2074,7 +2680,13 @@
       "special_eligibility": "None",
       "website": "https://rossprogram.org/",
       "key_benefits": "Number theory deep dive",
-      "application_requirements": "Application, problem solutions, essays"
+      "application_requirements": "Application, problem solutions, essays",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 74,
@@ -2094,7 +2706,13 @@
       "special_eligibility": "None",
       "website": "https://www.hcssim.org/",
       "key_benefits": "Hampshire College math immersion",
-      "application_requirements": "Application, math problems, essays"
+      "application_requirements": "Application, math problems, essays",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 75,
@@ -2114,7 +2732,13 @@
       "special_eligibility": "None",
       "website": "http://www.mathily.org/",
       "key_benefits": "Interactive math exploration",
-      "application_requirements": "Application, assorted problems"
+      "application_requirements": "Application, assorted problems",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 77,
@@ -2134,7 +2758,13 @@
       "special_eligibility": "None",
       "website": "http://www.tsimf.cn/",
       "key_benefits": "International math program",
-      "application_requirements": "Application, math assessment"
+      "application_requirements": "Application, math assessment",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 78,
@@ -2154,7 +2784,13 @@
       "special_eligibility": "None",
       "website": "https://njms.rutgers.edu/",
       "key_benefits": "Medical school preparation",
-      "application_requirements": "Application, transcript, essays"
+      "application_requirements": "Application, transcript, essays",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 83,
@@ -2175,7 +2811,13 @@
       "special_eligibility": "None",
       "website": "https://www.experiment.org/",
       "key_benefits": "Cultural immersion abroad",
-      "application_requirements": "Application, essays, references"
+      "application_requirements": "Application, essays, references",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 84,
@@ -2196,7 +2838,13 @@
       "special_eligibility": "None",
       "website": "https://www.ciee.org/",
       "key_benefits": "Language and cultural immersion",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 85,
@@ -2216,7 +2864,13 @@
       "special_eligibility": "None",
       "website": "https://www.nationalgeographic.com/student-expeditions/",
       "key_benefits": "Adventure and conservation",
-      "application_requirements": "Application"
+      "application_requirements": "Application",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.008Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 88,
@@ -2237,7 +2891,13 @@
       "special_eligibility": "Spanish proficiency helpful",
       "website": "https://amigosinternational.org/",
       "key_benefits": "Community development in Latin America",
-      "application_requirements": "Application, interview, training"
+      "application_requirements": "Application, interview, training",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 89,
@@ -2257,7 +2917,13 @@
       "special_eligibility": "None",
       "website": "https://globalroutes.org/",
       "key_benefits": "Service and adventure travel",
-      "application_requirements": "Application"
+      "application_requirements": "Application",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 91,
@@ -2277,7 +2943,13 @@
       "special_eligibility": "None",
       "website": "https://www.envisionexperience.com/",
       "key_benefits": "Career exploration programs",
-      "application_requirements": "Registration"
+      "application_requirements": "Registration",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 92,
@@ -2297,7 +2969,13 @@
       "special_eligibility": "None",
       "website": "https://jsa.org/",
       "key_benefits": "Government and politics immersion",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 93,
@@ -2317,7 +2995,13 @@
       "special_eligibility": "None",
       "website": "https://www.nslcleaders.org/",
       "key_benefits": "Leadership and career exploration",
-      "application_requirements": "Registration"
+      "application_requirements": "Registration",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 102,
@@ -2337,7 +3021,13 @@
       "special_eligibility": "None",
       "website": "https://blueprintprep.com/",
       "key_benefits": "Test prep and college admissions",
-      "application_requirements": "Registration"
+      "application_requirements": "Registration",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 105,
@@ -2357,7 +3047,13 @@
       "special_eligibility": "None",
       "website": "https://www.kaptest.com/",
       "key_benefits": "SAT/ACT test preparation",
-      "application_requirements": "Registration"
+      "application_requirements": "Registration",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 106,
@@ -2377,7 +3073,13 @@
       "special_eligibility": "None",
       "website": "https://www.princetonreview.com/",
       "key_benefits": "Test prep and college counseling",
-      "application_requirements": "Registration"
+      "application_requirements": "Registration",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 112,
@@ -2397,7 +3099,13 @@
       "special_eligibility": "Must hold elected/selected student government position",
       "website": "https://ussenateyouth.org/",
       "key_benefits": "$10K college scholarship + Washington Week experience",
-      "application_requirements": "Essays, transcript, leadership proof"
+      "application_requirements": "Essays, transcript, leadership proof",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 113,
@@ -2417,7 +3125,13 @@
       "special_eligibility": "Must have original research completed",
       "website": "https://www.societyforscience.org/regeneron-sts/",
       "key_benefits": "Top science competition; significant awards",
-      "application_requirements": "Original research paper, 3 recommendations"
+      "application_requirements": "Original research paper, 3 recommendations",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 114,
@@ -2438,7 +3152,13 @@
       "special_eligibility": "Significant work in field",
       "website": "https://www.davidsongifted.org/fellows",
       "key_benefits": "Large scholarships for exceptional work",
-      "application_requirements": "Project submission, essays, recommendations"
+      "application_requirements": "Project submission, essays, recommendations",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 115,
@@ -2458,7 +3178,13 @@
       "special_eligibility": "2 delegates per state",
       "website": "https://www.nyscamp.org/",
       "key_benefits": "Elite STEM camp for graduating seniors",
-      "application_requirements": "State nomination process"
+      "application_requirements": "State nomination process",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 301,
+        "error": null
+      }
     },
     {
       "id": 116,
@@ -2478,7 +3204,13 @@
       "special_eligibility": "Exceptional STEM students",
       "website": "https://www.cee.org/programs/rsi",
       "key_benefits": "Most prestigious STEM research program at MIT",
-      "application_requirements": "Essays, transcript, test scores, recommendations"
+      "application_requirements": "Essays, transcript, test scores, recommendations",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 404,
+        "error": null
+      }
     },
     {
       "id": 117,
@@ -2498,7 +3230,13 @@
       "special_eligibility": "Underrepresented minorities",
       "website": "https://mites.mit.edu/",
       "key_benefits": "Rigorous STEM at MIT for underrepresented students",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 118,
@@ -2518,7 +3256,13 @@
       "special_eligibility": "Underrepresented minorities",
       "website": "https://mites.mit.edu/",
       "key_benefits": "Online + 1 week at MIT for underrepresented students",
-      "application_requirements": "Application, essays, recommendations, transcript"
+      "application_requirements": "Application, essays, recommendations, transcript",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 119,
@@ -2538,7 +3282,13 @@
       "special_eligibility": "Must complete online prerequisite",
       "website": "https://beaverworks.ll.mit.edu/",
       "key_benefits": "Advanced tech projects at MIT",
-      "application_requirements": "Complete online course, application"
+      "application_requirements": "Complete online course, application",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 120,
@@ -2558,7 +3308,13 @@
       "special_eligibility": "Female/non-binary students",
       "website": "https://wtp.mit.edu/",
       "key_benefits": "Engineering for female/non-binary students at MIT",
-      "application_requirements": "Application, essays, recommendations"
+      "application_requirements": "Application, essays, recommendations",
+      "linkValidation": {
+        "isValid": false,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 403,
+        "error": null
+      }
     },
     {
       "id": 121,
@@ -2578,7 +3334,13 @@
       "special_eligibility": "Boston area students",
       "website": "https://math.mit.edu/research/highschool/primes/",
       "key_benefits": "Year-long research with MIT faculty",
-      "application_requirements": "Application, problem sets, recommendations"
+      "application_requirements": "Application, problem sets, recommendations",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 122,
@@ -2598,7 +3360,13 @@
       "special_eligibility": "Outside Boston area",
       "website": "https://math.mit.edu/research/highschool/primes/usa/",
       "key_benefits": "Remote math research with MIT mentors",
-      "application_requirements": "Application, problem sets, recommendations"
+      "application_requirements": "Application, problem sets, recommendations",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 123,
@@ -2618,7 +3386,13 @@
       "special_eligibility": "Original project idea",
       "website": "https://think.mit.edu/",
       "key_benefits": "Funding and mentorship for student projects",
-      "application_requirements": "Project proposal, budget"
+      "application_requirements": "Project proposal, budget",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 124,
@@ -2638,7 +3412,13 @@
       "special_eligibility": "Incoming college freshmen",
       "website": "https://buildyourfuture.withgoogle.com/",
       "key_benefits": "Google CS training with stipend",
-      "application_requirements": "Application, transcript"
+      "application_requirements": "Application, transcript",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 200,
+        "error": null
+      }
     },
     {
       "id": 125,
@@ -2658,7 +3438,13 @@
       "special_eligibility": "Local to Seattle area",
       "website": "https://careers.microsoft.com/students/",
       "key_benefits": "Paid tech internship at Microsoft",
-      "application_requirements": "Application, resume, interview"
+      "application_requirements": "Application, resume, interview",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 302,
+        "error": null
+      }
     },
     {
       "id": 126,
@@ -2678,7 +3464,13 @@
       "special_eligibility": "Underrepresented minorities",
       "website": "https://www.metacareers.com/",
       "key_benefits": "Tech training at Meta with stipend",
-      "application_requirements": "Application, essays"
+      "application_requirements": "Application, essays",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 302,
+        "error": null
+      }
     },
     {
       "id": 127,
@@ -2698,7 +3490,13 @@
       "special_eligibility": "None",
       "website": "https://www.amazonfutureengineer.com/",
       "key_benefits": "Free CS education from Amazon",
-      "application_requirements": "Registration"
+      "application_requirements": "Registration",
+      "linkValidation": {
+        "isValid": true,
+        "lastChecked": "2025-09-14T16:57:37.009Z",
+        "statusCode": 200,
+        "error": null
+      }
     }
   ]
 }

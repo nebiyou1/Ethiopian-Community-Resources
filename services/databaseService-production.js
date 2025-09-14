@@ -21,6 +21,10 @@ class DatabaseServiceProduction {
         .trim();
       
       this.jsonData = JSON.parse(cleanedData);
+      
+      // Clean the data after loading
+      this.cleanProgramData();
+      
       console.log(`✅ Loaded ${this.jsonData.programs?.length || 0} programs from JSON`);
     } catch (error) {
       console.error('❌ Error loading JSON data:', error.message);
@@ -39,9 +43,106 @@ class DatabaseServiceProduction {
     }
   }
 
-  // =====================================================
-  // PROGRAMS CRUD OPERATIONS
-  // =====================================================
+  cleanProgramData() {
+    if (!this.jsonData.programs) return;
+    
+    const originalCount = this.jsonData.programs.length;
+    
+    this.jsonData.programs = this.jsonData.programs.filter(program => {
+      // Remove programs with invalid names
+      if (!program.program_name || 
+          program.program_name.trim() === '' ||
+          program.program_name.toLowerCase() === 'unknown program' ||
+          program.program_name.toLowerCase() === 'n/a') {
+        return false;
+      }
+      
+      // Clean program name
+      program.program_name = program.program_name.toString().trim();
+      
+      // Clean organization
+      if (!program.organization) {
+        program.organization = {};
+      }
+      if (!program.organization.name || 
+          program.organization.name.toLowerCase() === 'unknown organization') {
+        // Try to extract from program name
+        const words = program.program_name.split(/\s+/);
+        program.organization.name = words.slice(0, Math.min(3, words.length - 1)).join(' ');
+      }
+      
+      // Clean dates
+      if (program.application_deadline) {
+        const deadline = program.application_deadline.toString().trim();
+        if (deadline === 'N/A' || deadline === 'TBD' || deadline === '' || 
+            deadline.toLowerCase().includes('invalid') ||
+            deadline.toLowerCase().includes('rolling')) {
+          program.application_deadline = null;
+          program.deadline_note = 'Refer to website for current deadline';
+        } else {
+          const date = new Date(deadline);
+          if (isNaN(date.getTime()) || date.getFullYear() < 2020 || date.getFullYear() > 2030) {
+            program.application_deadline = null;
+            program.deadline_note = 'Refer to website for current deadline';
+          } else {
+            program.application_deadline = date.toISOString().split('T')[0];
+          }
+        }
+      }
+      
+      // Clean grade levels
+      if (program.grade_level) {
+        const gradeStr = program.grade_level.toString().trim();
+        if (gradeStr.match(/^\d+$/)) {
+          // Single grade - keep as is
+          const grade = parseInt(gradeStr);
+          if (grade < 6 || grade > 12) {
+            program.grade_level = null;
+          }
+        } else if (gradeStr.match(/^\d+-\d+$/)) {
+          // Range - validate
+          const [min, max] = gradeStr.split('-').map(n => parseInt(n.trim()));
+          if (min < 6 || max > 12 || min > max) {
+            program.grade_level = null;
+          }
+        } else if (gradeStr.toLowerCase().includes('high school')) {
+          program.grade_level = '9-12';
+        } else if (gradeStr.toLowerCase().includes('middle school')) {
+          program.grade_level = '6-8';
+        } else {
+          program.grade_level = null;
+        }
+      }
+      
+      // Clean cost category
+      const validCategories = ['FREE', 'FREE_PLUS_STIPEND', 'FREE_PLUS_SCHOLARSHIP', 'LOW_COST', 'PAID'];
+      if (!program.cost_category || !validCategories.includes(program.cost_category)) {
+        program.cost_category = 'FREE'; // Default
+      }
+      
+      // Clean prestige level
+      const validLevels = ['elite', 'highly-selective', 'selective', 'accessible'];
+      if (!program.prestige_level || !validLevels.includes(program.prestige_level)) {
+        program.prestige_level = 'accessible'; // Default
+      }
+      
+      // Clean location
+      if (!program.location || program.location.trim() === '') {
+        if (program.organization && (program.organization.city || program.organization.state)) {
+          const locationParts = [];
+          if (program.organization.city) locationParts.push(program.organization.city);
+          if (program.organization.state) locationParts.push(program.organization.state);
+          program.location = locationParts.join(', ');
+        } else {
+          program.location = 'Various locations';
+        }
+      }
+      
+      return true; // Keep this program
+    });
+    
+    console.log(`🧹 Cleaned data: ${originalCount} → ${this.jsonData.programs.length} valid programs`);
+  }
 
   async getAllPrograms(filters = {}) {
     if (this.useSupabase) {
@@ -270,6 +371,7 @@ class DatabaseServiceProduction {
       location_state: program.location_state,
       website: program.website,
       cost_category: program.cost_category,
+      prestige_level: program.prestige_level,
       grade_level: program.grade_level,
       duration_weeks: program.duration_weeks,
       selectivity_percent: program.selectivity_percent,
@@ -286,6 +388,44 @@ class DatabaseServiceProduction {
     // Apply basic filters
     if (filters.program_type) {
       results = results.filter(p => p.program_type === filters.program_type);
+    }
+    
+    if (filters.costCategory) {
+      results = results.filter(p => p.cost_category === filters.costCategory);
+    }
+    
+    if (filters.prestige) {
+      results = results.filter(p => p.prestige_level === filters.prestige);
+    }
+    
+    if (filters.gradeLevel) {
+      const filterGrade = parseInt(filters.gradeLevel);
+      results = results.filter(p => {
+        if (!p.grade_level) return false;
+        const gradeStr = p.grade_level.toString();
+        if (gradeStr.match(/^\d+$/)) {
+          const programGrade = parseInt(gradeStr);
+          return (filterGrade >= programGrade - 1 && filterGrade <= programGrade + 1);
+        } else if (gradeStr.match(/^\d+-\d+$/)) {
+          const [min, max] = gradeStr.split('-').map(n => parseInt(n.trim()));
+          return (filterGrade >= min && filterGrade <= max);
+        } else if (gradeStr.toLowerCase().includes('high school')) {
+          return (filterGrade >= 9 && filterGrade <= 12);
+        } else if (gradeStr.toLowerCase().includes('middle school')) {
+          return (filterGrade >= 6 && filterGrade <= 8);
+        }
+        return true;
+      });
+    }
+    
+    if (filters.location) {
+      const locationTerm = filters.location.toLowerCase();
+      results = results.filter(p => 
+        (p.location_city || '').toLowerCase().includes(locationTerm) ||
+        (p.location_state || '').toLowerCase().includes(locationTerm) ||
+        (p.organization?.city || '').toLowerCase().includes(locationTerm) ||
+        (p.organization?.state || '').toLowerCase().includes(locationTerm)
+      );
     }
     
     if (filters.search) {
@@ -634,14 +774,17 @@ class DatabaseServiceProduction {
   }
 
   extractOrganizationFromName(programName) {
-    if (!programName) return 'Unknown Organization';
+    if (!programName || programName.trim() === '') return 'Unknown Organization';
+    
+    // Clean the program name first
+    let cleanName = programName.trim();
     
     // Common patterns for organization extraction
     const patterns = [
       // "MIT PRIMES" -> "MIT"
       /^([A-Z]{2,5})\s+/,
       // "Harvard Summer School" -> "Harvard"
-      /^(\w+)\s+(Summer|Program|School|Institute|Foundation|Center|Academy)/i,
+      /^(\w+)\s+(Summer|Program|School|Institute|Foundation|Center|Academy|University|College)/i,
       // "Fred Hutch SHIP" -> "Fred Hutch"
       /^([^-]+?)\s+[A-Z]{2,}/,
       // "All Star Code" -> "All Star Code"
@@ -649,20 +792,29 @@ class DatabaseServiceProduction {
     ];
 
     for (const pattern of patterns) {
-      const match = programName.match(pattern);
+      const match = cleanName.match(pattern);
       if (match) {
         let orgName = match[1].trim();
         // Clean up common suffixes
-        orgName = orgName.replace(/\s+(Program|Summer|School)$/i, '');
+        orgName = orgName.replace(/\s+(Program|Summer|School|Institute|Foundation|Center|Academy|University|College)$/i, '');
         if (orgName.length > 2) {
           return orgName;
         }
       }
     }
 
-    // Fallback: use first 2-3 words
-    const words = programName.split(' ');
-    return words.slice(0, Math.min(3, words.length)).join(' ');
+    // Fallback: use first 2-3 words, but avoid common program words
+    const words = cleanName.split(' ');
+    const filteredWords = words.filter(word => 
+      !['program', 'summer', 'school', 'institute', 'foundation', 'center', 'academy'].includes(word.toLowerCase())
+    );
+    
+    if (filteredWords.length > 0) {
+      return filteredWords.slice(0, Math.min(3, filteredWords.length)).join(' ');
+    }
+    
+    // Last resort: use first 2 words
+    return words.slice(0, Math.min(2, words.length)).join(' ');
   }
 
   extractCityFromState(locationState) {

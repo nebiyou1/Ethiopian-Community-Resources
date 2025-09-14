@@ -1,6 +1,7 @@
 import React from 'react'
 import { ChakraProvider, createSystem, defaultConfig } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { AuthProvider } from './contexts/AuthContext'
 import ProgramsTable from './components/ProgramsTable'
 import Header from './components/Header'
 import './App.css'
@@ -14,10 +15,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider value={system}>
-        <div className="App">
-          <Header />
-          <ProgramsTable />
-        </div>
+        <AuthProvider>
+          <div className="App">
+            <Header />
+            <ProgramsTable />
+          </div>
+        </AuthProvider>
       </ChakraProvider>
     </QueryClientProvider>
   )

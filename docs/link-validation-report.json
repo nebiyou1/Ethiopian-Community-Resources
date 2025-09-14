@@ -1,0 +1,1075 @@
+{
+  "timestamp": "2025-09-14T16:57:37.005Z",
+  "summary": {
+    "total": 133,
+    "valid": 103,
+    "invalid": 30,
+    "successRate": 77.44360902255639
+  },
+  "valid": [
+    {
+      "id": 132,
+      "name": "Simons Foundation Scholarship",
+      "website": "https://www.simonsfoundation.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.simonsfoundation.org/"
+    },
+    {
+      "id": 1,
+      "name": "Fred Hutch SHIP",
+      "website": "https://www.fredhutch.org/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.fredhutch.org/"
+    },
+    {
+      "id": 135,
+      "name": "QuestBridge National College Match",
+      "website": "https://www.questbridge.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.questbridge.org/"
+    },
+    {
+      "id": 134,
+      "name": "Gates Scholarship",
+      "website": "https://www.thegatesscholarship.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.thegatesscholarship.org/"
+    },
+    {
+      "id": 133,
+      "name": "Coca-Cola Scholars",
+      "website": "https://www.coca-colascholarsfoundation.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.coca-colascholarsfoundation.org/"
+    },
+    {
+      "id": 137,
+      "name": "Elks Most Valuable Student",
+      "website": "https://www.elks.org/scholars/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.elks.org/scholars/"
+    },
+    {
+      "id": 136,
+      "name": "Jack Kent Cooke Scholarship",
+      "website": "https://www.jkcf.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.jkcf.org/"
+    },
+    {
+      "id": 129,
+      "name": "All Star Code",
+      "website": "https://www.allstarcode.org/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.allstarcode.org/"
+    },
+    {
+      "id": 131,
+      "name": "AI4ALL",
+      "website": "https://ai-4-all.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://ai-4-all.org/"
+    },
+    {
+      "id": 130,
+      "name": "Code Nation",
+      "website": "https://codenation.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://codenation.org/"
+    },
+    {
+      "id": 141,
+      "name": "Posse Scholarship",
+      "website": "https://www.possefoundation.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.possefoundation.org/"
+    },
+    {
+      "id": 144,
+      "name": "Congress-Bundestag Youth Exchange",
+      "website": "https://www.usagermanyscholarship.org/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.usagermanyscholarship.org/"
+    },
+    {
+      "id": 143,
+      "name": "NSLI-Y",
+      "website": "https://www.nsliforyouth.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.nsliforyouth.org/"
+    },
+    {
+      "id": 139,
+      "name": "Coolidge Scholarship",
+      "website": "https://coolidgescholars.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://coolidgescholars.org/"
+    },
+    {
+      "id": 146,
+      "name": "UWC United World Colleges",
+      "website": "https://www.uwc.org/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.uwc.org/"
+    },
+    {
+      "id": 142,
+      "name": "Ron Brown Scholar Program",
+      "website": "https://www.ronbrown.org/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.ronbrown.org/"
+    },
+    {
+      "id": 140,
+      "name": "Stamps Scholarship",
+      "website": "https://www.stampsfoundation.org/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.stampsfoundation.org/"
+    },
+    {
+      "id": 148,
+      "name": "Rotary Youth Exchange",
+      "website": "https://www.rotary.org/",
+      "valid": true,
+      "statusCode": 302,
+      "url": "https://www.rotary.org/"
+    },
+    {
+      "id": 150,
+      "name": "YYGS Yale Young Global Scholars",
+      "website": "https://globalscholars.yale.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://globalscholars.yale.edu/"
+    },
+    {
+      "id": 149,
+      "name": "AFS-USA",
+      "website": "https://www.afsusa.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.afsusa.org/"
+    },
+    {
+      "id": 154,
+      "name": "LaunchX",
+      "website": "https://launchx.com/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://launchx.com/"
+    },
+    {
+      "id": 157,
+      "name": "HOSA ILC",
+      "website": "https://hosa.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://hosa.org/"
+    },
+    {
+      "id": 155,
+      "name": "DECA ICDC",
+      "website": "https://www.deca.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.deca.org/"
+    },
+    {
+      "id": 156,
+      "name": "FBLA NLC",
+      "website": "https://www.fbla-pbl.org/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.fbla-pbl.org/"
+    },
+    {
+      "id": 151,
+      "name": "TASP Telluride",
+      "website": "https://www.tellurideassociation.org/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.tellurideassociation.org/"
+    },
+    {
+      "id": 152,
+      "name": "TASS Telluride",
+      "website": "https://www.tellurideassociation.org/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.tellurideassociation.org/"
+    },
+    {
+      "id": 169,
+      "name": "Girl Scout Gold Award",
+      "website": "https://www.girlscouts.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.girlscouts.org/"
+    },
+    {
+      "id": 165,
+      "name": "Model UN Conference",
+      "website": "https://www.un.org/en/mun",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.un.org/en/mun"
+    },
+    {
+      "id": 172,
+      "name": "RYLA Rotary Youth Leadership",
+      "website": "https://www.rotary.org/",
+      "valid": true,
+      "statusCode": 302,
+      "url": "https://www.rotary.org/"
+    },
+    {
+      "id": 159,
+      "name": "SkillsUSA NLSC",
+      "website": "https://www.skillsusa.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.skillsusa.org/"
+    },
+    {
+      "id": 173,
+      "name": "Boys State",
+      "website": "https://www.legion.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.legion.org/"
+    },
+    {
+      "id": 170,
+      "name": "Eagle Scout",
+      "website": "https://www.scouting.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.scouting.org/"
+    },
+    {
+      "id": 163,
+      "name": "Mock Trial Nationals",
+      "website": "https://www.nationalmocktrial.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.nationalmocktrial.org/"
+    },
+    {
+      "id": 164,
+      "name": "We the People Nationals",
+      "website": "https://www.civiced.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.civiced.org/"
+    },
+    {
+      "id": 2,
+      "name": "CMU CS Scholars",
+      "website": "https://www.cmu.edu/pre-college/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.cmu.edu/pre-college/"
+    },
+    {
+      "id": 175,
+      "name": "Boys/Girls Nation",
+      "website": "https://www.legion.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.legion.org/"
+    },
+    {
+      "id": 8,
+      "name": "Stanford SIMR",
+      "website": "https://simr.stanford.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://simr.stanford.edu/"
+    },
+    {
+      "id": 9,
+      "name": "Columbia S-PREP",
+      "website": "https://ps.columbia.edu/education/academic-programs/college-programs/science-research-program-s-prep",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://ps.columbia.edu/education/academic-programs/college-programs/science-research-program-s-prep"
+    },
+    {
+      "id": 10,
+      "name": "Governor's School North Carolina",
+      "website": "https://www.ncgovschool.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.ncgovschool.org/"
+    },
+    {
+      "id": 13,
+      "name": "Yale Young Global Scholars (YYGS)",
+      "website": "https://globalscholars.yale.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://globalscholars.yale.edu/"
+    },
+    {
+      "id": 14,
+      "name": "Research in Science and Engineering (RiSE) - BU",
+      "website": "https://www.bu.edu/summer/high-school-programs/rise/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.bu.edu/summer/high-school-programs/rise/"
+    },
+    {
+      "id": 17,
+      "name": "Clark Scholars Program",
+      "website": "https://www.depts.ttu.edu/honors/academicsandenrichment/affiliatedandhighschool/clarks/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.depts.ttu.edu/honors/academicsandenrichment/affiliatedandhighschool/clarks/"
+    },
+    {
+      "id": 18,
+      "name": "Garcia MRSEC",
+      "website": "https://www.stonybrook.edu/commcms/garcia/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.stonybrook.edu/commcms/garcia/"
+    },
+    {
+      "id": 12,
+      "name": "Princeton LEDA Scholars",
+      "website": "https://ledascholars.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://ledascholars.org/"
+    },
+    {
+      "id": 16,
+      "name": "TASS (Telluride)",
+      "website": "https://www.tellurideassociation.org/our-programs/tass/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.tellurideassociation.org/our-programs/tass/"
+    },
+    {
+      "id": 22,
+      "name": "Launch X",
+      "website": "https://launchx.com/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://launchx.com/"
+    },
+    {
+      "id": 20,
+      "name": "Iowa SSTP",
+      "website": "https://belinblank.education.uiowa.edu/students/sstp/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://belinblank.education.uiowa.edu/students/sstp/"
+    },
+    {
+      "id": 29,
+      "name": "Bank of America Student Leaders",
+      "website": "https://about.bankofamerica.com/en/making-an-impact/student-leaders",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://about.bankofamerica.com/en/making-an-impact/student-leaders"
+    },
+    {
+      "id": 25,
+      "name": "Simons Summer Research",
+      "website": "https://www.stonybrook.edu/simons/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.stonybrook.edu/simons/"
+    },
+    {
+      "id": 19,
+      "name": "HSHSP at Michigan State",
+      "website": "https://education.msu.edu/hshsp/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://education.msu.edu/hshsp/"
+    },
+    {
+      "id": 28,
+      "name": "Girls Who Code Summer Immersion",
+      "website": "https://girlswhocode.com/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://girlswhocode.com/"
+    },
+    {
+      "id": 34,
+      "name": "Notre Dame Summer Scholars",
+      "website": "https://precollege.nd.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://precollege.nd.edu/"
+    },
+    {
+      "id": 36,
+      "name": "Brown Pre-College",
+      "website": "https://precollege.brown.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://precollege.brown.edu/"
+    },
+    {
+      "id": 37,
+      "name": "Columbia Summer Programs",
+      "website": "https://precollege.sps.columbia.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://precollege.sps.columbia.edu/"
+    },
+    {
+      "id": 35,
+      "name": "Georgetown Summer Programs",
+      "website": "https://summer.georgetown.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://summer.georgetown.edu/"
+    },
+    {
+      "id": 39,
+      "name": "Duke Summer Session",
+      "website": "https://summersession.duke.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://summersession.duke.edu/"
+    },
+    {
+      "id": 38,
+      "name": "Cornell Summer College",
+      "website": "https://sce.cornell.edu/precollege",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://sce.cornell.edu/precollege"
+    },
+    {
+      "id": 33,
+      "name": "Economics for Leaders",
+      "website": "https://www.fte.org/students/economics-for-leaders/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.fte.org/students/economics-for-leaders/"
+    },
+    {
+      "id": 40,
+      "name": "Harvard Summer School",
+      "website": "https://summer.harvard.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://summer.harvard.edu/"
+    },
+    {
+      "id": 32,
+      "name": "Wharton Global Youth Summer Program",
+      "website": "https://globalyouth.wharton.upenn.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://globalyouth.wharton.upenn.edu/"
+    },
+    {
+      "id": 31,
+      "name": "Wharton Sports Business Academy",
+      "website": "https://globalyouth.wharton.upenn.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://globalyouth.wharton.upenn.edu/"
+    },
+    {
+      "id": 54,
+      "name": "RISD Pre-College",
+      "website": "https://precollege.risd.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://precollege.risd.edu/"
+    },
+    {
+      "id": 57,
+      "name": "Iowa Young Writers' Studio",
+      "website": "https://iyws.clas.uiowa.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://iyws.clas.uiowa.edu/"
+    },
+    {
+      "id": 59,
+      "name": "NYU Tisch Summer High School",
+      "website": "https://tisch.nyu.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://tisch.nyu.edu/"
+    },
+    {
+      "id": 58,
+      "name": "Sewanee Young Writers' Conference",
+      "website": "https://www.sewanee.edu/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.sewanee.edu/"
+    },
+    {
+      "id": 52,
+      "name": "MICA Pre-College",
+      "website": "https://www.mica.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.mica.edu/"
+    },
+    {
+      "id": 60,
+      "name": "USC Summer Programs",
+      "website": "https://summerprograms.usc.edu/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://summerprograms.usc.edu/"
+    },
+    {
+      "id": 56,
+      "name": "Kenyon Review Young Writers",
+      "website": "https://kenyonreview.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://kenyonreview.org/"
+    },
+    {
+      "id": 51,
+      "name": "Tanglewood BUTI",
+      "website": "https://www.bso.org/tanglewood-learning-institute",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.bso.org/tanglewood-learning-institute"
+    },
+    {
+      "id": 53,
+      "name": "Parsons Summer Programs",
+      "website": "https://www.newschool.edu/parsons/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.newschool.edu/parsons/"
+    },
+    {
+      "id": 63,
+      "name": "Stanford Summer Session",
+      "website": "https://summer.stanford.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://summer.stanford.edu/"
+    },
+    {
+      "id": 64,
+      "name": "UChicago Summer Session",
+      "website": "https://summer.uchicago.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://summer.uchicago.edu/"
+    },
+    {
+      "id": 62,
+      "name": "Berkeley Summer Sessions",
+      "website": "https://summer.berkeley.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://summer.berkeley.edu/"
+    },
+    {
+      "id": 69,
+      "name": "Carnegie Mellon Pre-College",
+      "website": "https://www.cmu.edu/pre-college/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.cmu.edu/pre-college/"
+    },
+    {
+      "id": 65,
+      "name": "Michigan Math and Science Scholars",
+      "website": "https://www.math.lsa.umich.edu/mmss/",
+      "valid": true,
+      "statusCode": 302,
+      "url": "https://www.math.lsa.umich.edu/mmss/"
+    },
+    {
+      "id": 70,
+      "name": "Stanford SUMaC",
+      "website": "https://sumac.spcs.stanford.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://sumac.spcs.stanford.edu/"
+    },
+    {
+      "id": 67,
+      "name": "Emory Pre-College",
+      "website": "https://precollege.emory.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://precollege.emory.edu/"
+    },
+    {
+      "id": 66,
+      "name": "Boston Leadership Institute",
+      "website": "https://www.bostonleadershipinstitute.com/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.bostonleadershipinstitute.com/"
+    },
+    {
+      "id": 73,
+      "name": "Ross Mathematics Program",
+      "website": "https://rossprogram.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://rossprogram.org/"
+    },
+    {
+      "id": 71,
+      "name": "PROMYS",
+      "website": "https://promys.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://promys.org/"
+    },
+    {
+      "id": 75,
+      "name": "MathILy",
+      "website": "http://www.mathily.org/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "http://www.mathily.org/"
+    },
+    {
+      "id": 78,
+      "name": "SMART @ NJMS",
+      "website": "https://njms.rutgers.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://njms.rutgers.edu/"
+    },
+    {
+      "id": 84,
+      "name": "CIEE High School Summer Abroad",
+      "website": "https://www.ciee.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.ciee.org/"
+    },
+    {
+      "id": 74,
+      "name": "HCSSiM",
+      "website": "https://www.hcssim.org/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.hcssim.org/"
+    },
+    {
+      "id": 77,
+      "name": "Yau Mathcamp SIMIS",
+      "website": "http://www.tsimf.cn/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "http://www.tsimf.cn/"
+    },
+    {
+      "id": 91,
+      "name": "Envision Career & Leadership Programs",
+      "website": "https://www.envisionexperience.com/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.envisionexperience.com/"
+    },
+    {
+      "id": 106,
+      "name": "Princeton Review Summer",
+      "website": "https://www.princetonreview.com/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.princetonreview.com/"
+    },
+    {
+      "id": 102,
+      "name": "Blueprint Summer Programs",
+      "website": "https://blueprintprep.com/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://blueprintprep.com/"
+    },
+    {
+      "id": 92,
+      "name": "Junior Statesmen Summer School",
+      "website": "https://jsa.org/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://jsa.org/"
+    },
+    {
+      "id": 93,
+      "name": "National Student Leadership Conference",
+      "website": "https://www.nslcleaders.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.nslcleaders.org/"
+    },
+    {
+      "id": 114,
+      "name": "Davidson Fellows Scholarship",
+      "website": "https://www.davidsongifted.org/fellows",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.davidsongifted.org/fellows"
+    },
+    {
+      "id": 112,
+      "name": "United States Senate Youth Program (USSYP)",
+      "website": "https://ussenateyouth.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://ussenateyouth.org/"
+    },
+    {
+      "id": 89,
+      "name": "Global Routes",
+      "website": "https://globalroutes.org/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://globalroutes.org/"
+    },
+    {
+      "id": 113,
+      "name": "Regeneron Science Talent Search (STS)",
+      "website": "https://www.societyforscience.org/regeneron-sts/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.societyforscience.org/regeneron-sts/"
+    },
+    {
+      "id": 119,
+      "name": "MIT Beaver Works Summer Institute (BWSI)",
+      "website": "https://beaverworks.ll.mit.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://beaverworks.ll.mit.edu/"
+    },
+    {
+      "id": 121,
+      "name": "MIT PRIMES",
+      "website": "https://math.mit.edu/research/highschool/primes/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://math.mit.edu/research/highschool/primes/"
+    },
+    {
+      "id": 122,
+      "name": "MIT PRIMES-USA",
+      "website": "https://math.mit.edu/research/highschool/primes/usa/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://math.mit.edu/research/highschool/primes/usa/"
+    },
+    {
+      "id": 124,
+      "name": "Google CSSI",
+      "website": "https://buildyourfuture.withgoogle.com/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://buildyourfuture.withgoogle.com/"
+    },
+    {
+      "id": 115,
+      "name": "National Youth Science Camp (NYSCamp)",
+      "website": "https://www.nyscamp.org/",
+      "valid": true,
+      "statusCode": 301,
+      "url": "https://www.nyscamp.org/"
+    },
+    {
+      "id": 123,
+      "name": "MIT THINK Scholars Program",
+      "website": "https://think.mit.edu/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://think.mit.edu/"
+    },
+    {
+      "id": 126,
+      "name": "Facebook/Meta Summer Academy",
+      "website": "https://www.metacareers.com/",
+      "valid": true,
+      "statusCode": 302,
+      "url": "https://www.metacareers.com/"
+    },
+    {
+      "id": 125,
+      "name": "Microsoft High School Internship",
+      "website": "https://careers.microsoft.com/students/",
+      "valid": true,
+      "statusCode": 302,
+      "url": "https://careers.microsoft.com/students/"
+    },
+    {
+      "id": 127,
+      "name": "Amazon Future Engineer",
+      "website": "https://www.amazonfutureengineer.com/",
+      "valid": true,
+      "statusCode": 200,
+      "url": "https://www.amazonfutureengineer.com/"
+    }
+  ],
+  "invalid": [
+    {
+      "id": 138,
+      "name": "Cameron Impact Scholarship",
+      "website": "https://www.bryancameroneducationfoundation.org/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://www.bryancameroneducationfoundation.org/"
+    },
+    {
+      "id": 145,
+      "name": "Kennedy-Lugar YES Abroad",
+      "website": "https://www.yesabroad.org/",
+      "valid": false,
+      "error": "getaddrinfo ENOTFOUND www.yesabroad.org",
+      "url": "https://www.yesabroad.org/"
+    },
+    {
+      "id": 147,
+      "name": "School Year Abroad",
+      "website": "https://www.sya.org/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://www.sya.org/"
+    },
+    {
+      "id": 153,
+      "name": "JCamp",
+      "website": "https://jcamp.com/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://jcamp.com/"
+    },
+    {
+      "id": 160,
+      "name": "FIRST Robotics Championship",
+      "website": "https://www.firstinspires.org/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://www.firstinspires.org/"
+    },
+    {
+      "id": 171,
+      "name": "HOBY Leadership Seminar",
+      "website": "https://www.hoby.org/",
+      "valid": false,
+      "error": "Timeout",
+      "url": "https://www.hoby.org/"
+    },
+    {
+      "id": 176,
+      "name": "National Youth Leadership Forum",
+      "valid": false,
+      "error": "Empty URL"
+    },
+    {
+      "id": 4,
+      "name": "Governor's School NJ Engineering",
+      "website": "https://njgss.org/",
+      "valid": false,
+      "error": "getaddrinfo ENOTFOUND njgss.org",
+      "url": "https://njgss.org/"
+    },
+    {
+      "id": 7,
+      "name": "Stanford SMYSP",
+      "website": "https://smysp.stanford.edu/",
+      "valid": false,
+      "error": "getaddrinfo ENOTFOUND smysp.stanford.edu",
+      "url": "https://smysp.stanford.edu/"
+    },
+    {
+      "id": 174,
+      "name": "Girls State",
+      "website": "https://www.alaforveterans.org/",
+      "valid": false,
+      "error": "certificate has expired",
+      "url": "https://www.alaforveterans.org/"
+    },
+    {
+      "id": 3,
+      "name": "MIT Women's Technology Program (WTP-ME)",
+      "website": "https://wtp.mit.edu/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://wtp.mit.edu/"
+    },
+    {
+      "id": 6,
+      "name": "MathRoots (MIT)",
+      "website": "https://mathroots.mit.edu/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://mathroots.mit.edu/"
+    },
+    {
+      "id": 5,
+      "name": "MIT Beaver Works Summer Institute (BWSI)",
+      "website": "https://beaverworks.ll.mit.edu/CMS/bw/bwsi",
+      "valid": false,
+      "error": "Timeout",
+      "url": "https://beaverworks.ll.mit.edu/CMS/bw/bwsi"
+    },
+    {
+      "id": 15,
+      "name": "SSP - Summer Science Program",
+      "website": "https://summerscience.org/",
+      "valid": false,
+      "error": "unable to get local issuer certificate",
+      "url": "https://summerscience.org/"
+    },
+    {
+      "id": 11,
+      "name": "Boston Philarmonic Young Scientist Mentorship Program",
+      "website": "https://zumerinstitute.org/",
+      "valid": false,
+      "error": "getaddrinfo ENOTFOUND zumerinstitute.org",
+      "url": "https://zumerinstitute.org/"
+    },
+    {
+      "id": 24,
+      "name": "NIH SIP",
+      "website": "https://www.training.nih.gov/programs/sip",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://www.training.nih.gov/programs/sip"
+    },
+    {
+      "id": 30,
+      "name": "LEAD Summer Business Institute",
+      "website": "https://www.leadprogram.org/",
+      "valid": false,
+      "error": "Hostname/IP does not match certificate's altnames: Host: www.leadprogram.org. is not in the cert's altnames: DNS:*.enschool.org, DNS:enschool.org",
+      "url": "https://www.leadprogram.org/"
+    },
+    {
+      "id": 21,
+      "name": "JCamp",
+      "website": "https://jcamp.com/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://jcamp.com/"
+    },
+    {
+      "id": 23,
+      "name": "MIT Launch",
+      "website": "https://mitlaunch.com/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://mitlaunch.com/"
+    },
+    {
+      "id": 55,
+      "name": "California State Summer School for the Arts",
+      "website": "https://www.csssa.org/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://www.csssa.org/"
+    },
+    {
+      "id": 61,
+      "name": "UCLA Summer Sessions",
+      "website": "https://summer.ucla.edu/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://summer.ucla.edu/"
+    },
+    {
+      "id": 68,
+      "name": "WashU Summer Programs",
+      "website": "https://summerexperiences.wustl.edu/",
+      "valid": false,
+      "error": "read ECONNRESET",
+      "url": "https://summerexperiences.wustl.edu/"
+    },
+    {
+      "id": 83,
+      "name": "Experiment in International Living",
+      "website": "https://www.experiment.org/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://www.experiment.org/"
+    },
+    {
+      "id": 85,
+      "name": "National Geographic Student Expeditions",
+      "website": "https://www.nationalgeographic.com/student-expeditions/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://www.nationalgeographic.com/student-expeditions/"
+    },
+    {
+      "id": 88,
+      "name": "AMIGOS de las Americas",
+      "website": "https://amigosinternational.org/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://amigosinternational.org/"
+    },
+    {
+      "id": 105,
+      "name": "Kaplan Test Prep Summer",
+      "website": "https://www.kaptest.com/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://www.kaptest.com/"
+    },
+    {
+      "id": 117,
+      "name": "MITES Summer (MIT)",
+      "website": "https://mites.mit.edu/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://mites.mit.edu/"
+    },
+    {
+      "id": 118,
+      "name": "MITES Semester (formerly MOSTEC)",
+      "website": "https://mites.mit.edu/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://mites.mit.edu/"
+    },
+    {
+      "id": 120,
+      "name": "MIT Women's Technology Program (WTP-ME)",
+      "website": "https://wtp.mit.edu/",
+      "valid": false,
+      "statusCode": 403,
+      "url": "https://wtp.mit.edu/"
+    },
+    {
+      "id": 116,
+      "name": "Research Science Institute (RSI)",
+      "website": "https://www.cee.org/programs/rsi",
+      "valid": false,
+      "statusCode": 404,
+      "url": "https://www.cee.org/programs/rsi"
+    }
+  ]
+}

@@ -1,8 +1,13 @@
-import React from 'react'
-import { Sun } from 'lucide-react'
+import React, { useState } from 'react'
+import { Sun, User, LogOut, LogIn } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
+import { useAuth } from '../contexts/AuthContext'
+import AuthModal from './AuthModal'
 
 const Header = () => {
+  const { user, signOut } = useAuth()
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
+  
   // Fetch stats data
   const { data: stats, isLoading } = useQuery({
     queryKey: ['programs-stats'],
@@ -257,6 +262,73 @@ const Header = () => {
             Stats unavailable
           </div>
         )}
+        
+        {/* Authentication Section */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px'
+        }}>
+          {user ? (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              background: 'rgba(255, 255, 255, 0.1)',
+              padding: '6px 12px',
+              borderRadius: '20px',
+              border: '1px solid rgba(255, 255, 255, 0.2)'
+            }}>
+              <User size={16} />
+              <span style={{ fontSize: '14px', opacity: 0.9 }}>
+                {user.email?.split('@')[0] || 'User'}
+              </span>
+              <button
+                onClick={signOut}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'white',
+                  cursor: 'pointer',
+                  padding: '4px',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  opacity: 0.8
+                }}
+                title="Sign Out"
+              >
+                <LogOut size={14} />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: 'rgba(255, 255, 255, 0.1)',
+                padding: '6px 12px',
+                borderRadius: '20px',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                color: 'white',
+                cursor: 'pointer',
+                fontSize: '14px',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.background = 'rgba(255, 255, 255, 0.2)'
+              }}
+              onMouseOut={(e) => {
+                e.target.style.background = 'rgba(255, 255, 255, 0.1)'
+              }}
+            >
+              <LogIn size={16} />
+              Sign In
+            </button>
+          )}
+        </div>
       </div>
       
       {/* CSS for spinner animation and responsive design */}
@@ -308,6 +380,12 @@ const Header = () => {
           }
         }
       `}</style>
+      
+      {/* Authentication Modal */}
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+      />
     </div>
   )
 }

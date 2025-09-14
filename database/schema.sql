@@ -1,477 +1,179 @@
--- Ethiopian & Eritrean Community Summer Programs Database Schema
--- Flexible schema designed for cultural and community-specific programs
+-- Ethiopian Community Resources Database Schema
+-- This file contains all the database tables and relationships
 
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
--- Programs table - Main table for all summer programs and community resources
-CREATE TABLE IF NOT EXISTS programs (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    program_name VARCHAR(255) NOT NULL,
-    program_name_amharic VARCHAR(255), -- Amharic translation
-    program_name_tigrinya VARCHAR(255), -- Tigrinya translation
-    program_name_oromo VARCHAR(255), -- Oromo translation
-    organization VARCHAR(255),
-    organization_type VARCHAR(100), -- 'community_center', 'religious', 'cultural', 'educational', 'government', 'nonprofit'
-    description TEXT,
-    description_amharic TEXT,
-    description_tigrinya TEXT,
-    description_oromo TEXT,
-    
-    -- Program Details
-    grade_level_min INTEGER,
-    grade_level_max INTEGER,
-    age_min INTEGER,
-    age_max INTEGER,
-    cost_category VARCHAR(50), -- 'FREE', 'LOW_COST', 'PAID', 'SCHOLARSHIP_AVAILABLE', 'SLIDING_SCALE'
-    cost_amount DECIMAL(10,2),
-    cost_currency VARCHAR(10) DEFAULT 'USD',
-    program_type VARCHAR(100), -- 'summer_camp', 'tutoring', 'cultural_program', 'language_school', 'sports', 'arts', 'stem', 'leadership'
-    subject_area VARCHAR(100),
-    
-    -- Cultural & Community Specific
-    target_community VARCHAR(100), -- 'ethiopian', 'eritrean', 'habesha', 'general', 'mixed'
-    languages_offered TEXT[], -- Array of languages: ['amharic', 'tigrinya', 'oromo', 'english', 'arabic']
-    cultural_focus BOOLEAN DEFAULT false, -- Programs with Ethiopian/Eritrean cultural components
-    religious_affiliation VARCHAR(100), -- 'orthodox', 'catholic', 'protestant', 'muslim', 'secular', 'interfaith'
-    
-    -- Location & Logistics
-    location_type VARCHAR(50), -- 'in_person', 'virtual', 'hybrid'
-    location_address TEXT,
-    location_city VARCHAR(100),
-    location_state VARCHAR(10),
-    location_country VARCHAR(50) DEFAULT 'USA',
-    location_zip VARCHAR(20),
-    coordinates POINT, -- Geographic coordinates
-    transportation_provided BOOLEAN DEFAULT false,
-    transportation_notes TEXT,
-    
-    -- Schedule & Duration
-    duration_weeks INTEGER,
-    duration_hours_per_week INTEGER,
-    start_date DATE,
-    end_date DATE,
-    schedule_days VARCHAR(50), -- 'monday-friday', 'weekends', 'flexible'
-    schedule_time VARCHAR(100), -- '9am-3pm', 'evenings', 'flexible'
-    
-    -- Application & Eligibility
-    application_deadline DATE,
-    application_process TEXT,
-    application_requirements TEXT,
-    eligibility_requirements TEXT,
-    selectivity_percent INTEGER,
-    capacity_total INTEGER,
-    capacity_remaining INTEGER,
-    
-    -- Financial Information
-    stipend_amount DECIMAL(10,2),
-    financial_aid_available BOOLEAN DEFAULT false,
-    scholarship_info TEXT,
-    payment_plans_available BOOLEAN DEFAULT false,
-    
-    -- Contact & Resources
-    website TEXT,
-    contact_email VARCHAR(255),
-    contact_phone VARCHAR(20),
-    contact_person VARCHAR(255),
-    social_media JSONB, -- {'facebook': 'url', 'instagram': 'url', 'whatsapp': 'number'}
-    
-    -- Program Benefits & Features
-    key_benefits TEXT,
-    special_features TEXT,
-    meals_provided BOOLEAN DEFAULT false,
-    meal_type VARCHAR(50), -- 'halal', 'vegetarian', 'ethiopian_cuisine', 'standard'
-    childcare_available BOOLEAN DEFAULT false,
-    
-    -- Community Integration
-    parent_involvement BOOLEAN DEFAULT false,
-    community_service_component BOOLEAN DEFAULT false,
-    mentorship_program BOOLEAN DEFAULT false,
-    alumni_network BOOLEAN DEFAULT false,
-    
-    -- Verification & Quality
-    verification_status VARCHAR(50) DEFAULT 'pending', -- 'verified', 'pending', 'flagged'
-    verified_by VARCHAR(255),
-    verification_date TIMESTAMP WITH TIME ZONE,
-    community_rating DECIMAL(3,2), -- Average rating from 1.00 to 5.00
-    total_reviews INTEGER DEFAULT 0,
-    
-    -- Administrative
-    source VARCHAR(100),
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    is_active BOOLEAN DEFAULT true,
-    is_featured BOOLEAN DEFAULT false,
-    priority_level INTEGER DEFAULT 0, -- Higher numbers = higher priority
-    metadata JSONB DEFAULT '{}'::jsonb
-);
-
--- Categories table - Flexible categorization system
-CREATE TABLE IF NOT EXISTS categories (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE,
-    name_amharic VARCHAR(100),
-    name_tigrinya VARCHAR(100),
-    name_oromo VARCHAR(100),
-    type VARCHAR(50) NOT NULL, -- 'cost', 'program_type', 'subject', 'age_group', 'community', 'language'
-    parent_category_id UUID REFERENCES categories(id),
-    description TEXT,
-    icon VARCHAR(50), -- Emoji or icon class
-    color VARCHAR(20), -- Hex color code
-    display_order INTEGER DEFAULT 0,
-    is_active BOOLEAN DEFAULT true,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- Program categories junction table
-CREATE TABLE IF NOT EXISTS program_categories (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    program_id UUID REFERENCES programs(id) ON DELETE CASCADE,
-    category_id UUID REFERENCES categories(id) ON DELETE CASCADE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    UNIQUE(program_id, category_id)
-);
-
--- Users table - Community members
+-- Users table for authentication and role management
 CREATE TABLE IF NOT EXISTS users (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) UNIQUE NOT NULL,
-    name VARCHAR(255),
-    name_amharic VARCHAR(255),
-    picture TEXT,
-    provider VARCHAR(50) DEFAULT 'google',
-    role VARCHAR(50) DEFAULT 'user', -- 'user', 'moderator', 'admin', 'community_leader'
-    
-    -- Community Profile
-    community_affiliation VARCHAR(100), -- 'ethiopian', 'eritrean', 'habesha'
-    languages_spoken TEXT[], -- Array of languages
-    location_city VARCHAR(100),
-    location_state VARCHAR(10),
-    
-    -- Preferences
-    preferred_language VARCHAR(20) DEFAULT 'english',
-    notification_preferences JSONB DEFAULT '{}'::jsonb,
-    privacy_settings JSONB DEFAULT '{}'::jsonb,
-    
-    -- Verification
-    is_verified BOOLEAN DEFAULT false,
-    verification_method VARCHAR(50), -- 'community_leader', 'document', 'referral'
-    verified_by UUID REFERENCES users(id),
-    
-    -- Activity
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    last_login TIMESTAMP WITH TIME ZONE,
-    is_active BOOLEAN DEFAULT true
+    password_hash VARCHAR(255),
+    google_id VARCHAR(255) UNIQUE,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    role VARCHAR(20) DEFAULT 'user' CHECK (role IN ('user', 'data_admin', 'admin')),
+    email_verified BOOLEAN DEFAULT FALSE,
+    email_verification_token VARCHAR(255),
+    email_verification_expires TIMESTAMP,
+    password_reset_token VARCHAR(255),
+    password_reset_expires TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- User favorites - Saved programs
+-- Organizations table
+CREATE TABLE IF NOT EXISTS organizations (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255) NOT NULL,
+    website VARCHAR(500),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    country VARCHAR(100) DEFAULT 'USA',
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Programs table
+CREATE TABLE IF NOT EXISTS programs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    program_name VARCHAR(255) NOT NULL,
+    organization_id UUID REFERENCES organizations(id) ON DELETE SET NULL,
+    description TEXT,
+    website VARCHAR(500),
+    cost_category VARCHAR(50) DEFAULT 'FREE' CHECK (cost_category IN ('FREE', 'FREE_PLUS_STIPEND', 'FREE_PLUS_SCHOLARSHIP', 'LOW_COST', 'PAID')),
+    grade_level VARCHAR(20),
+    application_deadline DATE,
+    deadline_note TEXT,
+    location VARCHAR(255),
+    prestige_level VARCHAR(50) DEFAULT 'accessible' CHECK (prestige_level IN ('elite', 'highly-selective', 'selective', 'accessible')),
+    duration VARCHAR(100),
+    financial_aid TEXT,
+    additional_info TEXT,
+    is_estimated_deadline BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by UUID REFERENCES users(id),
+    updated_by UUID REFERENCES users(id)
+);
+
+-- Program suggestions table
+CREATE TABLE IF NOT EXISTS program_suggestions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    type VARCHAR(20) NOT NULL CHECK (type IN ('new_program', 'edit_program')),
+    program_id UUID REFERENCES programs(id) ON DELETE CASCADE,
+    program_data JSONB, -- For new program suggestions
+    field VARCHAR(100), -- For edit suggestions
+    old_value TEXT,
+    new_value TEXT,
+    reason TEXT,
+    comment TEXT,
+    submitted_by UUID REFERENCES users(id) NOT NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+    reviewed_by UUID REFERENCES users(id),
+    reviewed_at TIMESTAMP,
+    review_comment TEXT
+);
+
+-- Comments on suggestions
+CREATE TABLE IF NOT EXISTS suggestion_comments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    suggestion_id UUID REFERENCES program_suggestions(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES users(id) NOT NULL,
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- User favorites
 CREATE TABLE IF NOT EXISTS user_favorites (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
     program_id UUID REFERENCES programs(id) ON DELETE CASCADE,
-    notes TEXT, -- Personal notes about the program
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(user_id, program_id)
 );
 
--- User applications - Application tracking
-CREATE TABLE IF NOT EXISTS user_applications (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+-- Program views/analytics
+CREATE TABLE IF NOT EXISTS program_views (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    program_id UUID REFERENCES programs(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES users(id) ON DELETE SET NULL, -- NULL for anonymous views
+    ip_address INET,
+    user_agent TEXT,
+    viewed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Search analytics
+CREATE TABLE IF NOT EXISTS search_analytics (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    search_term VARCHAR(255),
+    filters JSONB,
+    results_count INTEGER,
+    user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    ip_address INET,
+    searched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Email verification tokens
+CREATE TABLE IF NOT EXISTS email_verification_tokens (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    token VARCHAR(255) UNIQUE NOT NULL,
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-    program_id UUID REFERENCES programs(id) ON DELETE CASCADE,
-    status VARCHAR(50) DEFAULT 'interested', -- 'interested', 'applied', 'accepted', 'rejected', 'enrolled', 'completed'
-    application_date DATE,
-    enrollment_date DATE,
-    completion_date DATE,
-    notes TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    email VARCHAR(255) NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Reviews and ratings
-CREATE TABLE IF NOT EXISTS program_reviews (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    program_id UUID REFERENCES programs(id) ON DELETE CASCADE,
+-- Password reset tokens
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    token VARCHAR(255) UNIQUE NOT NULL,
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-    rating INTEGER CHECK (rating >= 1 AND rating <= 5),
-    review_text TEXT,
-    review_text_amharic TEXT,
-    review_text_tigrinya TEXT,
-    
-    -- Review Categories
-    cultural_relevance_rating INTEGER CHECK (cultural_relevance_rating >= 1 AND cultural_relevance_rating <= 5),
-    language_support_rating INTEGER CHECK (language_support_rating >= 1 AND language_support_rating <= 5),
-    community_connection_rating INTEGER CHECK (community_connection_rating >= 1 AND community_connection_rating <= 5),
-    
-    -- Verification
-    is_verified BOOLEAN DEFAULT false,
-    verified_enrollment BOOLEAN DEFAULT false, -- User actually attended the program
-    
-    -- Helpful votes
-    helpful_votes INTEGER DEFAULT 0,
-    total_votes INTEGER DEFAULT 0,
-    
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    UNIQUE(program_id, user_id)
+    email VARCHAR(255) NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Community organizations and partners
-CREATE TABLE IF NOT EXISTS organizations (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    name_amharic VARCHAR(255),
-    name_tigrinya VARCHAR(255),
-    type VARCHAR(100), -- 'community_center', 'church', 'mosque', 'cultural_org', 'school', 'nonprofit'
-    description TEXT,
-    
-    -- Contact Information
-    website TEXT,
-    email VARCHAR(255),
-    phone VARCHAR(20),
-    address TEXT,
-    city VARCHAR(100),
-    state VARCHAR(10),
-    
-    -- Community Details
-    community_served VARCHAR(100), -- 'ethiopian', 'eritrean', 'habesha', 'general'
-    languages_supported TEXT[],
-    established_year INTEGER,
-    
-    -- Verification
-    is_verified BOOLEAN DEFAULT false,
-    verification_documents JSONB,
-    
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    is_active BOOLEAN DEFAULT true
-);
-
--- Link programs to organizations
-CREATE TABLE IF NOT EXISTS program_organizations (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    program_id UUID REFERENCES programs(id) ON DELETE CASCADE,
-    organization_id UUID REFERENCES organizations(id) ON DELETE CASCADE,
-    relationship_type VARCHAR(50), -- 'host', 'partner', 'sponsor', 'referral'
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    UNIQUE(program_id, organization_id, relationship_type)
-);
-
--- Community events and announcements
-CREATE TABLE IF NOT EXISTS community_events (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    title_amharic VARCHAR(255),
-    title_tigrinya VARCHAR(255),
-    description TEXT,
-    event_type VARCHAR(100), -- 'info_session', 'cultural_event', 'workshop', 'meeting'
-    
-    -- Event Details
-    start_datetime TIMESTAMP WITH TIME ZONE,
-    end_datetime TIMESTAMP WITH TIME ZONE,
-    location TEXT,
-    is_virtual BOOLEAN DEFAULT false,
-    meeting_link TEXT,
-    
-    -- Community Relevance
-    target_community VARCHAR(100),
-    languages TEXT[],
-    
-    -- Related Programs
-    related_programs UUID[],
-    
-    created_by UUID REFERENCES users(id),
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    is_active BOOLEAN DEFAULT true
-);
-
--- Data import and migration tracking
-CREATE TABLE IF NOT EXISTS data_imports (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    import_type VARCHAR(50) NOT NULL,
-    source_file VARCHAR(255),
-    source_description TEXT,
-    records_processed INTEGER DEFAULT 0,
-    records_created INTEGER DEFAULT 0,
-    records_updated INTEGER DEFAULT 0,
-    records_failed INTEGER DEFAULT 0,
-    status VARCHAR(50) DEFAULT 'pending',
-    error_log TEXT,
-    import_metadata JSONB,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    completed_at TIMESTAMP WITH TIME ZONE
-);
-
--- Create indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_programs_name ON programs(program_name);
-CREATE INDEX IF NOT EXISTS idx_programs_community ON programs(target_community);
+-- Indexes for better performance
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id);
+CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
+CREATE INDEX IF NOT EXISTS idx_programs_organization_id ON programs(organization_id);
 CREATE INDEX IF NOT EXISTS idx_programs_cost_category ON programs(cost_category);
-CREATE INDEX IF NOT EXISTS idx_programs_program_type ON programs(program_type);
-CREATE INDEX IF NOT EXISTS idx_programs_grade_level ON programs(grade_level_min, grade_level_max);
-CREATE INDEX IF NOT EXISTS idx_programs_age ON programs(age_min, age_max);
-CREATE INDEX IF NOT EXISTS idx_programs_location ON programs(location_city, location_state);
-CREATE INDEX IF NOT EXISTS idx_programs_dates ON programs(start_date, end_date);
-CREATE INDEX IF NOT EXISTS idx_programs_deadline ON programs(application_deadline);
-CREATE INDEX IF NOT EXISTS idx_programs_active ON programs(is_active);
-CREATE INDEX IF NOT EXISTS idx_programs_featured ON programs(is_featured);
-CREATE INDEX IF NOT EXISTS idx_programs_languages ON programs USING GIN(languages_offered);
-CREATE INDEX IF NOT EXISTS idx_programs_cultural ON programs(cultural_focus);
-CREATE INDEX IF NOT EXISTS idx_programs_verification ON programs(verification_status);
-CREATE INDEX IF NOT EXISTS idx_programs_rating ON programs(community_rating);
-CREATE INDEX IF NOT EXISTS idx_programs_metadata ON programs USING GIN(metadata);
-CREATE INDEX IF NOT EXISTS idx_programs_coordinates ON programs USING GIST(coordinates);
+CREATE INDEX IF NOT EXISTS idx_programs_prestige_level ON programs(prestige_level);
+CREATE INDEX IF NOT EXISTS idx_programs_grade_level ON programs(grade_level);
+CREATE INDEX IF NOT EXISTS idx_programs_location ON programs(location);
+CREATE INDEX IF NOT EXISTS idx_program_suggestions_status ON program_suggestions(status);
+CREATE INDEX IF NOT EXISTS idx_program_suggestions_submitted_by ON program_suggestions(submitted_by);
+CREATE INDEX IF NOT EXISTS idx_program_suggestions_type ON program_suggestions(type);
+CREATE INDEX IF NOT EXISTS idx_user_favorites_user_id ON user_favorites(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_favorites_program_id ON user_favorites(program_id);
+CREATE INDEX IF NOT EXISTS idx_program_views_program_id ON program_views(program_id);
+CREATE INDEX IF NOT EXISTS idx_program_views_viewed_at ON program_views(viewed_at);
+CREATE INDEX IF NOT EXISTS idx_search_analytics_searched_at ON search_analytics(searched_at);
 
-CREATE INDEX IF NOT EXISTS idx_categories_type ON categories(type);
-CREATE INDEX IF NOT EXISTS idx_categories_parent ON categories(parent_category_id);
-CREATE INDEX IF NOT EXISTS idx_categories_active ON categories(is_active);
+-- Full-text search indexes
+CREATE INDEX IF NOT EXISTS idx_programs_search ON programs USING gin(to_tsvector('english', program_name || ' ' || COALESCE(description, '') || ' ' || COALESCE(location, '')));
+CREATE INDEX IF NOT EXISTS idx_organizations_search ON organizations USING gin(to_tsvector('english', name || ' ' || COALESCE(description, '') || ' ' || COALESCE(city, '') || ' ' || COALESCE(state, '')));
 
-CREATE INDEX IF NOT EXISTS idx_users_community ON users(community_affiliation);
-CREATE INDEX IF NOT EXISTS idx_users_languages ON users USING GIN(languages_spoken);
-CREATE INDEX IF NOT EXISTS idx_users_location ON users(location_city, location_state);
-CREATE INDEX IF NOT EXISTS idx_users_verified ON users(is_verified);
-
-CREATE INDEX IF NOT EXISTS idx_user_favorites_user ON user_favorites(user_id);
-CREATE INDEX IF NOT EXISTS idx_user_favorites_program ON user_favorites(program_id);
-
-CREATE INDEX IF NOT EXISTS idx_user_applications_user ON user_applications(user_id);
-CREATE INDEX IF NOT EXISTS idx_user_applications_program ON user_applications(program_id);
-CREATE INDEX IF NOT EXISTS idx_user_applications_status ON user_applications(status);
-
-CREATE INDEX IF NOT EXISTS idx_reviews_program ON program_reviews(program_id);
-CREATE INDEX IF NOT EXISTS idx_reviews_user ON program_reviews(user_id);
-CREATE INDEX IF NOT EXISTS idx_reviews_rating ON program_reviews(rating);
-CREATE INDEX IF NOT EXISTS idx_reviews_verified ON program_reviews(is_verified);
-
-CREATE INDEX IF NOT EXISTS idx_organizations_type ON organizations(type);
-CREATE INDEX IF NOT EXISTS idx_organizations_community ON organizations(community_served);
-CREATE INDEX IF NOT EXISTS idx_organizations_languages ON organizations USING GIN(languages_supported);
-
--- Create updated_at trigger function
+-- Triggers for updated_at timestamps
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
-    NEW.updated_at = NOW();
+    NEW.updated_at = CURRENT_TIMESTAMP;
     RETURN NEW;
 END;
 $$ language 'plpgsql';
 
--- Create triggers for updated_at
-CREATE TRIGGER update_programs_updated_at BEFORE UPDATE ON programs
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_organizations_updated_at BEFORE UPDATE ON organizations FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_programs_updated_at BEFORE UPDATE ON programs FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+-- Insert default admin user (password: admin123)
+INSERT INTO users (email, password_hash, first_name, last_name, role, email_verified) 
+VALUES ('admin@ethiopiancommunity.org', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8KzKz2K', 'Admin', 'User', 'admin', true)
+ON CONFLICT (email) DO NOTHING;
 
-CREATE TRIGGER update_user_applications_updated_at BEFORE UPDATE ON user_applications
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-
-CREATE TRIGGER update_reviews_updated_at BEFORE UPDATE ON program_reviews
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-
-CREATE TRIGGER update_organizations_updated_at BEFORE UPDATE ON organizations
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-
--- Insert default categories for Ethiopian/Eritrean community
-INSERT INTO categories (name, name_amharic, name_tigrinya, type, description, icon, display_order) VALUES
-    -- Cost Categories
-    ('FREE', 'ነፃ', 'ነፃ', 'cost', 'Completely free programs', '🆓', 1),
-    ('LOW_COST', 'ዝቅተኛ ወጪ', 'ትሑት ክፍሊት', 'cost', 'Affordable programs under $100', '💰', 2),
-    ('SCHOLARSHIP_AVAILABLE', 'የዕድል ስኮላርሺፕ', 'ስኮላርሺፕ ይርከብ', 'cost', 'Programs with scholarship opportunities', '🎓', 3),
-    ('SLIDING_SCALE', 'የተለያየ ክፍያ', 'ተመጣጣኒ ክፍሊት', 'cost', 'Payment based on family income', '📊', 4),
-    ('PAID', 'የሚከፈልበት', 'ክፍሊት ዘለዎ', 'cost', 'Paid programs', '💳', 5),
-    
-    -- Program Types
-    ('CULTURAL_PROGRAM', 'የባህል ፕሮግራም', 'ባህላዊ መደብ', 'program_type', 'Ethiopian/Eritrean cultural programs', '🇪🇹', 1),
-    ('LANGUAGE_SCHOOL', 'የቋንቋ ትምህርት', 'ቋንቋ ትምህርቲ', 'program_type', 'Amharic, Tigrinya, Oromo language classes', '📚', 2),
-    ('SUMMER_CAMP', 'የበጋ ካምፕ', 'ናይ ሓጋይ ካምፕ', 'program_type', 'Summer day camps and overnight camps', '🏕️', 3),
-    ('TUTORING', 'ተጨማሪ ትምህርት', 'ተወሳኺ ትምህርቲ', 'program_type', 'Academic tutoring and homework help', '📖', 4),
-    ('SPORTS', 'ስፖርት', 'ስፖርት', 'program_type', 'Sports and athletic programs', '⚽', 5),
-    ('ARTS', 'ጥበብ', 'ጥበብ', 'program_type', 'Arts, music, and creative programs', '🎨', 6),
-    ('STEM', 'ሳይንስ እና ቴክኖሎጂ', 'ሳይንስን ቴክኖሎጂን', 'program_type', 'Science, technology, engineering, math', '🔬', 7),
-    ('LEADERSHIP', 'አመራር', 'መራሕነት', 'program_type', 'Leadership and civic engagement', '👥', 8),
-    ('RELIGIOUS', 'ሃይማኖታዊ', 'ሃይማኖታዊ', 'program_type', 'Religious education and activities', '⛪', 9),
-    
-    -- Age Groups
-    ('EARLY_CHILDHOOD', 'ቅድመ ትምህርት', 'ቅድሚ ትምህርቲ', 'age_group', 'Ages 3-5', '👶', 1),
-    ('ELEMENTARY', 'የመጀመሪያ ደረጃ', 'ቀዳማይ ደረጃ', 'age_group', 'Ages 6-10', '🧒', 2),
-    ('MIDDLE_SCHOOL', 'የመካከለኛ ደረጃ', 'ማእከላይ ደረጃ', 'age_group', 'Ages 11-13', '👦', 3),
-    ('HIGH_SCHOOL', 'የሁለተኛ ደረጃ', 'ካልኣይ ደረጃ', 'age_group', 'Ages 14-18', '👨‍🎓', 4),
-    ('COLLEGE', 'ኮሌጅ', 'ኮሌጅ', 'age_group', 'College age and young adults', '🎓', 5),
-    
-    -- Community Focus
-    ('ETHIOPIAN', 'ኢትዮጵያዊ', 'ኢትዮጵያዊ', 'community', 'Ethiopian community focused', '🇪🇹', 1),
-    ('ERITREAN', 'ኤርትራዊ', 'ኤርትራዊ', 'community', 'Eritrean community focused', '🇪🇷', 2),
-    ('HABESHA', 'ሐበሻ', 'ሓበሻ', 'community', 'Ethiopian and Eritrean communities', '🤝', 3),
-    ('MULTICULTURAL', 'ባህላዊ ብዝሕነት', 'ብዙሕ ባህሊ', 'community', 'Multicultural and inclusive', '🌍', 4),
-    
-    -- Languages
-    ('AMHARIC', 'አማርኛ', 'አማርኛ', 'language', 'Amharic language support', '🗣️', 1),
-    ('TIGRINYA', 'ትግርኛ', 'ትግርኛ', 'language', 'Tigrinya language support', '🗣️', 2),
-    ('OROMO', 'ኦሮምኛ', 'ኦሮምኛ', 'language', 'Oromo language support', '🗣️', 3),
-    ('ENGLISH', 'እንግሊዝኛ', 'እንግሊዝኛ', 'language', 'English language programs', '🗣️', 4),
-    ('BILINGUAL', 'ባለሁለት ቋንቋ', 'ክልተ ቋንቋ', 'language', 'Bilingual programs', '🗣️', 5)
-ON CONFLICT (name) DO NOTHING;
-
--- Enable Row Level Security (RLS)
-ALTER TABLE programs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE users ENABLE ROW LEVEL SECURITY;
-ALTER TABLE user_favorites ENABLE ROW LEVEL SECURITY;
-ALTER TABLE user_applications ENABLE ROW LEVEL SECURITY;
-ALTER TABLE program_reviews ENABLE ROW LEVEL SECURITY;
-
--- Create RLS policies
--- Programs are publicly readable
-CREATE POLICY "Programs are publicly readable" ON programs
-    FOR SELECT USING (is_active = true);
-
--- Users can only see their own data
-CREATE POLICY "Users can view own profile" ON users
-    FOR SELECT USING (auth.uid()::text = id::text);
-
-CREATE POLICY "Users can update own profile" ON users
-    FOR UPDATE USING (auth.uid()::text = id::text);
-
--- User favorites policies
-CREATE POLICY "Users can manage own favorites" ON user_favorites
-    FOR ALL USING (auth.uid()::text = user_id::text);
-
--- User applications policies
-CREATE POLICY "Users can manage own applications" ON user_applications
-    FOR ALL USING (auth.uid()::text = user_id::text);
-
--- Review policies
-CREATE POLICY "Users can manage own reviews" ON program_reviews
-    FOR ALL USING (auth.uid()::text = user_id::text);
-
-CREATE POLICY "Reviews are publicly readable" ON program_reviews
-    FOR SELECT USING (true);
-
--- Function to update program rating when reviews are added/updated
-CREATE OR REPLACE FUNCTION update_program_rating()
-RETURNS TRIGGER AS $$
-BEGIN
-    UPDATE programs 
-    SET 
-        community_rating = (
-            SELECT AVG(rating)::DECIMAL(3,2) 
-            FROM program_reviews 
-            WHERE program_id = COALESCE(NEW.program_id, OLD.program_id)
-            AND is_verified = true
-        ),
-        total_reviews = (
-            SELECT COUNT(*) 
-            FROM program_reviews 
-            WHERE program_id = COALESCE(NEW.program_id, OLD.program_id)
-            AND is_verified = true
-        )
-    WHERE id = COALESCE(NEW.program_id, OLD.program_id);
-    
-    RETURN COALESCE(NEW, OLD);
-END;
-$$ LANGUAGE plpgsql;
-
--- Trigger to update program rating
-CREATE TRIGGER update_program_rating_trigger
-    AFTER INSERT OR UPDATE OR DELETE ON program_reviews
-    FOR EACH ROW EXECUTE FUNCTION update_program_rating();
+-- Insert default data admin user (password: dataadmin123)
+INSERT INTO users (email, password_hash, first_name, last_name, role, email_verified) 
+VALUES ('dataadmin@ethiopiancommunity.org', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8KzKz2K', 'Data', 'Admin', 'data_admin', true)
+ON CONFLICT (email) DO NOTHING;
