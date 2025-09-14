@@ -139,14 +139,14 @@ const ProgramsTable = () => {
             const locationStr = [city, state, country].filter(Boolean).join(', ') || 'Various'
             return (
               <HStack spacing={1}>
-                <MapPin size={12} />
+                <Text fontSize="xs">📍</Text>
                 <Text fontSize="sm">{locationStr}</Text>
               </HStack>
             )
           }
           return (
             <HStack spacing={1}>
-              <MapPin size={12} />
+              <Text fontSize="xs">📍</Text>
               <Text fontSize="sm">{String(location)}</Text>
             </HStack>
           )
@@ -161,7 +161,7 @@ const ProgramsTable = () => {
           if (min && max) {
             return (
               <HStack spacing={1}>
-                <GraduationCap size={12} />
+                <Text fontSize="xs">🎓</Text>
                 <Text fontSize="sm">{min}-{max}</Text>
               </HStack>
             )
@@ -178,7 +178,7 @@ const ProgramsTable = () => {
           }
           return (
             <HStack spacing={1}>
-              <Calendar size={12} />
+              <Text fontSize="xs">📅</Text>
               <Text fontSize="sm">{String(duration)} weeks</Text>
             </HStack>
           )
@@ -223,7 +223,7 @@ const ProgramsTable = () => {
           return (
             <Badge colorScheme={colorScheme} size="sm">
               <HStack spacing={1}>
-                <Star size={10} />
+                <Text fontSize="xs">⭐</Text>
                 <Text>{String(prestige)}</Text>
               </HStack>
             </Badge>
@@ -323,7 +323,7 @@ const ProgramsTable = () => {
                 align={{ base: 'stretch', md: 'center' }}
               >
                 <HStack flex={1} spacing={2}>
-                  <Search size={16} color="gray" />
+                  <Text fontSize="sm" color="gray.500">🔍</Text>
                   <Input
                     placeholder="Search programs, organizations, locations..."
                     value={globalFilter}
@@ -534,18 +534,18 @@ const ProgramsTable = () => {
                     <VStack spacing={2} align="stretch">
                       <HStack justify="space-between">
                         <HStack spacing={1}>
-                          <MapPin size={12} />
+                          <Text fontSize="xs">📍</Text>
                           <Text fontSize="xs">{program.location}</Text>
                         </HStack>
                         <HStack spacing={1}>
-                          <Calendar size={12} />
+                          <Text fontSize="xs">📅</Text>
                           <Text fontSize="xs">{program.duration_weeks}w</Text>
                         </HStack>
                       </HStack>
                       
                       <HStack justify="space-between">
                         <HStack spacing={1}>
-                          <GraduationCap size={12} />
+                          <Text fontSize="xs">🎓</Text>
                           <Text fontSize="xs">
                             {program.grade_level_min && program.grade_level_max 
                               ? `${program.grade_level_min}-${program.grade_level_max}`
