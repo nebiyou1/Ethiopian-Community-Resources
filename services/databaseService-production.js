@@ -552,6 +552,94 @@ class DatabaseServiceProduction {
     );
     return residentialAttr?.value_string || null;
   }
+
+  // Utility helper methods
+  createSlug(text) {
+    if (!text) return '';
+    return text
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  createDescription(program) {
+    const parts = [];
+    
+    if (program.key_benefits) {
+      parts.push(program.key_benefits);
+    }
+    
+    if (program.special_eligibility) {
+      parts.push(`Eligibility: ${program.special_eligibility}`);
+    }
+    
+    if (program.subject_area && program.subject_area !== 'General') {
+      parts.push(`Focus: ${program.subject_area.replace(/_/g, ' ')}`);
+    }
+
+    return parts.length > 0 ? parts.join('. ') : null;
+  }
+
+  getSelectivityTier(selectivityPercent) {
+    if (!selectivityPercent || selectivityPercent === 'N/A') return 'open';
+    
+    const percent = parseInt(selectivityPercent);
+    if (isNaN(percent)) return 'open';
+    
+    if (percent <= 10) return 'elite';
+    if (percent <= 25) return 'highly_selective';
+    if (percent <= 50) return 'selective';
+    return 'open';
+  }
+
+  extractOrganizationFromName(programName) {
+    if (!programName) return 'Unknown Organization';
+    
+    // Common patterns for organization extraction
+    const patterns = [
+      // "MIT PRIMES" -> "MIT"
+      /^([A-Z]{2,5})\s+/,
+      // "Harvard Summer School" -> "Harvard"
+      /^(\w+)\s+(Summer|Program|School|Institute|Foundation|Center|Academy)/i,
+      // "Fred Hutch SHIP" -> "Fred Hutch"
+      /^([^-]+?)\s+[A-Z]{2,}/,
+      // "All Star Code" -> "All Star Code"
+      /^([^-\(]+)/
+    ];
+
+    for (const pattern of patterns) {
+      const match = programName.match(pattern);
+      if (match) {
+        let orgName = match[1].trim();
+        // Clean up common suffixes
+        orgName = orgName.replace(/\s+(Program|Summer|School)$/i, '');
+        if (orgName.length > 2) {
+          return orgName;
+        }
+      }
+    }
+
+    // Fallback: use first 2-3 words
+    const words = programName.split(' ');
+    return words.slice(0, Math.min(3, words.length)).join(' ');
+  }
+
+  extractCityFromState(locationState) {
+    if (!locationState) return null;
+    
+    const cityStateMap = {
+      'CA': 'California',
+      'NY': 'New York', 
+      'MA': 'Boston',
+      'WA': 'Seattle',
+      'TX': 'Texas',
+      'DC': 'Washington DC',
+      'Various': 'Various',
+      'National': 'Various'
+    };
+    
+    return cityStateMap[locationState] || null;
+  }
 }
 
 module.exports = new DatabaseServiceProduction();
