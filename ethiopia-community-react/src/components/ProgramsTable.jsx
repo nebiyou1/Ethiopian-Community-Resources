@@ -10,45 +10,13 @@ import {
   Badge,
   Text,
   Flex,
-  useColorModeValue,
   Spinner,
   Alert,
-  AlertIcon,
   Card,
   CardBody,
   IconButton,
   Tooltip,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Divider,
   SimpleGrid,
-  Collapse,
-  Wrap,
-  WrapItem,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  CloseButton,
-  Stack,
-  FormControl,
-  FormLabel,
-  RangeSlider,
-  RangeSliderTrack,
-  RangeSliderFilledTrack,
-  RangeSliderThumb,
-  Checkbox,
-  CheckboxGroup,
-  Switch,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
 } from '@chakra-ui/react'
 import {
   useReactTable,
@@ -61,20 +29,15 @@ import {
 } from '@tanstack/react-table'
 import {
   Search,
-  Filter,
   Eye,
   Heart,
   Calendar,
   MapPin,
   GraduationCap,
-  DollarSign,
   Star,
   Grid3X3,
   List,
   Table as TableIcon,
-  ChevronDown,
-  ChevronUp,
-  X,
   Settings,
 } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
@@ -87,18 +50,10 @@ const ProgramsTable = () => {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false)
   const [filters, setFilters] = useState({
     costCategory: '',
-    gradeRange: [9, 12],
     location: '',
-    duration: '',
     prestige: '',
-    subject: '',
-    freeOnly: false,
   })
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const [selectedProgram, setSelectedProgram] = useState(null)
-
-  const bg = useColorModeValue('white', 'gray.800')
-  const borderColor = useColorModeValue('gray.200', 'gray.600')
 
   // Fetch programs data
   const { data: programs = [], isLoading, error } = useQuery({
@@ -143,36 +98,13 @@ const ProgramsTable = () => {
         return false
       }
 
-      // Grade range filter
-      if (program.grade_level_min && program.grade_level_max) {
-        const programMin = parseInt(program.grade_level_min)
-        const programMax = parseInt(program.grade_level_max)
-        const filterMin = filters.gradeRange[0]
-        const filterMax = filters.gradeRange[1]
-        
-        // Check if there's any overlap between program range and filter range
-        if (programMax < filterMin || programMin > filterMax) {
-          return false
-        }
-      }
-
       // Location filter
       if (filters.location && !program.location?.toLowerCase().includes(filters.location.toLowerCase())) {
         return false
       }
 
-      // Duration filter
-      if (filters.duration && program.duration_weeks !== parseInt(filters.duration)) {
-        return false
-      }
-
       // Prestige filter
       if (filters.prestige && program.prestige_level !== filters.prestige) {
-        return false
-      }
-
-      // Free only filter
-      if (filters.freeOnly && !['FREE', 'FREE_PLUS_STIPEND', 'FREE_PLUS_SCHOLARSHIP'].includes(program.cost_category)) {
         return false
       }
 
@@ -250,14 +182,6 @@ const ProgramsTable = () => {
           )
         },
       }),
-      columnHelper.accessor('application_deadline', {
-        header: 'Deadline',
-        cell: (info) => (
-          <Text fontSize="sm">
-            {info.getValue() ? new Date(info.getValue()).toLocaleDateString() : 'Rolling'}
-          </Text>
-        ),
-      }),
       columnHelper.accessor('prestige_level', {
         header: 'Prestige',
         cell: (info) => {
@@ -288,10 +212,7 @@ const ProgramsTable = () => {
               <IconButton
                 size="sm"
                 icon={<Eye size={14} />}
-                onClick={() => {
-                  setSelectedProgram(info.row.original)
-                  onOpen()
-                }}
+                onClick={() => setSelectedProgram(info.row.original)}
                 variant="ghost"
               />
             </Tooltip>
@@ -307,7 +228,7 @@ const ProgramsTable = () => {
         ),
       }),
     ],
-    [onOpen]
+    []
   )
 
   const table = useReactTable({
@@ -328,17 +249,13 @@ const ProgramsTable = () => {
     setGlobalFilter('')
     setFilters({
       costCategory: '',
-      gradeRange: [9, 12],
       location: '',
-      duration: '',
       prestige: '',
-      subject: '',
-      freeOnly: false,
     })
   }
 
   const activeFiltersCount = Object.values(filters).filter(value => 
-    value !== '' && value !== false && !(Array.isArray(value) && value[0] === 9 && value[1] === 12)
+    value !== ''
   ).length + (globalFilter ? 1 : 0)
 
   if (isLoading) {
@@ -358,8 +275,7 @@ const ProgramsTable = () => {
     return (
       <Container maxW="container.xl" py={8}>
         <Alert status="error">
-          <AlertIcon />
-          Failed to load programs. Please try again.
+          <Text>Failed to load programs. Please try again.</Text>
         </Alert>
       </Container>
     )
@@ -368,7 +284,7 @@ const ProgramsTable = () => {
   return (
     <Container maxW="container.xl" py={8}>
       <VStack spacing={6} align="stretch">
-        {/* Advanced Filters */}
+        {/* Filters */}
         <Card>
           <CardBody>
             <VStack spacing={4}>
@@ -379,22 +295,21 @@ const ProgramsTable = () => {
                 w="full"
                 align={{ base: 'stretch', md: 'center' }}
               >
-                <InputGroup flex={1}>
-                  <InputLeftElement>
-                    <Search size={16} color="gray" />
-                  </InputLeftElement>
+                <HStack flex={1} spacing={2}>
+                  <Search size={16} color="gray" />
                   <Input
                     placeholder="Search programs, organizations, locations..."
                     value={globalFilter}
                     onChange={(e) => setGlobalFilter(e.target.value)}
                     size="md"
+                    flex={1}
                   />
                   {globalFilter && (
-                    <InputRightElement>
-                      <CloseButton size="sm" onClick={() => setGlobalFilter('')} />
-                    </InputRightElement>
+                    <Button size="sm" variant="ghost" onClick={() => setGlobalFilter('')}>
+                      ✕
+                    </Button>
                   )}
-                </InputGroup>
+                </HStack>
                 
                 <HStack spacing={2}>
                   <Button
@@ -434,8 +349,8 @@ const ProgramsTable = () => {
               </Flex>
 
               {/* Advanced Filters */}
-              <Collapse in={showAdvancedFilters} animateOpacity>
-                <Box w="full" p={4} bg={useColorModeValue('gray.50', 'gray.700')} borderRadius="md">
+              {showAdvancedFilters && (
+                <Box w="full" p={4} bg="gray.50" borderRadius="md">
                   <VStack spacing={4} align="stretch">
                     <Flex justify="space-between" align="center">
                       <Text fontWeight="bold">Advanced Filters</Text>
@@ -446,8 +361,8 @@ const ProgramsTable = () => {
                     
                     <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
                       {/* Cost Category */}
-                      <FormControl>
-                        <FormLabel fontSize="sm">Cost Category</FormLabel>
+                      <Box>
+                        <Text fontSize="sm" fontWeight="bold" mb={2}>Cost Category</Text>
                         <Select
                           placeholder="All costs"
                           value={filters.costCategory}
@@ -460,62 +375,22 @@ const ProgramsTable = () => {
                           <option value="LOW_COST">Low Cost</option>
                           <option value="PAID">Paid</option>
                         </Select>
-                      </FormControl>
-
-                      {/* Grade Range */}
-                      <FormControl>
-                        <FormLabel fontSize="sm">Grade Range</FormLabel>
-                        <VStack spacing={2}>
-                          <RangeSlider
-                            value={filters.gradeRange}
-                            onChange={(val) => setFilters(prev => ({ ...prev, gradeRange: val }))}
-                            min={6}
-                            max={16}
-                            step={1}
-                            size="sm"
-                          >
-                            <RangeSliderTrack>
-                              <RangeSliderFilledTrack />
-                            </RangeSliderTrack>
-                            <RangeSliderThumb index={0} />
-                            <RangeSliderThumb index={1} />
-                          </RangeSlider>
-                          <Text fontSize="xs" color="gray.600">
-                            Grades {filters.gradeRange[0]}-{filters.gradeRange[1]}
-                          </Text>
-                        </VStack>
-                      </FormControl>
+                      </Box>
 
                       {/* Location */}
-                      <FormControl>
-                        <FormLabel fontSize="sm">Location</FormLabel>
+                      <Box>
+                        <Text fontSize="sm" fontWeight="bold" mb={2}>Location</Text>
                         <Input
                           placeholder="City, State, or Country"
                           value={filters.location}
                           onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
                           size="sm"
                         />
-                      </FormControl>
-
-                      {/* Duration */}
-                      <FormControl>
-                        <FormLabel fontSize="sm">Duration (weeks)</FormLabel>
-                        <NumberInput
-                          value={filters.duration}
-                          onChange={(value) => setFilters(prev => ({ ...prev, duration: value }))}
-                          size="sm"
-                        >
-                          <NumberInputField placeholder="Any duration" />
-                          <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                          </NumberInputStepper>
-                        </NumberInput>
-                      </FormControl>
+                      </Box>
 
                       {/* Prestige Level */}
-                      <FormControl>
-                        <FormLabel fontSize="sm">Prestige Level</FormLabel>
+                      <Box>
+                        <Text fontSize="sm" fontWeight="bold" mb={2}>Prestige Level</Text>
                         <Select
                           placeholder="All levels"
                           value={filters.prestige}
@@ -527,21 +402,11 @@ const ProgramsTable = () => {
                           <option value="selective">📚 Selective</option>
                           <option value="accessible">🌟 Accessible</option>
                         </Select>
-                      </FormControl>
-
-                      {/* Free Only Toggle */}
-                      <FormControl>
-                        <FormLabel fontSize="sm">Free Programs Only</FormLabel>
-                        <Switch
-                          isChecked={filters.freeOnly}
-                          onChange={(e) => setFilters(prev => ({ ...prev, freeOnly: e.target.checked }))}
-                          colorScheme="green"
-                        />
-                      </FormControl>
+                      </Box>
                     </SimpleGrid>
                   </VStack>
                 </Box>
-              </Collapse>
+              )}
 
               {/* Results Count */}
               <Text fontSize="sm" color="gray.600">
@@ -557,7 +422,7 @@ const ProgramsTable = () => {
             <CardBody p={0}>
               <Box overflowX="auto">
                 <Box as="table" w="full">
-                  <Box as="thead" bg={useColorModeValue('gray.50', 'gray.700')}>
+                  <Box as="thead" bg="gray.50">
                     {table.getHeaderGroups().map((headerGroup) => (
                       <Box as="tr" key={headerGroup.id}>
                         {headerGroup.headers.map((header) => (
@@ -571,7 +436,7 @@ const ProgramsTable = () => {
                             fontWeight="bold"
                             color="gray.600"
                             borderBottom="1px"
-                            borderColor={borderColor}
+                            borderColor="gray.200"
                             cursor={header.column.getCanSort() ? 'pointer' : 'default'}
                             onClick={header.column.getToggleSortingHandler()}
                           >
@@ -593,7 +458,7 @@ const ProgramsTable = () => {
                       <Box
                         as="tr"
                         key={row.id}
-                        _hover={{ bg: useColorModeValue('gray.50', 'gray.700') }}
+                        _hover={{ bg: 'gray.50' }}
                         transition="background-color 0.2s"
                       >
                         {row.getVisibleCells().map((cell) => (
@@ -603,7 +468,7 @@ const ProgramsTable = () => {
                             px={4}
                             py={3}
                             borderBottom="1px"
-                            borderColor={borderColor}
+                            borderColor="gray.200"
                             fontSize="sm"
                           >
                             {flexRender(
@@ -679,10 +544,7 @@ const ProgramsTable = () => {
                       <Button
                         size="sm"
                         leftIcon={<Eye size={14} />}
-                        onClick={() => {
-                          setSelectedProgram(program)
-                          onOpen()
-                        }}
+                        onClick={() => setSelectedProgram(program)}
                         variant="outline"
                       >
                         View Details
@@ -705,7 +567,7 @@ const ProgramsTable = () => {
         {viewMode === 'list' && (
           <VStack spacing={2} align="stretch">
             {filteredPrograms.map((program) => (
-              <Card key={program.id} _hover={{ bg: useColorModeValue('gray.50', 'gray.700') }} transition="all 0.2s">
+              <Card key={program.id} _hover={{ bg: 'gray.50' }} transition="all 0.2s">
                 <CardBody py={3}>
                   <Flex justify="space-between" align="center">
                     <VStack spacing={1} align="start" flex={1}>
@@ -740,10 +602,7 @@ const ProgramsTable = () => {
                         <Button
                           size="xs"
                           leftIcon={<Eye size={12} />}
-                          onClick={() => {
-                            setSelectedProgram(program)
-                            onOpen()
-                          }}
+                          onClick={() => setSelectedProgram(program)}
                           variant="ghost"
                         >
                           View
@@ -800,25 +659,29 @@ const ProgramsTable = () => {
             </Button>
           </Flex>
         )}
-      </VStack>
 
-      {/* Program Details Modal */}
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            {selectedProgram?.program_name}
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            {selectedProgram && (
+        {/* Program Details */}
+        {selectedProgram && (
+          <Card>
+            <CardBody>
               <VStack spacing={4} align="stretch">
-                <Text fontWeight="bold" color="brand.500">
-                  {selectedProgram.organization_name}
-                </Text>
+                <Flex justify="space-between" align="start">
+                  <VStack align="start" spacing={1}>
+                    <Text fontWeight="bold" fontSize="lg">
+                      {selectedProgram.program_name}
+                    </Text>
+                    <Text color="brand.500" fontWeight="bold">
+                      {selectedProgram.organization_name}
+                    </Text>
+                  </VStack>
+                  <Button size="sm" onClick={() => setSelectedProgram(null)}>
+                    ✕
+                  </Button>
+                </Flex>
+                
                 <Text>{selectedProgram.description}</Text>
                 
-                <Divider />
+                <Box h="1px" bg="gray.200" w="full" />
                 
                 <SimpleGrid columns={2} spacing={4}>
                   <Box>
@@ -857,10 +720,10 @@ const ProgramsTable = () => {
                   </Box>
                 </SimpleGrid>
               </VStack>
-            )}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+            </CardBody>
+          </Card>
+        )}
+      </VStack>
     </Container>
   )
 }

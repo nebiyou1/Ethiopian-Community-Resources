@@ -8,17 +8,13 @@ import {
   Badge,
   HStack,
   VStack,
-  useColorModeValue,
   Spinner,
 } from '@chakra-ui/react'
 import { Sun, Flag } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 
 const Header = () => {
-  const bgGradient = useColorModeValue(
-    'linear(to-r, brand.600, ethiopian.green, ethiopian.red)',
-    'linear(to-r, brand.700, ethiopian.green, ethiopian.red)'
-  )
+  const bgGradient = 'linear(to-r, brand.600, ethiopian.green, ethiopian.red)'
 
   // Fetch stats data
   const { data: stats, isLoading } = useQuery({
@@ -53,7 +49,7 @@ const Header = () => {
         right={0}
         bottom={0}
         opacity={0.1}
-        backgroundImage="url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><circle cx=\"20\" cy=\"20\" r=\"2\" fill=\"white\"/><circle cx=\"80\" cy=\"80\" r=\"2\" fill=\"white\"/><circle cx=\"40\" cy=\"60\" r=\"1\" fill=\"white\"/><circle cx=\"60\" cy=\"40\" r=\"1\" fill=\"white\"/></svg>')"
+        backgroundImage="url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%222%22 fill=%22white%22/%3E%3Ccircle cx=%2280%22 cy=%2280%22 r=%222%22 fill=%22white%22/%3E%3Ccircle cx=%2240%22 cy=%2260%22 r=%221%22 fill=%22white%22/%3E%3Ccircle cx=%2260%22 cy=%2240%22 r=%221%22 fill=%22white%22/%3E%3C/svg%3E')"
       />
       
       <Container maxW="container.xl" position="relative" zIndex={1}>
