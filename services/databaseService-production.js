@@ -70,6 +70,22 @@ class DatabaseServiceProduction {
             state_province,
             country,
             is_active
+          ),
+          program_attributes(
+            attribute_definition_id,
+            value_string,
+            value_integer,
+            value_decimal,
+            value_boolean,
+            value_date,
+            value_timestamp,
+            value_json,
+            value_array,
+            attribute_definitions(
+              name,
+              display_name,
+              data_type
+            )
           )
         `)
         .eq('status', 'active');
@@ -141,6 +157,28 @@ class DatabaseServiceProduction {
 
   transformSupabasePrograms(programs) {
     return programs.map(program => {
+      // Extract attributes
+      const attributes = {};
+      if (program.program_attributes) {
+        program.program_attributes.forEach(attr => {
+          const attrName = attr.attribute_definitions?.name;
+          if (attrName) {
+            // Get the appropriate value based on data type
+            let value = null;
+            if (attr.value_string !== null) value = attr.value_string;
+            else if (attr.value_integer !== null) value = attr.value_integer;
+            else if (attr.value_decimal !== null) value = attr.value_decimal;
+            else if (attr.value_boolean !== null) value = attr.value_boolean;
+            else if (attr.value_date !== null) value = attr.value_date;
+            else if (attr.value_timestamp !== null) value = attr.value_timestamp;
+            else if (attr.value_json !== null) value = attr.value_json;
+            else if (attr.value_array !== null) value = attr.value_array;
+            
+            attributes[attrName] = value;
+          }
+        });
+      }
+
       // Return transformed program with simplified structure
       return {
         id: program.id,
@@ -151,6 +189,9 @@ class DatabaseServiceProduction {
         program_type: program.program_type,
         target_audience: program.target_audience,
         selectivity_tier: program.selectivity_tier,
+        // Grade level attributes
+        grade_level_min: attributes.grade_level_min,
+        grade_level_max: attributes.grade_level_max,
         estimated_acceptance_rate: program.estimated_acceptance_rate,
         duration_type: program.duration_type,
         duration_value: program.duration_value,

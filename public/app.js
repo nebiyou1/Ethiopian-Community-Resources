@@ -11,7 +11,7 @@ class SummerProgramsApp {
             search: '',
             prestige: ''
         };
-        this.currentView = 'card'; // card, list, table
+        this.currentView = 'compact'; // compact, card, table
         this.user = null;
         this.favorites = new Set();
         this.init();
@@ -309,15 +309,15 @@ class SummerProgramsApp {
         }
 
         // View toggle buttons
+        const compactViewBtn = document.getElementById('compactView');
         const cardViewBtn = document.getElementById('cardView');
-        const listViewBtn = document.getElementById('listView');
         const tableViewBtn = document.getElementById('tableView');
 
+        if (compactViewBtn) {
+            compactViewBtn.addEventListener('click', () => this.setView('compact'));
+        }
         if (cardViewBtn) {
             cardViewBtn.addEventListener('click', () => this.setView('card'));
-        }
-        if (listViewBtn) {
-            listViewBtn.addEventListener('click', () => this.setView('list'));
         }
         if (tableViewBtn) {
             tableViewBtn.addEventListener('click', () => this.setView('table'));
@@ -534,22 +534,68 @@ class SummerProgramsApp {
         }
 
         if (emptyState) emptyState.style.display = 'none';
-        programsGrid.style.display = 'grid';
+        programsGrid.style.display = 'block';
 
-        programsGrid.innerHTML = this.filteredPrograms.map(program => 
-            this.createProgramCard(program)
-        ).join('');
+        // Render based on current view
+        switch (this.currentView) {
+            case 'compact':
+                programsGrid.innerHTML = this.createCompactList();
+                break;
+            case 'table':
+                programsGrid.innerHTML = this.createTableView();
+                break;
+            case 'card':
+            default:
+                programsGrid.innerHTML = this.createCardView();
+                break;
+        }
 
         // Add event listeners to program cards
         this.setupProgramCardListeners();
     }
 
+    createCardView() {
+        return this.filteredPrograms.map(program => this.createProgramCard(program)).join('');
+    }
+
+    createCompactList() {
+        return `
+            <div class="compact-list">
+                ${this.filteredPrograms.map(program => this.createCompactListItem(program)).join('')}
+            </div>
+        `;
+    }
+
+    createTableView() {
+        return `
+            <div class="table-container">
+                <table class="programs-table">
+                    <thead>
+                        <tr>
+                            <th>Program</th>
+                            <th>Organization</th>
+                            <th>Location</th>
+                            <th>Grade</th>
+                            <th>Duration</th>
+                            <th>Cost</th>
+                            <th>Deadline</th>
+                            <th>Prestige</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${this.filteredPrograms.map(program => this.createTableRow(program)).join('')}
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
+
     createProgramCard(program) {
         const costBadge = this.getCostBadge(program.cost_category);
-        const deadline = program.application_deadline ? 
-            new Date(program.application_deadline).toLocaleDateString() : 'Rolling';
+        const deadline = this.formatDeadline(program.application_deadline);
         const prestigeLevel = this.getPrestigeLevel(program);
         const prestigeLabel = this.getPrestigeLabel(prestigeLevel);
+        const gradeLevel = this.formatGradeLevel(program.grade_level);
         
         return `
             <div class="program-card" data-program-id="${program.id}">
@@ -557,28 +603,28 @@ class SummerProgramsApp {
                 <div class="program-header">
                     <div>
                         <h3 class="program-title">${program.program_name}</h3>
-                        <p class="program-organization">${program.organization || 'Community Program'}</p>
+                        <p class="program-organization">${program.organization_name || program.organization?.name || 'Community Program'}</p>
                     </div>
                     ${costBadge}
                 </div>
                 
-                <div class="program-details">
-                    <div class="program-detail">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>${program.location_city || 'Various'}, ${program.location_state || 'Multiple States'}</span>
+                <div class="program-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">Location</div>
+                        <div class="meta-value">${this.formatLocation(program)}</div>
                     </div>
-                    <div class="program-detail">
-                        <i class="fas fa-graduation-cap"></i>
-                        <span>Grade ${program.grade_level || 'All Levels'}</span>
+                    <div class="meta-item">
+                        <div class="meta-label">Grade</div>
+                        <div class="meta-value">${gradeLevel}</div>
                     </div>
-                    <div class="program-detail">
-                        <i class="fas fa-clock"></i>
-                        <span>${program.duration_weeks || 'Flexible'} weeks</span>
+                    <div class="meta-item">
+                        <div class="meta-label">Duration</div>
+                        <div class="meta-value">${this.formatDuration(program.duration_weeks)}</div>
                     </div>
-                    <div class="program-detail">
-                        <i class="fas fa-tag"></i>
-                        <span>${program.subject_area || program.program_type || 'General'}</span>
-                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Subject</div>
+                        <div class="meta-value">${this.formatSubject(program)}</div>
+                </div>
                 </div>
 
                 <p class="program-description">
@@ -609,12 +655,70 @@ class SummerProgramsApp {
         return badges[costCategory] || '<span class="program-badge badge-paid">Contact</span>';
     }
 
+    createCompactListItem(program) {
+        const costBadge = this.getCostBadge(program.cost_category);
+        const deadline = this.formatDeadline(program.application_deadline);
+        const prestigeLevel = this.getPrestigeLevel(program);
+        const prestigeLabel = this.getPrestigeLabel(prestigeLevel);
+        const gradeLevel = this.formatGradeLevel(program.grade_level);
+        
+        return `
+            <div class="compact-list-item" data-program-id="${program.id}">
+                <div class="compact-main">
+                    <div class="compact-title">
+                        <h4>${program.program_name}</h4>
+                        <span class="compact-org">${program.organization_name || program.organization?.name || 'Community Program'}</span>
+                    </div>
+                    <div class="compact-meta">
+                        <span class="compact-location">${this.formatLocation(program)}</span>
+                        <span class="compact-grade">${gradeLevel}</span>
+                        <span class="compact-duration">${this.formatDuration(program.duration_weeks)}</span>
+                        <span class="compact-deadline">${deadline}</span>
+                    </div>
+                </div>
+                <div class="compact-side">
+                    ${costBadge}
+                    <div class="prestige-badge ${prestigeLevel}">${prestigeLabel}</div>
+                    <button class="favorite-btn" data-program-id="${program.id}">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    createTableRow(program) {
+        const costBadge = this.getCostBadge(program.cost_category);
+        const deadline = this.formatDeadline(program.application_deadline);
+        const prestigeLevel = this.getPrestigeLevel(program);
+        const prestigeLabel = this.getPrestigeLabel(prestigeLevel);
+        const gradeLevel = this.formatGradeLevel(program.grade_level);
+        
+        return `
+            <tr class="table-row" data-program-id="${program.id}">
+                <td class="table-program">
+                    <div class="table-program-name">${program.program_name}</div>
+                    <div class="table-program-org">${program.organization_name || program.organization?.name || 'Community Program'}</div>
+                </td>
+                <td class="table-org">${program.organization_name || program.organization?.name || 'Community Program'}</td>
+                <td class="table-location">${this.formatLocation(program)}</td>
+                <td class="table-grade">${gradeLevel}</td>
+                <td class="table-duration">${this.formatDuration(program.duration_weeks)}</td>
+                <td class="table-cost">${costBadge}</td>
+                <td class="table-deadline">${deadline}</td>
+                <td class="table-prestige">
+                    <div class="prestige-badge ${prestigeLevel}">${prestigeLabel}</div>
+                </td>
+            </tr>
+        `;
+    }
+
     setupProgramCardListeners() {
-        // Program card click handlers
-        document.querySelectorAll('.program-card').forEach(card => {
-            card.addEventListener('click', (e) => {
+        // Program card click handlers for all view types
+        document.querySelectorAll('.program-card, .compact-list-item, .table-row').forEach(item => {
+            item.addEventListener('click', (e) => {
                 if (!e.target.closest('.favorite-btn')) {
-                    const programId = card.dataset.programId;
+                    const programId = item.dataset.programId;
                     this.showProgramModal(programId);
                 }
             });
@@ -786,6 +890,97 @@ class SummerProgramsApp {
         
         // Re-render programs with new view
         this.renderPrograms();
+    }
+
+    // Data formatting helper functions
+    formatDeadline(deadline) {
+        if (!deadline) return 'Rolling';
+        
+        // Handle non-date strings
+        if (typeof deadline === 'string') {
+            if (deadline.toLowerCase().includes('varies')) {
+                return 'Varies*';
+            }
+            if (deadline.toLowerCase().includes('rolling')) {
+                return 'Rolling';
+            }
+        }
+        
+        try {
+            const date = new Date(deadline);
+            if (isNaN(date.getTime())) {
+                return 'Check Website*';
+            }
+            return date.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric',
+                year: 'numeric'
+            });
+        } catch (error) {
+            return 'Check Website*';
+        }
+    }
+
+    formatGradeLevel(grade) {
+        if (!grade) return '9-12';
+        
+        const gradeNum = parseInt(grade);
+        if (isNaN(gradeNum)) return '9-12';
+        
+        // Convert single grades to ranges based on typical program patterns
+        if (gradeNum <= 6) return '6-8';
+        if (gradeNum <= 8) return '6-12';
+        if (gradeNum === 9) return '9-12';
+        if (gradeNum === 10) return '10-12';
+        if (gradeNum === 11) return '11-12';
+        if (gradeNum === 12) return '12+';
+        
+        return '9-12';
+    }
+
+    formatLocation(program) {
+        const city = program.location_city || program.organization?.city;
+        const state = program.location_state || program.organization?.state;
+        
+        if (state === 'Various' || state === 'National') {
+            return 'National';
+        }
+        
+        if (city && state) {
+            return `${city}, ${state}`;
+        }
+        
+        if (state) {
+            return state;
+        }
+        
+        return 'Various';
+    }
+
+    formatDuration(weeks) {
+        if (!weeks || weeks === 'N/A') return 'Flexible';
+        
+        const duration = parseInt(weeks);
+        if (isNaN(duration)) return 'Flexible';
+        
+        if (duration === 1) return '1 week';
+        if (duration < 52) return `${duration} weeks`;
+        
+        return 'Year-long';
+    }
+
+    formatSubject(program) {
+        const subject = program.subject_area || program.program_type;
+        if (!subject) return 'General';
+        
+        // Clean up subject names
+        return subject
+            .replace(/_/g, ' ')
+            .replace(/([A-Z])/g, ' $1')
+            .trim()
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(' ');
     }
 }
 

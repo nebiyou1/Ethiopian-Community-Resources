@@ -29,7 +29,7 @@
                     <i class="fas fa-user"></i>
                     Sign In
                 </button>
-                <button id="signOutBtn" class="btn btn-outline" style="display: none;">
+                <button id="signOutBtn" class="btn btn-outline" style="display: none;" onclick="signOut()">
                     <i class="fas fa-sign-out-alt"></i>
                     Sign Out
                 </button>
@@ -74,21 +74,15 @@
                         <form id="emailSignInForm" onsubmit="handleEmailSignIn(event)">
                             <div class="form-group">
                                 <label for="signInEmail">Email</label>
-                                <input type="email" id="signInEmail" required>
+                                <input type="email" id="signInEmail" required placeholder="Enter your email address">
                             </div>
-                            <div class="form-group">
-                                <label for="signInPassword">Password</label>
-                                <input type="password" id="signInPassword" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary full-width">Sign In</button>
+                            <button type="submit" class="btn btn-primary full-width">Send Verification Code</button>
                         </form>
                         
                         <div class="auth-divider">
-                            <span>Don't have an account?</span>
-                            <button class="link-btn" onclick="showSignUpForm()">Sign Up</button>
+                            <span>Already have a code?</span>
+                            <button class="link-btn" onclick="showCodeVerification()">Enter Code</button>
                         </div>
-                        
-                        <button class="link-btn" onclick="showForgotPassword()">Forgot Password?</button>
                     </div>
                     
                     <!-- Google Auth -->
@@ -100,44 +94,27 @@
                     </div>
                 </div>
                 
-                <!-- Sign Up Form -->
-                <div id="signUpForm" class="auth-form hidden">
-                    <form id="emailSignUpForm" onsubmit="handleEmailSignUp(event)">
+                <!-- Code Verification Form -->
+                <div id="codeVerificationForm" class="auth-form hidden">
+                    <form id="verifyCodeForm" onsubmit="handleCodeVerification(event)">
                         <div class="form-group">
-                            <label for="signUpEmail">Email</label>
-                            <input type="email" id="signUpEmail" required>
+                            <label for="verificationCode">Verification Code</label>
+                            <input type="text" id="verificationCode" required placeholder="Enter 6-digit code" maxlength="6" pattern="[0-9]{6}">
+                            <small class="form-help">Check your email for the verification code</small>
                         </div>
-                        <div class="form-group">
-                            <label for="signUpPassword">Password</label>
-                            <input type="password" id="signUpPassword" required minlength="6">
-                        </div>
-                        <div class="form-group">
-                            <label for="signUpConfirmPassword">Confirm Password</label>
-                            <input type="password" id="signUpConfirmPassword" required minlength="6">
-                        </div>
-                        <button type="submit" class="btn btn-primary full-width">Create Account</button>
+                        <button type="submit" class="btn btn-primary full-width">Verify & Sign In</button>
                     </form>
                     
                     <div class="auth-divider">
-                        <span>Already have an account?</span>
-                        <button class="link-btn" onclick="showSignInForm()">Sign In</button>
+                        <span>Didn't receive the code?</span>
+                        <button class="link-btn" onclick="resendCode()">Resend Code</button>
+                    </div>
+                    
+                    <div class="auth-divider">
+                        <button class="link-btn" onclick="showSignInForm()">Back to Email</button>
                     </div>
                 </div>
                 
-                <!-- Forgot Password Form -->
-                <div id="forgotPasswordForm" class="auth-form hidden">
-                    <form id="resetPasswordForm" onsubmit="handlePasswordReset(event)">
-                        <div class="form-group">
-                            <label for="resetEmail">Email</label>
-                            <input type="email" id="resetEmail" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary full-width">Send Reset Link</button>
-                    </form>
-                    
-                    <div class="auth-divider">
-                        <button class="link-btn" onclick="showSignInForm()">Back to Sign In</button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -287,23 +264,14 @@
         
         function showSignInForm() {
             document.getElementById('signInForm').classList.remove('hidden');
-            document.getElementById('signUpForm').classList.add('hidden');
-            document.getElementById('forgotPasswordForm').classList.add('hidden');
+            document.getElementById('codeVerificationForm').classList.add('hidden');
             document.getElementById('authModalTitle').textContent = 'Sign In';
         }
         
-        function showSignUpForm() {
+        function showCodeVerification() {
             document.getElementById('signInForm').classList.add('hidden');
-            document.getElementById('signUpForm').classList.remove('hidden');
-            document.getElementById('forgotPasswordForm').classList.add('hidden');
-            document.getElementById('authModalTitle').textContent = 'Create Account';
-        }
-        
-        function showForgotPassword() {
-            document.getElementById('signInForm').classList.add('hidden');
-            document.getElementById('signUpForm').classList.add('hidden');
-            document.getElementById('forgotPasswordForm').classList.remove('hidden');
-            document.getElementById('authModalTitle').textContent = 'Reset Password';
+            document.getElementById('codeVerificationForm').classList.remove('hidden');
+            document.getElementById('authModalTitle').textContent = 'Verify Code';
         }
         
         function showEmailAuth() {
@@ -323,52 +291,50 @@
         async function handleEmailSignIn(event) {
             event.preventDefault();
             const email = document.getElementById('signInEmail').value;
-            const password = document.getElementById('signInPassword').value;
             
             try {
                 if (window.authManager) {
-                    await window.authManager.signInWithEmail(email, password);
-                    closeAuthModal();
+                    await window.authManager.sendVerificationCode(email);
+                    showCodeVerification();
+                    alert('Verification code sent to your email!');
                 }
             } catch (error) {
-                alert('Sign in failed: ' + error.message);
+                alert('Failed to send code: ' + error.message);
             }
         }
         
-        async function handleEmailSignUp(event) {
+        async function handleCodeVerification(event) {
             event.preventDefault();
-            const email = document.getElementById('signUpEmail').value;
-            const password = document.getElementById('signUpPassword').value;
-            const confirmPassword = document.getElementById('signUpConfirmPassword').value;
+            const code = document.getElementById('verificationCode').value;
+            const email = document.getElementById('signInEmail').value;
             
-            if (password !== confirmPassword) {
-                alert('Passwords do not match');
+            try {
+                if (window.authManager) {
+                    await window.authManager.verifyCode(email, code);
+                    closeAuthModal();
+                    alert('Successfully signed in!');
+                }
+            } catch (error) {
+                alert('Verification failed: ' + error.message);
+            }
+        }
+        
+        async function resendCode() {
+            const email = document.getElementById('signInEmail').value;
+            
+            if (!email) {
+                alert('Please enter your email first');
+                showSignInForm();
                 return;
             }
             
             try {
                 if (window.authManager) {
-                    await window.authManager.signUpWithEmail(email, password);
-                    closeAuthModal();
-                    alert('Account created! Please check your email to verify your account.');
+                    await window.authManager.sendVerificationCode(email);
+                    alert('New verification code sent!');
                 }
             } catch (error) {
-                alert('Sign up failed: ' + error.message);
-            }
-        }
-        
-        async function handlePasswordReset(event) {
-            event.preventDefault();
-            const email = document.getElementById('resetEmail').value;
-            
-            try {
-                if (window.authManager) {
-                    await window.authManager.resetPassword(email);
-                    alert('Password reset email sent! Please check your inbox.');
-                    showSignInForm();
-                }
-            } catch (error) {
-                alert('Password reset failed: ' + error.message);
+                alert('Failed to resend code: ' + error.message);
             }
         }
         
@@ -380,6 +346,16 @@
                 }
             } catch (error) {
                 alert('Google sign in failed: ' + error.message);
+            }
+        }
+        
+        async function signOut() {
+            try {
+                if (window.authManager) {
+                    await window.authManager.signOut();
+                }
+            } catch (error) {
+                alert('Sign out failed: ' + error.message);
             }
         }
         
