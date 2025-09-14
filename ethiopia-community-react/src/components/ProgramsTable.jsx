@@ -104,11 +104,20 @@ const ProgramsTable = () => {
   const { data: programs = [], isLoading, error } = useQuery({
     queryKey: ['programs'],
     queryFn: async () => {
-      const response = await fetch('http://localhost:3000/api/programs')
+      // Use Netlify API endpoint in production, localhost in development
+      const apiUrl = window.location.hostname === 'localhost' 
+        ? 'http://localhost:3000/api/programs'
+        : '/api/programs'
+      
+      const response = await fetch(apiUrl)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
       const data = await response.json()
       return data.programs || []
     },
     staleTime: 5 * 60 * 1000,
+    retry: 3,
   })
 
   // Filter programs based on current filters
@@ -370,8 +379,10 @@ const ProgramsTable = () => {
                 w="full"
                 align={{ base: 'stretch', md: 'center' }}
               >
-                <HStack flex={1} spacing={2}>
-                  <Search size={20} color="gray" />
+                <InputGroup flex={1}>
+                  <InputLeftElement>
+                    <Search size={16} color="gray" />
+                  </InputLeftElement>
                   <Input
                     placeholder="Search programs, organizations, locations..."
                     value={globalFilter}
@@ -383,7 +394,7 @@ const ProgramsTable = () => {
                       <CloseButton size="sm" onClick={() => setGlobalFilter('')} />
                     </InputRightElement>
                   )}
-                </HStack>
+                </InputGroup>
                 
                 <HStack spacing={2}>
                   <Button
@@ -610,41 +621,185 @@ const ProgramsTable = () => {
           </Card>
         )}
 
+        {/* Cards View */}
+        {viewMode === 'cards' && (
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
+            {filteredPrograms.map((program) => (
+              <Card key={program.id} _hover={{ transform: 'translateY(-2px)', shadow: 'lg' }} transition="all 0.2s">
+                <CardBody>
+                  <VStack spacing={3} align="stretch">
+                    <VStack spacing={1} align="start">
+                      <Text fontWeight="bold" fontSize="lg" noOfLines={2}>
+                        {program.program_name}
+                      </Text>
+                      <Text fontSize="sm" color="gray.600" noOfLines={1}>
+                        {program.organization_name}
+                      </Text>
+                    </VStack>
+                    
+                    <Text fontSize="sm" color="gray.700" noOfLines={3}>
+                      {program.description}
+                    </Text>
+                    
+                    <VStack spacing={2} align="stretch">
+                      <HStack justify="space-between">
+                        <HStack spacing={1}>
+                          <MapPin size={12} />
+                          <Text fontSize="xs">{program.location}</Text>
+                        </HStack>
+                        <HStack spacing={1}>
+                          <Calendar size={12} />
+                          <Text fontSize="xs">{program.duration_weeks}w</Text>
+                        </HStack>
+                      </HStack>
+                      
+                      <HStack justify="space-between">
+                        <HStack spacing={1}>
+                          <GraduationCap size={12} />
+                          <Text fontSize="xs">
+                            {program.grade_level_min && program.grade_level_max 
+                              ? `${program.grade_level_min}-${program.grade_level_max}`
+                              : 'N/A'
+                            }
+                          </Text>
+                        </HStack>
+                        <Badge 
+                          colorScheme={
+                            program.cost_category === 'FREE' ? 'green' :
+                            program.cost_category === 'PAID' ? 'red' : 'orange'
+                          } 
+                          size="sm"
+                        >
+                          {program.cost_category?.replace('_', ' ')}
+                        </Badge>
+                      </HStack>
+                    </VStack>
+                    
+                    <HStack justify="space-between">
+                      <Button
+                        size="sm"
+                        leftIcon={<Eye size={14} />}
+                        onClick={() => {
+                          setSelectedProgram(program)
+                          onOpen()
+                        }}
+                        variant="outline"
+                      >
+                        View Details
+                      </Button>
+                      <IconButton
+                        size="sm"
+                        icon={<Heart size={14} />}
+                        variant="ghost"
+                        colorScheme="red"
+                      />
+                    </HStack>
+                  </VStack>
+                </CardBody>
+              </Card>
+            ))}
+          </SimpleGrid>
+        )}
+
+        {/* List View */}
+        {viewMode === 'list' && (
+          <VStack spacing={2} align="stretch">
+            {filteredPrograms.map((program) => (
+              <Card key={program.id} _hover={{ bg: useColorModeValue('gray.50', 'gray.700') }} transition="all 0.2s">
+                <CardBody py={3}>
+                  <Flex justify="space-between" align="center">
+                    <VStack spacing={1} align="start" flex={1}>
+                      <Text fontWeight="bold" fontSize="sm">
+                        {program.program_name}
+                      </Text>
+                      <Text fontSize="xs" color="gray.600">
+                        {program.organization_name} • {program.location}
+                      </Text>
+                    </VStack>
+                    
+                    <HStack spacing={4}>
+                      <Text fontSize="xs" color="gray.600">
+                        {program.grade_level_min && program.grade_level_max 
+                          ? `Grades ${program.grade_level_min}-${program.grade_level_max}`
+                          : 'N/A'
+                        }
+                      </Text>
+                      <Text fontSize="xs" color="gray.600">
+                        {program.duration_weeks} weeks
+                      </Text>
+                      <Badge 
+                        colorScheme={
+                          program.cost_category === 'FREE' ? 'green' :
+                          program.cost_category === 'PAID' ? 'red' : 'orange'
+                        } 
+                        size="sm"
+                      >
+                        {program.cost_category?.replace('_', ' ')}
+                      </Badge>
+                      <HStack spacing={1}>
+                        <Button
+                          size="xs"
+                          leftIcon={<Eye size={12} />}
+                          onClick={() => {
+                            setSelectedProgram(program)
+                            onOpen()
+                          }}
+                          variant="ghost"
+                        >
+                          View
+                        </Button>
+                        <IconButton
+                          size="xs"
+                          icon={<Heart size={12} />}
+                          variant="ghost"
+                          colorScheme="red"
+                        />
+                      </HStack>
+                    </HStack>
+                  </Flex>
+                </CardBody>
+              </Card>
+            ))}
+          </VStack>
+        )}
+
         {/* Pagination */}
-        <Flex justify="center" align="center" gap={4}>
-          <Button
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-            size="sm"
-          >
-            First
-          </Button>
-          <Button
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            size="sm"
-          >
-            Previous
-          </Button>
-          <Text fontSize="sm">
-            Page {table.getState().pagination.pageIndex + 1} of{' '}
-            {table.getPageCount()}
-          </Text>
-          <Button
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-            size="sm"
-          >
-            Next
-          </Button>
-          <Button
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
-            size="sm"
-          >
-            Last
-          </Button>
-        </Flex>
+        {filteredPrograms.length > 0 && (
+          <Flex justify="center" align="center" gap={4}>
+            <Button
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage()}
+              size="sm"
+            >
+              First
+            </Button>
+            <Button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              size="sm"
+            >
+              Previous
+            </Button>
+            <Text fontSize="sm">
+              Page {table.getState().pagination.pageIndex + 1} of{' '}
+              {table.getPageCount()}
+            </Text>
+            <Button
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              size="sm"
+            >
+              Next
+            </Button>
+            <Button
+              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              disabled={!table.getCanNextPage()}
+              size="sm"
+            >
+              Last
+            </Button>
+          </Flex>
+        )}
       </VStack>
 
       {/* Program Details Modal */}

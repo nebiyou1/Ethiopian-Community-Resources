@@ -9,14 +9,33 @@ import {
   HStack,
   VStack,
   useColorModeValue,
+  Spinner,
 } from '@chakra-ui/react'
 import { Sun, Flag } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
 
 const Header = () => {
   const bgGradient = useColorModeValue(
     'linear(to-r, brand.600, ethiopian.green, ethiopian.red)',
     'linear(to-r, brand.700, ethiopian.green, ethiopian.red)'
   )
+
+  // Fetch stats data
+  const { data: stats, isLoading } = useQuery({
+    queryKey: ['programs-stats'],
+    queryFn: async () => {
+      const apiUrl = window.location.hostname === 'localhost' 
+        ? 'http://localhost:3000/api/programs/stats'
+        : '/api/programs/stats'
+      
+      const response = await fetch(apiUrl)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      return response.json()
+    },
+    staleTime: 10 * 60 * 1000, // Cache for 10 minutes
+  })
 
   return (
     <Box
@@ -57,24 +76,30 @@ const Header = () => {
           </VStack>
           
           <HStack spacing={4} flexWrap="wrap" justify="center">
-            <VStack spacing={1}>
-              <Badge colorScheme="yellow" fontSize="sm" px={3} py={1} borderRadius="full">
-                176+ Programs
-              </Badge>
-              <Text fontSize="xs" opacity={0.8}>Total Available</Text>
-            </VStack>
-            <VStack spacing={1}>
-              <Badge colorScheme="green" fontSize="sm" px={3} py={1} borderRadius="full">
-                37 Free
-              </Badge>
-              <Text fontSize="xs" opacity={0.8}>No Cost</Text>
-            </VStack>
-            <VStack spacing={1}>
-              <Badge colorScheme="blue" fontSize="sm" px={3} py={1} borderRadius="full">
-                15+ Subjects
-              </Badge>
-              <Text fontSize="xs" opacity={0.8}>Areas</Text>
-            </VStack>
+            {isLoading ? (
+              <Spinner color="white" size="sm" />
+            ) : (
+              <>
+                <VStack spacing={1}>
+                  <Badge colorScheme="yellow" fontSize="sm" px={3} py={1} borderRadius="full">
+                    {stats?.data?.statistics?.totalPrograms || 0} Programs
+                  </Badge>
+                  <Text fontSize="xs" opacity={0.8}>Total Available</Text>
+                </VStack>
+                <VStack spacing={1}>
+                  <Badge colorScheme="green" fontSize="sm" px={3} py={1} borderRadius="full">
+                    {stats?.data?.statistics?.freePrograms || 0} Free
+                  </Badge>
+                  <Text fontSize="xs" opacity={0.8}>No Cost</Text>
+                </VStack>
+                <VStack spacing={1}>
+                  <Badge colorScheme="blue" fontSize="sm" px={3} py={1} borderRadius="full">
+                    {stats?.data?.statistics?.topSubjects?.length || 0}+ Subjects
+                  </Badge>
+                  <Text fontSize="xs" opacity={0.8}>Areas</Text>
+                </VStack>
+              </>
+            )}
           </HStack>
         </Flex>
       </Container>
