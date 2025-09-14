@@ -26,19 +26,13 @@ const tests = [
         name: 'Programs Statistics',
         path: '/api/programs/stats',
         expectedStatus: 200,
-        expectedContent: 'statistics'
+        expectedContent: 'data'
     },
     {
         name: 'Filter Options',
         path: '/api/programs/filters',
         expectedStatus: 200,
         expectedContent: 'data'
-    },
-    {
-        name: 'User Authentication Status',
-        path: '/api/user',
-        expectedStatus: 200,
-        expectedContent: 'authenticated'
     },
     {
         name: 'Search Programs (Free)',

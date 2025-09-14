@@ -15,20 +15,25 @@ import {
   Users,
   Award,
   User,
-  LogIn
+  LogIn,
+  Heart
 } from 'lucide-react'
 import ProgramDetailsModal from './ProgramDetailsModal'
 import FavoritesPanel from './FavoritesPanel'
 import ExportButton from './ExportButton'
 import AuthModal from './AuthModal'
+import ProtectedRoute from './ProtectedRoute'
+import { useAuth } from '../contexts/AuthContext'
 import authService from '../services/authService'
 
 const ProgramsTable = () => {
+  const { user } = useAuth()
   const [globalFilter, setGlobalFilter] = useState('')
   const [viewMode, setViewMode] = useState('table')
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(true)
   const [selectedProgram, setSelectedProgram] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [favorites, setFavorites] = useState(new Set())
   const [filters, setFilters] = useState({
     costCategory: '',
     location: '',
@@ -129,6 +134,32 @@ const ProgramsTable = () => {
                            program.financial_aid.toLowerCase().includes('contact')
     
     return needsDisclaimer
+  }
+
+  // Favorites functionality
+  const toggleFavorite = (programId) => {
+    if (!user) {
+      // Show auth modal if not logged in
+      const signInButton = document.querySelector('[data-sign-in-button]')
+      if (signInButton) {
+        signInButton.click()
+      }
+      return
+    }
+
+    setFavorites(prev => {
+      const newFavorites = new Set(prev)
+      if (newFavorites.has(programId)) {
+        newFavorites.delete(programId)
+      } else {
+        newFavorites.add(programId)
+      }
+      return newFavorites
+    })
+  }
+
+  const isFavorite = (programId) => {
+    return favorites.has(programId)
   }
 
   const formatPrestigeLevel = (level) => {
@@ -1064,21 +1095,52 @@ const ProgramsTable = () => {
                       padding: density === 'compact' ? '8px' : density === 'spacious' ? '20px' : '16px',
                       textAlign: 'center'
                     }}>
-                      <button
-                        onClick={() => handleViewProgram(program)}
-                        style={{
-                          background: '#667eea',
-                          color: 'white',
-                          border: 'none',
-                          padding: density === 'compact' ? '4px 8px' : density === 'spacious' ? '12px 20px' : '8px 16px',
-                          borderRadius: '6px',
-                          cursor: 'pointer',
-                          fontSize: density === 'compact' ? '12px' : '14px',
-                          fontWeight: '500'
-                        }}
-                      >
-                        {density === 'compact' ? 'View' : 'View Details'}
-                      </button>
+                      <div style={{
+                        display: 'flex',
+                        gap: '8px',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <button
+                          onClick={() => toggleFavorite(program.id)}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: '4px',
+                            borderRadius: '4px',
+                            color: isFavorite(program.id) ? '#ef4444' : '#9ca3af',
+                            transition: 'all 0.2s ease'
+                          }}
+                          onMouseOver={(e) => {
+                            e.target.style.background = '#f3f4f6'
+                            e.target.style.color = '#ef4444'
+                          }}
+                          onMouseOut={(e) => {
+                            e.target.style.background = 'none'
+                            e.target.style.color = isFavorite(program.id) ? '#ef4444' : '#9ca3af'
+                          }}
+                          title={isFavorite(program.id) ? 'Remove from favorites' : 'Add to favorites'}
+                        >
+                          <Heart size={18} fill={isFavorite(program.id) ? '#ef4444' : 'none'} />
+                        </button>
+                        
+                        <button
+                          onClick={() => handleViewProgram(program)}
+                          style={{
+                            background: '#667eea',
+                            color: 'white',
+                            border: 'none',
+                            padding: density === 'compact' ? '4px 8px' : density === 'spacious' ? '12px 20px' : '8px 16px',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            fontSize: density === 'compact' ? '12px' : '14px',
+                            fontWeight: '500'
+                          }}
+                        >
+                          {density === 'compact' ? 'View' : 'View Details'}
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -1354,6 +1416,33 @@ const ProgramsTable = () => {
                   }}>
                     {formatCostCategory(program.cost_category)}
                   </span>
+                  
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      toggleFavorite(program.id)
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: '4px',
+                      borderRadius: '4px',
+                      color: isFavorite(program.id) ? '#ef4444' : '#9ca3af',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseOver={(e) => {
+                      e.target.style.background = '#f3f4f6'
+                      e.target.style.color = '#ef4444'
+                    }}
+                    onMouseOut={(e) => {
+                      e.target.style.background = 'none'
+                      e.target.style.color = isFavorite(program.id) ? '#ef4444' : '#9ca3af'
+                    }}
+                    title={isFavorite(program.id) ? 'Remove from favorites' : 'Add to favorites'}
+                  >
+                    <Heart size={18} fill={isFavorite(program.id) ? '#ef4444' : 'none'} />
+                  </button>
                 </div>
                 
                 <div style={{
