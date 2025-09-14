@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useCallback } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { 
   Search, 
@@ -27,13 +27,19 @@ import { useAuth } from '../contexts/AuthContext'
 import authService from '../services/authService'
 
 const ProgramsTable = () => {
-  const { user } = useAuth()
+  const { user, toggleFavorite, isFavorite } = useAuth()
   const [globalFilter, setGlobalFilter] = useState('')
+  const [debouncedFilter, setDebouncedFilter] = useState('')
+  const [debouncedFilters, setDebouncedFilters] = useState({
+    costCategory: '',
+    location: '',
+    prestige: '',
+    gradeLevel: '',
+  })
   const [viewMode, setViewMode] = useState('table')
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(true)
   const [selectedProgram, setSelectedProgram] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [favorites, setFavorites] = useState(new Set())
   const [filters, setFilters] = useState({
     costCategory: '',
     location: '',
@@ -49,21 +55,37 @@ const ProgramsTable = () => {
   const [density, setDensity] = useState('comfortable') // compact, comfortable, spacious
   const [selectedRows, setSelectedRows] = useState(new Set())
 
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedFilter(globalFilter)
+    }, 500) // 500ms delay
+
+    return () => clearTimeout(timer)
+  }, [globalFilter])
+
+  // Debounce filters to prevent excessive API calls
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedFilters(filters)
+    }, 300) // Shorter delay for filters since they're less frequent
+
+    return () => clearTimeout(timer)
+  }, [filters])
+
   // Fetch programs data with filters
   const { data: programs = [], isLoading, error } = useQuery({
-    queryKey: ['programs', globalFilter, filters],
+    queryKey: ['programs', debouncedFilter, debouncedFilters],
     queryFn: async () => {
-      const apiUrl = window.location.hostname === 'localhost' 
-        ? 'http://localhost:3000/api/programs/search'
-        : '/api/programs/search'
+      const apiUrl = 'https://ethiopian-community-resources.netlify.app/api/programs/search'
       
       // Build query parameters
       const params = new URLSearchParams()
-      if (globalFilter) params.append('search', globalFilter)
-      if (filters.costCategory) params.append('costCategory', filters.costCategory)
-      if (filters.prestige) params.append('prestige', filters.prestige)
-      if (filters.gradeLevel) params.append('gradeLevel', filters.gradeLevel)
-      if (filters.location) params.append('location', filters.location)
+      if (debouncedFilter) params.append('q', debouncedFilter)
+      if (debouncedFilters.costCategory) params.append('costCategory', debouncedFilters.costCategory)
+      if (debouncedFilters.prestige) params.append('prestige', debouncedFilters.prestige)
+      if (debouncedFilters.gradeLevel) params.append('gradeLevel', debouncedFilters.gradeLevel)
+      if (debouncedFilters.location) params.append('location', debouncedFilters.location)
       
       const url = `${apiUrl}?${params.toString()}`
       console.log('Fetching programs from:', url)
@@ -76,7 +98,10 @@ const ProgramsTable = () => {
       console.log('Received programs:', data.programs?.length || 0)
       return data.programs || []
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000, // 5 minutes - data stays fresh for 5 minutes
+    cacheTime: 10 * 60 * 1000, // 10 minutes - cache for 10 minutes
+    refetchOnWindowFocus: false, // Don't refetch when window gains focus
+    retry: 2, // Retry failed requests twice
   })
 
   // Helper functions
@@ -137,7 +162,7 @@ const ProgramsTable = () => {
   }
 
   // Favorites functionality
-  const toggleFavorite = (programId) => {
+  const handleToggleFavorite = (programId) => {
     if (!user) {
       // Show auth modal if not logged in
       const signInButton = document.querySelector('[data-sign-in-button]')
@@ -147,19 +172,7 @@ const ProgramsTable = () => {
       return
     }
 
-    setFavorites(prev => {
-      const newFavorites = new Set(prev)
-      if (newFavorites.has(programId)) {
-        newFavorites.delete(programId)
-      } else {
-        newFavorites.add(programId)
-      }
-      return newFavorites
-    })
-  }
-
-  const isFavorite = (programId) => {
-    return favorites.has(programId)
+    toggleFavorite(programId)
   }
 
   const formatPrestigeLevel = (level) => {
@@ -299,7 +312,7 @@ const ProgramsTable = () => {
     }
 
     return filtered
-  }, [programs, globalFilter, filters, sortBy, sortOrder])
+  }, [programs, debouncedFilter, filters, sortBy, sortOrder])
 
   // Pagination calculations
   const totalItems = filteredPrograms.length
@@ -311,7 +324,7 @@ const ProgramsTable = () => {
   // Reset to first page when filters change
   useEffect(() => {
     setCurrentPage(1)
-  }, [globalFilter, filters, sortBy, sortOrder])
+  }, [debouncedFilter, filters, sortBy, sortOrder])
 
   const handleViewProgram = (program) => {
     setSelectedProgram(program)
@@ -325,7 +338,14 @@ const ProgramsTable = () => {
 
   const clearAllFilters = () => {
     setGlobalFilter('')
+    setDebouncedFilter('')
     setFilters({
+      costCategory: '',
+      location: '',
+      prestige: '',
+      gradeLevel: '',
+    })
+    setDebouncedFilters({
       costCategory: '',
       location: '',
       prestige: '',
@@ -1102,7 +1122,7 @@ const ProgramsTable = () => {
                         justifyContent: 'center'
                       }}>
                         <button
-                          onClick={() => toggleFavorite(program.id)}
+                          onClick={() => handleToggleFavorite(program.id)}
                           style={{
                             background: 'none',
                             border: 'none',
@@ -1420,7 +1440,7 @@ const ProgramsTable = () => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
-                      toggleFavorite(program.id)
+                      handleToggleFavorite(program.id)
                     }}
                     style={{
                       background: 'none',

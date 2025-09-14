@@ -17,7 +17,7 @@ const supabaseAuth = {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}${window.location.pathname}`, // Redirect back to current page
+        redirectTo: window.location.origin, // Redirect back to app root
       },
     })
     if (error) return { success: false, error: error.message }

@@ -100,8 +100,102 @@ exports.handler = async (event, context) => {
   const { path, httpMethod, headers, body, queryStringParameters } = event;
   
   // Handle different auth routes
+  if (path.includes('/auth/status')) {
+    // Check authentication status
+    const sessionCookie = headers.cookie?.split(';')
+      .find(c => c.trim().startsWith('session='))
+      ?.split('=')[1];
+    
+    if (!sessionCookie) {
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({
+          success: false,
+          authenticated: false,
+          user: null
+        })
+      };
+    }
+    
+    try {
+      const sessionData = JSON.parse(Buffer.from(sessionCookie, 'base64').toString());
+      
+      if (sessionData.expires < Date.now()) {
+        return {
+          statusCode: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          },
+          body: JSON.stringify({
+            success: false,
+            authenticated: false,
+            user: null,
+            error: 'Session expired'
+          })
+        };
+      }
+      
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({
+          success: true,
+          authenticated: true,
+          user: {
+            id: sessionData.id,
+            email: sessionData.email,
+            name: sessionData.name,
+            picture: sessionData.picture
+          }
+        })
+      };
+    } catch (error) {
+      return {
+        statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({
+          success: false,
+          authenticated: false,
+          user: null,
+          error: 'Invalid session'
+        })
+      };
+    }
+  }
+  
   if (path.includes('/auth/google') && !path.includes('/callback')) {
     // Initiate Google OAuth
+    console.log('🔍 Google OAuth request:', {
+      path,
+      clientId: process.env.GOOGLE_CLIENT_ID ? 'SET' : 'NOT_SET',
+      url: process.env.URL || process.env.NETLIFY_URL
+    });
+    
+    if (!process.env.GOOGLE_CLIENT_ID) {
+      return {
+        statusCode: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({
+          success: false,
+          error: 'Google OAuth not configured. Missing GOOGLE_CLIENT_ID environment variable.'
+        })
+      };
+    }
+    
     const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
       `client_id=${process.env.GOOGLE_CLIENT_ID}&` +
       `redirect_uri=${encodeURIComponent(process.env.URL || process.env.NETLIFY_URL)}/auth/google/callback&` +

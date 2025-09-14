@@ -4,15 +4,42 @@ const { supabase } = require('../config/supabase');
 
 class DatabaseServiceProduction {
   constructor() {
+    console.log('🏗️ Initializing DatabaseServiceProduction...');
     this.jsonData = null;
     this.useSupabase = process.env.USE_SUPABASE === 'true';
+    console.log(`🔧 Using Supabase: ${this.useSupabase}`);
     this.loadJsonData();
+    console.log('✅ DatabaseServiceProduction initialized');
   }
 
   loadJsonData() {
     try {
-      const dataPath = path.join(__dirname, '../docs/inputdata.json');
-      const rawData = fs.readFileSync(dataPath, 'utf8');
+      // Try multiple possible paths for different environments
+      const possiblePaths = [
+        path.join(__dirname, '../docs/inputdata.json'), // Local development
+        path.join(__dirname, 'docs/inputdata.json'),    // Netlify Functions
+        path.join(process.cwd(), 'docs/inputdata.json'), // Alternative
+        path.join(process.cwd(), 'netlify/functions/docs/inputdata.json') // Netlify Functions alternative
+      ];
+      
+      let dataPath = null;
+      let rawData = null;
+      
+      for (const testPath of possiblePaths) {
+        try {
+          console.log(`📁 Trying path: ${testPath}`);
+          rawData = fs.readFileSync(testPath, 'utf8');
+          dataPath = testPath;
+          console.log(`✅ Found JSON data at: ${dataPath}`);
+          break;
+        } catch (err) {
+          console.log(`❌ Path not found: ${testPath}`);
+        }
+      }
+      
+      if (!rawData) {
+        throw new Error('Could not find inputdata.json in any expected location');
+      }
       
       // Clean the JSON data - remove any trailing commas or invalid characters
       const cleanedData = rawData
@@ -154,7 +181,7 @@ class DatabaseServiceProduction {
 
   async getProgramsFromSupabase(filters = {}) {
     try {
-      console.log('🔍 Fetching programs from Supabase...');
+      console.log('🔍 Fetching programs from Supabase with filters:', filters);
       
       // Start with a simple query
       let query = supabase
@@ -191,17 +218,43 @@ class DatabaseServiceProduction {
         `)
         .eq('status', 'active');
 
-      // Apply filters
+      // Apply filters based on actual Supabase schema
       if (filters.program_type) {
         query = query.eq('program_type', filters.program_type);
+      }
+
+      if (filters.selectivity_tier) {
+        query = query.eq('selectivity_tier', filters.selectivity_tier);
       }
 
       if (filters.target_audience) {
         query = query.eq('target_audience', filters.target_audience);
       }
 
-      if (filters.selectivity_tier) {
-        query = query.eq('selectivity_tier', filters.selectivity_tier);
+      // For costCategory, we'll need to add this as a custom attribute or skip for now
+      // if (filters.costCategory) {
+      //   query = query.eq('cost_category', filters.costCategory);
+      // }
+
+      // For prestige, we'll use selectivity_tier as a proxy
+      if (filters.prestige) {
+        const prestigeMapping = {
+          'HIGH': 'highly_selective',
+          'MEDIUM': 'selective', 
+          'LOW': 'moderately_selective'
+        };
+        if (prestigeMapping[filters.prestige]) {
+          query = query.eq('selectivity_tier', prestigeMapping[filters.prestige]);
+        }
+      }
+
+      // For location, use comprehensive search across multiple fields
+      if (filters.location) {
+        const locationTerm = filters.location.toLowerCase().trim();
+        console.log(`🔍 Applying location filter: "${locationTerm}"`);
+        // Use separate queries for each field to avoid complex OR syntax issues
+        query = query.or(`organizations.city.ilike.%${locationTerm}%,organizations.state_province.ilike.%${locationTerm}%`);
+        console.log(`🔍 Location filter applied to query`);
       }
 
       if (filters.search) {
@@ -336,6 +389,7 @@ class DatabaseServiceProduction {
 
   getProgramsFromJson(filters) {
     let results = [...(this.jsonData.programs || [])];
+    console.log(`📊 Starting with ${results.length} programs from JSON`);
     
     // Transform JSON data to match expected frontend structure
     results = results.map(program => ({
@@ -384,6 +438,9 @@ class DatabaseServiceProduction {
       special_eligibility: program.special_eligibility,
       application_deadline: program.application_deadline
     }));
+    
+    console.log(`📊 After transformation: ${results.length} programs`);
+    console.log(`📊 Sample cost_categories:`, results.slice(0, 5).map(p => p.cost_category));
     
     // Apply basic filters
     if (filters.program_type) {
@@ -484,12 +541,16 @@ class DatabaseServiceProduction {
   }
 
   async searchPrograms(searchTerm, filters = {}) {
+    console.log(`🔍 searchPrograms called with: term="${searchTerm}", filters=`, filters);
+    
     if (this.useSupabase) {
+      console.log('🔍 Using Supabase for search');
       return await this.getProgramsFromSupabase({
         ...filters,
         search: searchTerm
       });
     } else {
+      console.log('🔍 Using JSON data for search');
       return this.getProgramsFromJson({
         ...filters,
         search: searchTerm

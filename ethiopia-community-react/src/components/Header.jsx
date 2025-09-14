@@ -13,7 +13,7 @@ const Header = () => {
     queryKey: ['programs-stats'],
     queryFn: async () => {
       const apiUrl = window.location.hostname === 'localhost' 
-        ? 'http://localhost:3000/api/programs/stats'
+        ? '/api/programs/stats'
         : '/api/programs/stats'
       
       const response = await fetch(apiUrl)

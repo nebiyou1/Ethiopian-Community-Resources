@@ -78,18 +78,32 @@ exports.handler = async (event, context) => {
     }
 
     if (path.startsWith('/api/programs/search')) {
-      const searchTerm = query.q || '';
-      const results = await databaseService.searchPrograms(searchTerm, query);
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-          success: true,
-          programs: results,
-          count: results.length,
-          query: query
-        })
-      };
+      try {
+        const searchTerm = query.q || '';
+        console.log(`🔍 Search request: term="${searchTerm}", filters=`, query);
+        const results = await databaseService.searchPrograms(searchTerm, query);
+        console.log(`📊 Search results: ${results.length} programs found`);
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({
+            success: true,
+            programs: results,
+            count: results.length,
+            query: query
+          })
+        };
+      } catch (error) {
+        console.error('❌ Search error:', error);
+        return {
+          statusCode: 500,
+          headers,
+          body: JSON.stringify({
+            success: false,
+            error: error.message
+          })
+        };
+      }
     }
 
     if (path.match(/^\/api\/programs\/[^\/]+$/)) {

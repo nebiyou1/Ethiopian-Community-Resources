@@ -3,44 +3,38 @@ import { Heart, Star, MapPin, Calendar, DollarSign, ExternalLink } from 'lucide-
 import { useAuth } from '../contexts/AuthContext'
 
 const Favorites = () => {
-  const { user } = useAuth()
-  const [favorites, setFavorites] = useState([])
-  const [loading, setLoading] = useState(true)
+  const { user, favorites, removeFromFavorites } = useAuth()
+  const [loading, setLoading] = useState(false)
 
-  // Mock favorites data for now - in a real app, this would come from Supabase
-  useEffect(() => {
-    // Simulate loading favorites
-    setTimeout(() => {
-      setFavorites([
-        {
-          id: '1',
-          program_name: 'MIT Summer Research Program',
-          organization_name: 'Massachusetts Institute of Technology',
-          location: 'Cambridge, MA',
-          cost_category: 'FREE',
-          application_deadline: '2024-03-15',
-          prestige_level: 'elite',
-          description: 'Research opportunity in computer science and engineering.',
-          website: 'https://mit.edu'
-        },
-        {
-          id: '2',
-          program_name: 'Stanford Pre-Collegiate Studies',
-          organization_name: 'Stanford University',
-          location: 'Stanford, CA',
-          cost_category: 'PAID',
-          application_deadline: '2024-02-28',
-          prestige_level: 'highly_selective',
-          description: 'Academic enrichment program for high school students.',
-          website: 'https://stanford.edu'
-        }
-      ])
-      setLoading(false)
-    }, 1000)
-  }, [])
+  // For now, we'll use dummy data since we don't have a backend to fetch program details
+  // In a real app, you'd fetch the full program details for each favorite ID
+  const favoritePrograms = [
+    {
+      id: '1',
+      program_name: 'MIT Summer Research Program',
+      organization_name: 'Massachusetts Institute of Technology',
+      location: 'Cambridge, MA',
+      cost_category: 'FREE',
+      application_deadline: '2024-03-15',
+      prestige_level: 'elite',
+      description: 'Research opportunity in computer science and engineering.',
+      website: 'https://mit.edu'
+    },
+    {
+      id: '2',
+      program_name: 'Stanford Pre-Collegiate Studies',
+      organization_name: 'Stanford University',
+      location: 'Stanford, CA',
+      cost_category: 'PAID',
+      application_deadline: '2024-02-28',
+      prestige_level: 'highly_selective',
+      description: 'Academic enrichment program for high school students.',
+      website: 'https://stanford.edu'
+    }
+  ].filter(program => favorites.includes(program.id))
 
   const removeFavorite = (programId) => {
-    setFavorites(favorites.filter(fav => fav.id !== programId))
+    removeFromFavorites(programId)
   }
 
   const getCostEmoji = (costCategory) => {

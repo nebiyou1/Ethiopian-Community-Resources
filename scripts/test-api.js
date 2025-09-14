@@ -3,8 +3,8 @@
 const http = require('http');
 const https = require('https');
 
-const BASE_URL = process.env.TEST_URL || 'http://localhost:3000';
-const TIMEOUT = 10000; // 10 seconds
+const BASE_URL = process.env.TEST_URL || 'https://ethiopian-community-resources.netlify.app';
+const TIMEOUT = 30000; // 30 seconds
 
 console.log('🧪 Running API Integration Tests for Ethiopian Community Resources');
 console.log(`🔗 Testing against: ${BASE_URL}`);

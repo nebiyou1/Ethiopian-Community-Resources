@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [session, setSession] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [favorites, setFavorites] = useState(new Set())
 
   useEffect(() => {
     const { data: authListener } = supabaseAuth.onAuthStateChange(
@@ -52,6 +53,38 @@ export const AuthProvider = ({ children }) => {
     return await supabaseAuth.signOut()
   }
 
+  // Favorites management
+  const toggleFavorite = (programId) => {
+    if (!user) return false
+    
+    setFavorites(prev => {
+      const newFavorites = new Set(prev)
+      if (newFavorites.has(programId)) {
+        newFavorites.delete(programId)
+      } else {
+        newFavorites.add(programId)
+      }
+      return newFavorites
+    })
+    return true
+  }
+
+  const isFavorite = (programId) => {
+    return favorites.has(programId)
+  }
+
+  const getFavorites = () => {
+    return Array.from(favorites)
+  }
+
+  const removeFromFavorites = (programId) => {
+    setFavorites(prev => {
+      const newFavorites = new Set(prev)
+      newFavorites.delete(programId)
+      return newFavorites
+    })
+  }
+
   const value = {
     user,
     session,
@@ -60,7 +93,12 @@ export const AuthProvider = ({ children }) => {
     signIn,
     signUp,
     signInWithGoogle,
-    signOut
+    signOut,
+    favorites: Array.from(favorites),
+    toggleFavorite,
+    isFavorite,
+    getFavorites,
+    removeFromFavorites
   }
 
   return (

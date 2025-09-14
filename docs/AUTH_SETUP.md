@@ -29,6 +29,19 @@ SUPABASE_SERVICE_ROLE_KEY=[GET_FROM_SUPABASE_DASHBOARD]
 - Client ID: `990930761220-82mlrn71hbqbbbe75c84u1dgpt450efs.apps.googleusercontent.com`
 - Callback URL: `https://qvqybobnsaikaknsdqhw.supabase.co/auth/v1/callback`
 
+⚠️ **IMPORTANT: Site URL Configuration**
+To fix the redirect issue (`http://localhost:3000/#`), you need to configure the **Site URL** in Supabase:
+
+1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
+2. Select your project: `qvqybobnsaikaknsdqhw`
+3. Go to **Authentication** → **URL Configuration**
+4. Set **Site URL** to:
+   - For local development: `http://localhost:5173`
+   - For production: `https://ethiopian-community-resources.netlify.app`
+5. Add **Redirect URLs**:
+   - `http://localhost:5173/**` (for local development)
+   - `https://ethiopian-community-resources.netlify.app/**` (for production)
+
 ### Next Steps
 
 1. **Generate Session Secret:**
