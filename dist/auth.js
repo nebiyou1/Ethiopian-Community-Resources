@@ -70,94 +70,6 @@ class AuthManager {
         }
     }
 
-    async signUpWithEmail(email, password, userData = {}) {
-        if (!this.supabase) {
-            await this.init();
-        }
-
-        try {
-            const { data, error } = await this.supabase.auth.signUp({
-                email: email,
-                password: password,
-                options: {
-                    data: {
-                        full_name: userData.fullName || '',
-                        community_affiliations: userData.communityAffiliations || [],
-                        languages_spoken: userData.languagesSpoken || ['english'],
-                        preferred_language: userData.preferredLanguage || 'en'
-                    }
-                }
-            });
-
-            if (error) {
-                console.error('❌ Email sign-up failed:', error);
-                this.showError(error.message);
-                return { success: false, error: error.message };
-            }
-
-            if (data.user && !data.session) {
-                this.showSuccess('Please check your email to confirm your account.');
-            }
-
-            return { success: true, data };
-        } catch (error) {
-            console.error('❌ Email sign-up error:', error);
-            this.showError('Sign-up failed. Please try again.');
-            return { success: false, error: error.message };
-        }
-    }
-
-    async signInWithEmail(email, password) {
-        if (!this.supabase) {
-            await this.init();
-        }
-
-        try {
-            const { data, error } = await this.supabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
-
-            if (error) {
-                console.error('❌ Email sign-in failed:', error);
-                this.showError(error.message);
-                return { success: false, error: error.message };
-            }
-
-            console.log('✅ Email sign-in successful:', data.user.email);
-            return { success: true, data };
-        } catch (error) {
-            console.error('❌ Email sign-in error:', error);
-            this.showError('Sign-in failed. Please try again.');
-            return { success: false, error: error.message };
-        }
-    }
-
-    async resetPassword(email) {
-        if (!this.supabase) {
-            await this.init();
-        }
-
-        try {
-            const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/reset-password`
-            });
-
-            if (error) {
-                console.error('❌ Password reset failed:', error);
-                this.showError(error.message);
-                return { success: false, error: error.message };
-            }
-
-            this.showSuccess('Password reset email sent. Please check your inbox.');
-            return { success: true };
-        } catch (error) {
-            console.error('❌ Password reset error:', error);
-            this.showError('Password reset failed. Please try again.');
-            return { success: false, error: error.message };
-        }
-    }
-
     async signOut() {
         if (!this.supabase) return;
 
@@ -202,30 +114,21 @@ class AuthManager {
     }
 
     showError(message) {
-        this.showMessage(message, 'error');
-    }
-
-    showSuccess(message) {
-        this.showMessage(message, 'success');
-    }
-
-    showMessage(message, type = 'info') {
-        // Create or update message
-        let messageDiv = document.getElementById('authMessage');
-        if (!messageDiv) {
-            messageDiv = document.createElement('div');
-            messageDiv.id = 'authMessage';
-            messageDiv.className = 'auth-message';
-            document.body.appendChild(messageDiv);
+        // Create or update error message
+        let errorDiv = document.getElementById('authError');
+        if (!errorDiv) {
+            errorDiv = document.createElement('div');
+            errorDiv.id = 'authError';
+            errorDiv.className = 'auth-error';
+            document.body.appendChild(errorDiv);
         }
         
-        messageDiv.textContent = message;
-        messageDiv.className = `auth-message auth-${type}`;
-        messageDiv.style.display = 'block';
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
         
         // Hide after 5 seconds
         setTimeout(() => {
-            messageDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
         }, 5000);
     }
 

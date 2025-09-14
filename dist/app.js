@@ -8,8 +8,10 @@ class SummerProgramsApp {
             type: '',
             grade: '',
             state: '',
-            search: ''
+            search: '',
+            prestige: ''
         };
+        this.currentView = 'card'; // card, list, table
         this.user = null;
         this.favorites = new Set();
         this.init();
@@ -80,14 +82,29 @@ class SummerProgramsApp {
 
     async checkAuthStatus() {
         try {
+            // Wait for auth manager to be available
+            if (window.authManager) {
+                await window.authManager.init();
+                this.user = window.authManager.getCurrentUser();
+                
+                if (this.user) {
+                    console.log('👤 User authenticated:', this.user.email);
+                    this.updateUIForAuthenticatedUser();
+                    this.loadUserPreferences();
+                } else {
+                    this.updateUIForUnauthenticatedUser();
+                }
+            } else {
+                // Fallback to server-side auth check
             const response = await fetch('/api/user');
             const data = await response.json();
             
-            if (data.success && data.authenticated) {
+                if (data.success && data.authenticated) {
                 this.user = data.user;
                 this.updateUIForAuthenticatedUser();
             } else {
                 this.updateUIForUnauthenticatedUser();
+                }
             }
         } catch (error) {
             console.error('Error checking auth status:', error);
@@ -96,23 +113,35 @@ class SummerProgramsApp {
     }
 
     updateUIForAuthenticatedUser() {
-        const loginBtn = document.getElementById('loginBtn');
-        const userMenu = document.getElementById('userMenu');
-        const userName = document.getElementById('userName');
-            const userAvatar = document.getElementById('userAvatar');
+        const signInBtn = document.getElementById('signInBtn');
+        const signOutBtn = document.getElementById('signOutBtn');
+        const userInfo = document.getElementById('userInfo');
 
-        if (loginBtn) loginBtn.style.display = 'none';
-        if (userMenu) userMenu.style.display = 'flex';
-        if (userName) userName.textContent = this.user.name;
-        if (userAvatar && this.user.picture) userAvatar.src = this.user.picture;
+        if (signInBtn) signInBtn.style.display = 'none';
+        if (signOutBtn) signOutBtn.style.display = 'inline-block';
+        if (userInfo) {
+            userInfo.innerHTML = `
+                <div class="user-profile">
+                    <img src="${this.user.user_metadata?.avatar_url || '/default-avatar.png'}" 
+                         alt="Profile" class="user-avatar">
+                    <span class="user-name">${this.user.user_metadata?.full_name || this.user.email}</span>
+                </div>
+            `;
+            userInfo.style.display = 'block';
+        }
     }
 
     updateUIForUnauthenticatedUser() {
-        const loginBtn = document.getElementById('loginBtn');
-        const userMenu = document.getElementById('userMenu');
+        const signInBtn = document.getElementById('signInBtn');
+        const signOutBtn = document.getElementById('signOutBtn');
+        const userInfo = document.getElementById('userInfo');
 
-        if (loginBtn) loginBtn.style.display = 'inline-flex';
-        if (userMenu) userMenu.style.display = 'none';
+        if (signInBtn) signInBtn.style.display = 'inline-block';
+        if (signOutBtn) signOutBtn.style.display = 'none';
+        if (userInfo) {
+            userInfo.innerHTML = '';
+            userInfo.style.display = 'none';
+        }
     }
 
     async loadPrograms() {
@@ -271,6 +300,49 @@ class SummerProgramsApp {
             });
         }
 
+        const prestigeFilter = document.getElementById('prestigeFilter');
+        if (prestigeFilter) {
+            prestigeFilter.addEventListener('change', (e) => {
+                this.filters.prestige = e.target.value;
+                this.applyFilters();
+            });
+        }
+
+        // View toggle buttons
+        const cardViewBtn = document.getElementById('cardView');
+        const listViewBtn = document.getElementById('listView');
+        const tableViewBtn = document.getElementById('tableView');
+
+        if (cardViewBtn) {
+            cardViewBtn.addEventListener('click', () => this.setView('card'));
+        }
+        if (listViewBtn) {
+            listViewBtn.addEventListener('click', () => this.setView('list'));
+        }
+        if (tableViewBtn) {
+            tableViewBtn.addEventListener('click', () => this.setView('table'));
+        }
+
+        // Authentication buttons
+        const signInBtn = document.getElementById('signInBtn');
+        const signOutBtn = document.getElementById('signOutBtn');
+
+        if (signInBtn) {
+            signInBtn.addEventListener('click', () => {
+                if (window.authManager) {
+                    window.authManager.signInWithGoogle();
+                }
+            });
+        }
+
+        if (signOutBtn) {
+            signOutBtn.addEventListener('click', () => {
+                if (window.authManager) {
+                    window.authManager.signOut();
+                }
+            });
+        }
+
         // Clear filters button
         const clearFilters = document.getElementById('clearFilters');
         if (clearFilters) {
@@ -355,6 +427,14 @@ class SummerProgramsApp {
                 return false;
             }
 
+            // Prestige filter
+            if (this.filters.prestige) {
+                const programPrestige = this.getPrestigeLevel(program);
+                if (programPrestige !== this.filters.prestige) {
+                    return false;
+                }
+            }
+
             return true;
         });
 
@@ -393,6 +473,16 @@ class SummerProgramsApp {
 
     sortPrograms(sortBy) {
         switch (sortBy) {
+            case 'prestige':
+                const prestigeOrder = ['elite', 'highly-selective', 'selective', 'accessible'];
+                this.filteredPrograms.sort((a, b) => {
+                    const prestigeA = this.getPrestigeLevel(a);
+                    const prestigeB = this.getPrestigeLevel(b);
+                    const indexA = prestigeOrder.indexOf(prestigeA);
+                    const indexB = prestigeOrder.indexOf(prestigeB);
+                    return indexA - indexB;
+                });
+                break;
             case 'name':
                 this.filteredPrograms.sort((a, b) => 
                     a.program_name.localeCompare(b.program_name)
@@ -458,9 +548,12 @@ class SummerProgramsApp {
         const costBadge = this.getCostBadge(program.cost_category);
         const deadline = program.application_deadline ? 
             new Date(program.application_deadline).toLocaleDateString() : 'Rolling';
+        const prestigeLevel = this.getPrestigeLevel(program);
+        const prestigeLabel = this.getPrestigeLabel(prestigeLevel);
         
         return `
             <div class="program-card" data-program-id="${program.id}">
+                <div class="prestige-badge ${prestigeLevel}">${prestigeLabel}</div>
                 <div class="program-header">
                     <div>
                         <h3 class="program-title">${program.program_name}</h3>
@@ -654,6 +747,46 @@ class SummerProgramsApp {
         };
         return formats[type] || type;
     }
+
+    // Calculate prestige level based on selectivity
+    getPrestigeLevel(program) {
+        const selectivity = program.selectivity_percent || 100;
+        
+        if (selectivity <= 10) return 'elite';
+        if (selectivity <= 25) return 'highly-selective';
+        if (selectivity <= 50) return 'selective';
+        return 'accessible';
+    }
+
+    getPrestigeLabel(level) {
+        const labels = {
+            'elite': '🏆 Elite',
+            'highly-selective': '⭐ Highly Selective',
+            'selective': '📚 Selective',
+            'accessible': '🌟 Accessible'
+        };
+        return labels[level] || '';
+    }
+
+    // Set view mode (card, list, table)
+    setView(viewType) {
+        this.currentView = viewType;
+        
+        // Update button states
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.getElementById(viewType + 'View')?.classList.add('active');
+        
+        // Update grid classes
+        const programsGrid = document.getElementById('programsGrid');
+        if (programsGrid) {
+            programsGrid.className = `programs-grid ${viewType}-view`;
+        }
+        
+        // Re-render programs with new view
+        this.renderPrograms();
+    }
 }
 
 // Global functions for modal and navigation
@@ -676,7 +809,7 @@ function scrollToPrograms() {
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🌍 Ethiopian Community Resources - Summer Programs Database');
+    console.log('🚀 Ethiopian Community Resources - Summer Programs Database');
     window.app = new SummerProgramsApp();
 });
 

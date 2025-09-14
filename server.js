@@ -5,7 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
-const databaseService = require('./services/databaseService-v2');
+const databaseService = require('./services/databaseService-production');
 const { configureGoogleAuth, requireAuth, requireAdmin, getCurrentUser } = require('./services/authService');
 require('dotenv').config();
 
@@ -151,14 +151,7 @@ app.get('/api/programs/stats', async (req, res) => {
     const stats = await databaseService.getStatistics();
     res.json({
       success: true,
-      data: {
-        statistics: stats,
-        metadata: {
-          database_name: "ethiopia_community_resources",
-          version: "1.0.0",
-          last_updated: new Date().toISOString()
-        }
-      }
+      data: stats
     });
   } catch (error) {
     res.status(500).json({
