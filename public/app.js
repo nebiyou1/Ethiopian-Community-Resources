@@ -151,7 +151,7 @@ class SummerProgramsApp {
             const data = await response.json();
             
             if (data.success) {
-                this.programs = data.data || [];
+                this.programs = data.programs || [];
                 this.filteredPrograms = [...this.programs];
                 console.log(`✅ Loaded ${this.programs.length} programs`);
                 
