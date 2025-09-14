@@ -38,23 +38,19 @@
         </div>
     </nav>
 
-    <!-- Compact Hero Section -->
-    <section id="home" class="hero-compact">
+    <!-- Minimal Hero Section -->
+    <section id="home" class="hero-minimal">
         <div class="hero-container">
-            <div class="hero-header">
-                <h1 class="hero-title">
-                    <span class="flag-icons">🇪🇹 🇪🇷</span> Summer Programs <span class="amharic-inline">የክረመት ፕሮግራሞች</span>
+            <div class="hero-content-minimal">
+                <h1 class="hero-title-minimal">
+                    🇪🇹 🇪🇷 Ethiopian & Eritrean Summer Programs <span class="amharic-minimal">የክረምት ፕሮግራሞች</span>
                 </h1>
-                <div class="hero-stats-inline">
-                    <span class="stat-inline"><strong id="totalPrograms">176</strong> Programs</span>
-                    <span class="stat-inline"><strong id="freePrograms">37</strong> Free</span>
-                    <span class="stat-inline"><strong id="subjects">15+</strong> Subjects</span>
+                <div class="hero-stats-minimal">
+                    <span><strong id="totalPrograms">170</strong> Programs</span>
+                    <span><strong id="freePrograms">0</strong> Free</span>
+                    <span><strong id="subjects">15+</strong> Subjects</span>
                 </div>
             </div>
-            <p class="hero-description">
-                Discover amazing summer opportunities from our comprehensive database. 
-                <span class="amharic-text">አስደናቂ የክረምት እድሎችን ከሰፊ የመረጃ ቋታችን ያግኙ።</span>
-            </p>
         </div>
     </section>
 
@@ -151,57 +147,39 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Summer Programs Database</h2>
-                <div class="amharic-section-title">የክረመት ፕሮግራሞች ዳታቤዝ</div>
+                <div class="amharic-section-title">የክረምት ፕሮግራሞች ዳታቤዝ</div>
                 <p class="section-subtitle">Filter and search through our comprehensive database</p>
                 <p class="amharic-subtitle">በእኛ ሰፊ ዳታቤዝ ውስጥ ይፈልጉ እና ያጣሩ</p>
             </div>
 
-            <!-- Filters -->
-            <div class="filters-container">
-                <div class="filters-row">
-                    <div class="filter-group">
-                        <label for="costFilter">Cost Category</label>
-                        <select id="costFilter" class="filter-select">
-                            <option value="">All Cost Categories</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="typeFilter">Program Type</label>
-                        <select id="typeFilter" class="filter-select">
-                            <option value="">All Program Types</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="gradeFilter">Grade Level</label>
-                        <select id="gradeFilter" class="filter-select">
-                            <option value="">All Grade Levels</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="stateFilter">Location</label>
-                        <select id="stateFilter" class="filter-select">
-                            <option value="">All Locations</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="prestigeFilter">Prestige Level</label>
-                        <select id="prestigeFilter" class="filter-select">
-                            <option value="">All Programs</option>
-                            <option value="elite">🏆 Elite (Top 10%)</option>
-                            <option value="highly-selective">⭐ Highly Selective (10-25%)</option>
-                            <option value="selective">📚 Selective (25-50%)</option>
-                            <option value="accessible">🌟 Accessible (50%+)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="search-row">
-                    <div class="search-container">
+            <!-- Compact Filters -->
+            <div class="filters-compact">
+                <div class="filters-inline">
+                    <select id="costFilter" class="filter-compact">
+                        <option value="">All Costs</option>
+                    </select>
+                    <select id="typeFilter" class="filter-compact">
+                        <option value="">All Types</option>
+                    </select>
+                    <select id="gradeFilter" class="filter-compact">
+                        <option value="">All Grades</option>
+                    </select>
+                    <select id="stateFilter" class="filter-compact">
+                        <option value="">All Locations</option>
+                    </select>
+                    <select id="prestigeFilter" class="filter-compact">
+                        <option value="">All Programs</option>
+                        <option value="elite">🏆 Elite</option>
+                        <option value="highly-selective">⭐ Highly Selective</option>
+                        <option value="selective">📚 Selective</option>
+                        <option value="accessible">🌟 Accessible</option>
+                    </select>
+                    <div class="search-container-compact">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" id="searchInput" placeholder="Search programs, organizations, or subjects..." class="search-input">
+                        <input type="text" id="searchInput" class="search-compact" placeholder="Search programs...">
                     </div>
-                    <button id="clearFilters" class="btn btn-outline">
+                    <button class="btn-clear" onclick="clearFilters()" title="Clear All">
                         <i class="fas fa-times"></i>
-                        Clear All
                     </button>
                 </div>
             </div>
@@ -222,14 +200,17 @@
                     </select>
                 </div>
                 <div class="view-toggle">
-                    <button id="cardView" class="view-btn active" title="Card View">
-                        <i class="fas fa-th"></i>
-                    </button>
-                    <button id="listView" class="view-btn" title="List View">
+                    <button id="compactView" class="view-btn active" title="Compact List">
                         <i class="fas fa-list"></i>
+                        <span>List</span>
+                    </button>
+                    <button id="cardView" class="view-btn" title="Card View">
+                        <i class="fas fa-th"></i>
+                        <span>Cards</span>
                     </button>
                     <button id="tableView" class="view-btn" title="Table View">
                         <i class="fas fa-table"></i>
+                        <span>Table</span>
                     </button>
                 </div>
             </div>
