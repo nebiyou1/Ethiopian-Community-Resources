@@ -118,10 +118,10 @@ const ProgramsTable = () => {
         cell: (info) => (
           <VStack align="start" spacing={1}>
             <Text fontWeight="bold" fontSize="sm">
-              {info.getValue()}
+              {String(info.getValue() || 'Unknown Program')}
             </Text>
             <Text fontSize="xs" color="gray.500">
-              {info.row.original.organization_name}
+              {String(info.row.original.organization_name || info.row.original.organization?.name || 'Unknown Organization')}
             </Text>
           </VStack>
         ),
@@ -129,12 +129,28 @@ const ProgramsTable = () => {
       }),
       columnHelper.accessor('location', {
         header: 'Location',
-        cell: (info) => (
-          <HStack spacing={1}>
-            <MapPin size={12} />
-            <Text fontSize="sm">{info.getValue()}</Text>
-          </HStack>
-        ),
+        cell: (info) => {
+          const location = info.getValue()
+          if (!location) {
+            const org = info.row.original.organization
+            const city = org?.city
+            const state = org?.state
+            const country = org?.country
+            const locationStr = [city, state, country].filter(Boolean).join(', ') || 'Various'
+            return (
+              <HStack spacing={1}>
+                <MapPin size={12} />
+                <Text fontSize="sm">{locationStr}</Text>
+              </HStack>
+            )
+          }
+          return (
+            <HStack spacing={1}>
+              <MapPin size={12} />
+              <Text fontSize="sm">{String(location)}</Text>
+            </HStack>
+          )
+        },
       }),
       columnHelper.display({
         id: 'grade_range',
@@ -155,17 +171,26 @@ const ProgramsTable = () => {
       }),
       columnHelper.accessor('duration_weeks', {
         header: 'Duration',
-        cell: (info) => (
-          <HStack spacing={1}>
-            <Calendar size={12} />
-            <Text fontSize="sm">{info.getValue()} weeks</Text>
-          </HStack>
-        ),
+        cell: (info) => {
+          const duration = info.getValue()
+          if (!duration) {
+            return <Text fontSize="sm" color="gray.400">N/A</Text>
+          }
+          return (
+            <HStack spacing={1}>
+              <Calendar size={12} />
+              <Text fontSize="sm">{String(duration)} weeks</Text>
+            </HStack>
+          )
+        },
       }),
       columnHelper.accessor('cost_category', {
         header: 'Cost',
         cell: (info) => {
           const cost = info.getValue()
+          if (!cost) {
+            return <Badge colorScheme="gray" size="sm">Unknown</Badge>
+          }
           const colorScheme = {
             'FREE': 'green',
             'FREE_PLUS_STIPEND': 'green',
@@ -176,7 +201,7 @@ const ProgramsTable = () => {
           
           return (
             <Badge colorScheme={colorScheme} size="sm">
-              {cost.replace('_', ' ')}
+              {String(cost).replace('_', ' ')}
             </Badge>
           )
         },
@@ -185,6 +210,9 @@ const ProgramsTable = () => {
         header: 'Prestige',
         cell: (info) => {
           const prestige = info.getValue()
+          if (!prestige) {
+            return <Badge colorScheme="gray" size="sm">N/A</Badge>
+          }
           const colorScheme = {
             'elite': 'yellow',
             'highly-selective': 'purple',
@@ -196,7 +224,7 @@ const ProgramsTable = () => {
             <Badge colorScheme={colorScheme} size="sm">
               <HStack spacing={1}>
                 <Star size={10} />
-                <Text>{prestige}</Text>
+                <Text>{String(prestige)}</Text>
               </HStack>
             </Badge>
           )
