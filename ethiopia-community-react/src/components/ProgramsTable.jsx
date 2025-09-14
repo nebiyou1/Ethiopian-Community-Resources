@@ -238,7 +238,7 @@ const ProgramsTable = () => {
             <Tooltip label="View Details">
               <IconButton
                 size="sm"
-                icon={<Eye size={14} />}
+                icon="👁️"
                 onClick={() => setSelectedProgram(info.row.original)}
                 variant="ghost"
               />
@@ -246,7 +246,7 @@ const ProgramsTable = () => {
             <Tooltip label="Add to Favorites">
               <IconButton
                 size="sm"
-                icon={<Heart size={14} />}
+                icon="❤️"
                 variant="ghost"
                 colorScheme="red"
               />
@@ -344,8 +344,7 @@ const ProgramsTable = () => {
                     variant={showAdvancedFilters ? 'solid' : 'outline'}
                     onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
                   >
-                    <Settings size={16} style={{ marginRight: '8px' }} />
-                    Filters {activeFiltersCount > 0 && `(${activeFiltersCount})`}
+                    ⚙️ Filters {activeFiltersCount > 0 && `(${activeFiltersCount})`}
                   </Button>
                   
                   <Button
@@ -353,24 +352,21 @@ const ProgramsTable = () => {
                     variant={viewMode === 'table' ? 'solid' : 'outline'}
                     onClick={() => setViewMode('table')}
                   >
-                    <TableIcon size={16} style={{ marginRight: '8px' }} />
-                    Table
+                    📊 Table
                   </Button>
                   <Button
                     size="sm"
                     variant={viewMode === 'cards' ? 'solid' : 'outline'}
                     onClick={() => setViewMode('cards')}
                   >
-                    <Grid3X3 size={16} style={{ marginRight: '8px' }} />
-                    Cards
+                    🃏 Cards
                   </Button>
                   <Button
                     size="sm"
                     variant={viewMode === 'list' ? 'solid' : 'outline'}
                     onClick={() => setViewMode('list')}
                   >
-                    <List size={16} style={{ marginRight: '8px' }} />
-                    List
+                    📋 List
                   </Button>
                 </HStack>
               </Flex>
@@ -571,12 +567,11 @@ const ProgramsTable = () => {
                         onClick={() => setSelectedProgram(program)}
                         variant="outline"
                       >
-                        <Eye size={14} style={{ marginRight: '6px' }} />
-                        View Details
+                        👁️ View Details
                       </Button>
                       <IconButton
                         size="sm"
-                        icon={<Heart size={14} />}
+                        icon="❤️"
                         variant="ghost"
                         colorScheme="red"
                       />
@@ -629,12 +624,11 @@ const ProgramsTable = () => {
                           onClick={() => setSelectedProgram(program)}
                           variant="ghost"
                         >
-                          <Eye size={12} style={{ marginRight: '4px' }} />
-                          View
+                          👁️ View
                         </Button>
                         <IconButton
                           size="xs"
-                          icon={<Heart size={12} />}
+                          icon="❤️"
                           variant="ghost"
                           colorScheme="red"
                         />
