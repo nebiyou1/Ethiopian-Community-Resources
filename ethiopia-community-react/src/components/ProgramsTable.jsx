@@ -5,43 +5,16 @@ import {
   VStack,
   HStack,
   Input,
-  Select,
   Button,
-  Badge,
   Text,
   Flex,
   Spinner,
-  Alert,
+  Badge,
   Card,
   CardBody,
-  IconButton,
-  Tooltip,
   SimpleGrid,
 } from '@chakra-ui/react'
-import {
-  useReactTable,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
-  getPaginationRowModel,
-  createColumnHelper,
-} from '@tanstack/react-table'
-import {
-  Search,
-  Eye,
-  Heart,
-  Calendar,
-  MapPin,
-  GraduationCap,
-  Star,
-  Grid3X3,
-  List,
-  Table as TableIcon,
-  Settings,
-} from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-
-const columnHelper = createColumnHelper()
 
 const ProgramsTable = () => {
   const [globalFilter, setGlobalFilter] = useState('')
@@ -52,13 +25,11 @@ const ProgramsTable = () => {
     location: '',
     prestige: '',
   })
-  const [selectedProgram, setSelectedProgram] = useState(null)
 
   // Fetch programs data
   const { data: programs = [], isLoading, error } = useQuery({
     queryKey: ['programs'],
     queryFn: async () => {
-      // Use Netlify API endpoint in production, localhost in development
       const apiUrl = window.location.hostname === 'localhost' 
         ? 'http://localhost:3000/api/programs'
         : '/api/programs'
@@ -74,7 +45,7 @@ const ProgramsTable = () => {
     retry: 3,
   })
 
-  // Filter programs based on current filters
+  // Filter programs
   const filteredPrograms = useMemo(() => {
     return programs.filter(program => {
       // Global search filter
@@ -82,10 +53,10 @@ const ProgramsTable = () => {
         const searchTerm = globalFilter.toLowerCase()
         const searchableText = [
           program.program_name,
-          program.organization_name,
-          program.description,
+          program.organization?.name,
           program.location,
-        ].join(' ').toLowerCase()
+          program.subject_area
+        ].filter(Boolean).join(' ').toLowerCase()
         
         if (!searchableText.includes(searchTerm)) {
           return false
@@ -111,167 +82,6 @@ const ProgramsTable = () => {
     })
   }, [programs, globalFilter, filters])
 
-  const columns = useMemo(
-    () => [
-      columnHelper.accessor('program_name', {
-        header: 'Program',
-        cell: (info) => (
-          <VStack align="start" spacing={1}>
-            <Text fontWeight="bold" fontSize="sm">
-              {String(info.getValue() || 'Unknown Program')}
-            </Text>
-            <Text fontSize="xs" color="gray.500">
-              {String(info.row.original.organization_name || info.row.original.organization?.name || 'Unknown Organization')}
-            </Text>
-          </VStack>
-        ),
-        enableSorting: true,
-      }),
-      columnHelper.accessor('location', {
-        header: 'Location',
-        cell: (info) => {
-          const location = info.getValue()
-          if (!location) {
-            const org = info.row.original.organization
-            const city = org?.city
-            const state = org?.state
-            const country = org?.country
-            const locationStr = [city, state, country].filter(Boolean).join(', ') || 'Various'
-            return (
-              <HStack spacing={1}>
-                <Text fontSize="xs">📍</Text>
-                <Text fontSize="sm">{locationStr}</Text>
-              </HStack>
-            )
-          }
-          return (
-            <HStack spacing={1}>
-              <Text fontSize="xs">📍</Text>
-              <Text fontSize="sm">{String(location)}</Text>
-            </HStack>
-          )
-        },
-      }),
-      columnHelper.display({
-        id: 'grade_range',
-        header: 'Grade Range',
-        cell: (info) => {
-          const min = info.row.original.grade_level_min
-          const max = info.row.original.grade_level_max
-          if (min && max) {
-            return (
-              <HStack spacing={1}>
-                <Text fontSize="xs">🎓</Text>
-                <Text fontSize="sm">{min}-{max}</Text>
-              </HStack>
-            )
-          }
-          return <Text fontSize="sm" color="gray.400">N/A</Text>
-        },
-      }),
-      columnHelper.accessor('duration_weeks', {
-        header: 'Duration',
-        cell: (info) => {
-          const duration = info.getValue()
-          if (!duration) {
-            return <Text fontSize="sm" color="gray.400">N/A</Text>
-          }
-          return (
-            <HStack spacing={1}>
-              <Text fontSize="xs">📅</Text>
-              <Text fontSize="sm">{String(duration)} weeks</Text>
-            </HStack>
-          )
-        },
-      }),
-      columnHelper.accessor('cost_category', {
-        header: 'Cost',
-        cell: (info) => {
-          const cost = info.getValue()
-          if (!cost) {
-            return <Badge colorScheme="gray" size="sm">Unknown</Badge>
-          }
-          const colorScheme = {
-            'FREE': 'green',
-            'FREE_PLUS_STIPEND': 'green',
-            'FREE_PLUS_SCHOLARSHIP': 'blue',
-            'LOW_COST': 'orange',
-            'PAID': 'red'
-          }[cost] || 'gray'
-          
-          return (
-            <Badge colorScheme={colorScheme} size="sm">
-              {String(cost).replace('_', ' ')}
-            </Badge>
-          )
-        },
-      }),
-      columnHelper.accessor('prestige_level', {
-        header: 'Prestige',
-        cell: (info) => {
-          const prestige = info.getValue()
-          if (!prestige) {
-            return <Badge colorScheme="gray" size="sm">N/A</Badge>
-          }
-          const colorScheme = {
-            'elite': 'yellow',
-            'highly-selective': 'purple',
-            'selective': 'blue',
-            'accessible': 'green'
-          }[prestige] || 'gray'
-          
-          return (
-            <Badge colorScheme={colorScheme} size="sm">
-              <HStack spacing={1}>
-                <Text fontSize="xs">⭐</Text>
-                <Text>{String(prestige)}</Text>
-              </HStack>
-            </Badge>
-          )
-        },
-      }),
-      columnHelper.display({
-        id: 'actions',
-        header: 'Actions',
-        cell: (info) => (
-          <HStack spacing={1}>
-            <Tooltip label="View Details">
-              <IconButton
-                size="sm"
-                icon="👁️"
-                onClick={() => setSelectedProgram(info.row.original)}
-                variant="ghost"
-              />
-            </Tooltip>
-            <Tooltip label="Add to Favorites">
-              <IconButton
-                size="sm"
-                icon="❤️"
-                variant="ghost"
-                colorScheme="red"
-              />
-            </Tooltip>
-          </HStack>
-        ),
-      }),
-    ],
-    []
-  )
-
-  const table = useReactTable({
-    data: filteredPrograms,
-    columns,
-    state: {
-      globalFilter,
-    },
-    onGlobalFilterChange: setGlobalFilter,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    globalFilterFn: 'includesString',
-  })
-
   const clearAllFilters = () => {
     setGlobalFilter('')
     setFilters({
@@ -290,8 +100,8 @@ const ProgramsTable = () => {
       <Container maxW="container.xl" py={8}>
         <Flex justify="center" align="center" h="400px">
           <VStack spacing={4}>
-            <Spinner size="xl" color="brand.500" />
-            <Text>Loading programs...</Text>
+            <Spinner size="xl" color="blue.500" />
+            <Text fontSize="lg" color="gray.600">Loading programs...</Text>
           </VStack>
         </Flex>
       </Container>
@@ -301,203 +111,310 @@ const ProgramsTable = () => {
   if (error) {
     return (
       <Container maxW="container.xl" py={8}>
-        <Alert status="error">
-          <Text>Failed to load programs. Please try again.</Text>
-        </Alert>
+        <Box 
+          p={6} 
+          bg="red.50" 
+          border="1px" 
+          borderColor="red.200" 
+          borderRadius="lg"
+          textAlign="center"
+        >
+          <Text fontSize="lg" color="red.600" fontWeight="bold">
+            ⚠️ Failed to load programs
+          </Text>
+          <Text fontSize="sm" color="red.500" mt={2}>
+            Please check your connection and try again.
+          </Text>
+        </Box>
       </Container>
     )
   }
 
   return (
     <Container maxW="container.xl" py={8}>
-      <VStack spacing={6} align="stretch">
-        {/* Filters */}
-        <Card>
-          <CardBody>
-            <VStack spacing={4}>
-              {/* Search and Basic Controls */}
+      <VStack spacing={8} align="stretch">
+        {/* Header */}
+        <Box textAlign="center">
+          <Text fontSize="3xl" fontWeight="bold" color="gray.800" mb={2}>
+            🎓 Summer Programs
+          </Text>
+          <Text fontSize="lg" color="gray.600">
+            Discover amazing opportunities for students
+          </Text>
+        </Box>
+
+        {/* Filters Card */}
+        <Card shadow="lg" borderRadius="xl">
+          <CardBody p={6}>
+            <VStack spacing={6}>
+              {/* Search and Controls */}
               <Flex
                 direction={{ base: 'column', md: 'row' }}
                 gap={4}
                 w="full"
                 align={{ base: 'stretch', md: 'center' }}
               >
-                <HStack flex={1} spacing={2}>
-                  <Text fontSize="sm" color="gray.500">🔍</Text>
+                <HStack flex={1} spacing={3}>
+                  <Text fontSize="lg" color="blue.500">🔍</Text>
                   <Input
                     placeholder="Search programs, organizations, locations..."
                     value={globalFilter}
                     onChange={(e) => setGlobalFilter(e.target.value)}
-                    size="md"
+                    size="lg"
                     flex={1}
+                    borderRadius="lg"
+                    borderColor="gray.300"
+                    _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px blue.500' }}
                   />
                   {globalFilter && (
-                    <Button size="sm" variant="ghost" onClick={() => setGlobalFilter('')}>
+                    <Button 
+                      size="lg" 
+                      variant="ghost" 
+                      onClick={() => setGlobalFilter('')}
+                      borderRadius="lg"
+                    >
                       ✕
                     </Button>
                   )}
                 </HStack>
                 
-                <HStack spacing={2}>
+                <HStack spacing={3}>
                   <Button
-                    size="sm"
+                    size="lg"
                     variant={showAdvancedFilters ? 'solid' : 'outline'}
                     onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+                    borderRadius="lg"
+                    colorScheme="blue"
                   >
                     ⚙️ Filters {activeFiltersCount > 0 && `(${activeFiltersCount})`}
                   </Button>
                   
                   <Button
-                    size="sm"
+                    size="lg"
                     variant={viewMode === 'table' ? 'solid' : 'outline'}
                     onClick={() => setViewMode('table')}
+                    borderRadius="lg"
+                    colorScheme="blue"
                   >
                     📊 Table
                   </Button>
                   <Button
-                    size="sm"
+                    size="lg"
                     variant={viewMode === 'cards' ? 'solid' : 'outline'}
                     onClick={() => setViewMode('cards')}
+                    borderRadius="lg"
+                    colorScheme="blue"
                   >
                     🃏 Cards
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant={viewMode === 'list' ? 'solid' : 'outline'}
-                    onClick={() => setViewMode('list')}
-                  >
-                    📋 List
                   </Button>
                 </HStack>
               </Flex>
 
               {/* Advanced Filters */}
               {showAdvancedFilters && (
-                <Box w="full" p={4} bg="gray.50" borderRadius="md">
-                  <VStack spacing={4} align="stretch">
-                    <Flex justify="space-between" align="center">
-                      <Text fontWeight="bold">Advanced Filters</Text>
-                      <Button size="sm" variant="ghost" onClick={clearAllFilters}>
-                        Clear All
-                      </Button>
-                    </Flex>
-                    
-                    <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
+                <Box w="full">
+                  <VStack spacing={6}>
+                    <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} w="full">
                       {/* Cost Category */}
                       <Box>
-                        <Text fontSize="sm" fontWeight="bold" mb={2}>Cost Category</Text>
-                        <Select
-                          placeholder="All costs"
-                          value={filters.costCategory}
-                          onChange={(e) => setFilters(prev => ({ ...prev, costCategory: e.target.value }))}
-                          size="sm"
-                        >
-                          <option value="FREE">Free</option>
-                          <option value="FREE_PLUS_STIPEND">Free + Stipend</option>
-                          <option value="FREE_PLUS_SCHOLARSHIP">Scholarship</option>
-                          <option value="LOW_COST">Low Cost</option>
-                          <option value="PAID">Paid</option>
-                        </Select>
+                        <Text fontSize="md" fontWeight="bold" mb={3} color="gray.700">
+                          💰 Cost Category
+                        </Text>
+                        <VStack spacing={2} align="stretch">
+                          {['FREE', 'FREE_PLUS_STIPEND', 'FREE_PLUS_SCHOLARSHIP', 'LOW_COST', 'PAID'].map(cost => (
+                            <Button
+                              key={cost}
+                              size="sm"
+                              variant={filters.costCategory === cost ? 'solid' : 'outline'}
+                              onClick={() => setFilters(prev => ({ 
+                                ...prev, 
+                                costCategory: prev.costCategory === cost ? '' : cost 
+                              }))}
+                              justifyContent="flex-start"
+                              borderRadius="md"
+                              colorScheme={filters.costCategory === cost ? 'blue' : 'gray'}
+                            >
+                              {cost === 'FREE' && '🆓 Free'}
+                              {cost === 'FREE_PLUS_STIPEND' && '💰 Free + Stipend'}
+                              {cost === 'FREE_PLUS_SCHOLARSHIP' && '🎓 Free + Scholarship'}
+                              {cost === 'LOW_COST' && '💵 Low Cost'}
+                              {cost === 'PAID' && '💸 Paid'}
+                            </Button>
+                          ))}
+                        </VStack>
                       </Box>
 
                       {/* Location */}
                       <Box>
-                        <Text fontSize="sm" fontWeight="bold" mb={2}>Location</Text>
+                        <Text fontSize="md" fontWeight="bold" mb={3} color="gray.700">
+                          📍 Location
+                        </Text>
                         <Input
-                          placeholder="City, State, or Country"
+                          placeholder="Search location..."
                           value={filters.location}
                           onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
-                          size="sm"
+                          size="md"
+                          borderRadius="md"
                         />
                       </Box>
 
                       {/* Prestige Level */}
                       <Box>
-                        <Text fontSize="sm" fontWeight="bold" mb={2}>Prestige Level</Text>
-                        <Select
-                          placeholder="All levels"
-                          value={filters.prestige}
-                          onChange={(e) => setFilters(prev => ({ ...prev, prestige: e.target.value }))}
-                          size="sm"
-                        >
-                          <option value="elite">🏆 Elite</option>
-                          <option value="highly-selective">⭐ Highly Selective</option>
-                          <option value="selective">📚 Selective</option>
-                          <option value="accessible">🌟 Accessible</option>
-                        </Select>
+                        <Text fontSize="md" fontWeight="bold" mb={3} color="gray.700">
+                          🏆 Prestige Level
+                        </Text>
+                        <VStack spacing={2} align="stretch">
+                          {[
+                            { value: 'elite', label: '🏆 Elite' },
+                            { value: 'highly-selective', label: '⭐ Highly Selective' },
+                            { value: 'selective', label: '📚 Selective' },
+                            { value: 'accessible', label: '🌟 Accessible' }
+                          ].map(prestige => (
+                            <Button
+                              key={prestige.value}
+                              size="sm"
+                              variant={filters.prestige === prestige.value ? 'solid' : 'outline'}
+                              onClick={() => setFilters(prev => ({ 
+                                ...prev, 
+                                prestige: prev.prestige === prestige.value ? '' : prestige.value 
+                              }))}
+                              justifyContent="flex-start"
+                              borderRadius="md"
+                              colorScheme={filters.prestige === prestige.value ? 'blue' : 'gray'}
+                            >
+                              {prestige.label}
+                            </Button>
+                          ))}
+                        </VStack>
                       </Box>
                     </SimpleGrid>
+                    
+                    <Button 
+                      size="md" 
+                      variant="ghost" 
+                      onClick={clearAllFilters}
+                      colorScheme="red"
+                    >
+                      🗑️ Clear All Filters
+                    </Button>
                   </VStack>
                 </Box>
               )}
 
               {/* Results Count */}
-              <Text fontSize="sm" color="gray.600">
-                Showing {filteredPrograms.length} of {programs.length} programs
-              </Text>
+              <Box textAlign="center">
+                <Text fontSize="lg" color="gray.600" fontWeight="medium">
+                  Showing <Text as="span" fontWeight="bold" color="blue.600">{filteredPrograms.length}</Text> of <Text as="span" fontWeight="bold" color="blue.600">{programs.length}</Text> programs
+                </Text>
+              </Box>
             </VStack>
           </CardBody>
         </Card>
 
         {/* Data Display */}
         {viewMode === 'table' && (
-          <Card>
+          <Card shadow="lg" borderRadius="xl">
             <CardBody p={0}>
               <Box overflowX="auto">
                 <Box as="table" w="full">
                   <Box as="thead" bg="gray.50">
-                    {table.getHeaderGroups().map((headerGroup) => (
-                      <Box as="tr" key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => (
-                          <Box
-                            as="th"
-                            key={header.id}
-                            px={4}
-                            py={3}
-                            textAlign="left"
-                            fontSize="sm"
-                            fontWeight="bold"
-                            color="gray.600"
-                            borderBottom="1px"
-                            borderColor="gray.200"
-                            cursor={header.column.getCanSort() ? 'pointer' : 'default'}
-                            onClick={header.column.getToggleSortingHandler()}
-                          >
-                            {header.isPlaceholder
-                              ? null
-                              : (header.column.columnDef.header || header.column.id)
-                            }
-                            {header.column.getIsSorted() === 'asc' && ' ↑'}
-                            {header.column.getIsSorted() === 'desc' && ' ↓'}
-                          </Box>
-                        ))}
+                    <Box as="tr">
+                      <Box as="th" px={6} py={4} textAlign="left" fontSize="md" fontWeight="bold" color="gray.700" borderBottom="2px" borderColor="gray.200">
+                        Program
                       </Box>
-                    ))}
+                      <Box as="th" px={6} py={4} textAlign="left" fontSize="md" fontWeight="bold" color="gray.700" borderBottom="2px" borderColor="gray.200">
+                        Organization
+                      </Box>
+                      <Box as="th" px={6} py={4} textAlign="left" fontSize="md" fontWeight="bold" color="gray.700" borderBottom="2px" borderColor="gray.200">
+                        Location
+                      </Box>
+                      <Box as="th" px={6} py={4} textAlign="left" fontSize="md" fontWeight="bold" color="gray.700" borderBottom="2px" borderColor="gray.200">
+                        Duration
+                      </Box>
+                      <Box as="th" px={6} py={4} textAlign="left" fontSize="md" fontWeight="bold" color="gray.700" borderBottom="2px" borderColor="gray.200">
+                        Cost
+                      </Box>
+                      <Box as="th" px={6} py={4} textAlign="left" fontSize="md" fontWeight="bold" color="gray.700" borderBottom="2px" borderColor="gray.200">
+                        Actions
+                      </Box>
+                    </Box>
                   </Box>
                   <Box as="tbody">
-                    {table.getRowModel().rows.map((row) => (
+                    {filteredPrograms.map((program, index) => (
                       <Box
                         as="tr"
-                        key={row.id}
-                        _hover={{ bg: 'gray.50' }}
+                        key={program.id || index}
+                        _hover={{ bg: 'blue.50' }}
                         transition="background-color 0.2s"
+                        borderBottom="1px"
+                        borderColor="gray.100"
                       >
-                        {row.getVisibleCells().map((cell) => (
-                          <Box
-                            as="td"
-                            key={cell.id}
-                            px={4}
-                            py={3}
-                            borderBottom="1px"
-                            borderColor="gray.200"
-                            fontSize="sm"
+                        <Box as="td" px={6} py={4} fontSize="sm">
+                          <VStack align="start" spacing={1}>
+                            <Text fontWeight="bold" fontSize="md" color="gray.800">
+                              {String(program.program_name || 'Unknown Program')}
+                            </Text>
+                            <Text fontSize="sm" color="gray.500">
+                              {String(program.organization?.name || 'Unknown Organization')}
+                            </Text>
+                          </VStack>
+                        </Box>
+                        <Box as="td" px={6} py={4} fontSize="sm">
+                          <Text fontSize="sm" color="gray.700">{String(program.organization?.name || 'Unknown')}</Text>
+                        </Box>
+                        <Box as="td" px={6} py={4} fontSize="sm">
+                          <HStack spacing={2}>
+                            <Text fontSize="sm">📍</Text>
+                            <Text fontSize="sm" color="gray.700">
+                              {program.location || 
+                               (program.organization ? 
+                                 [program.organization.city, program.organization.state, program.organization.country]
+                                   .filter(Boolean).join(', ') || 'Various' : 
+                                 'Various')}
+                            </Text>
+                          </HStack>
+                        </Box>
+                        <Box as="td" px={6} py={4} fontSize="sm">
+                          <HStack spacing={2}>
+                            <Text fontSize="sm">📅</Text>
+                            <Text fontSize="sm" color="gray.700">
+                              {program.duration_weeks ? `${String(program.duration_weeks)} weeks` : 'N/A'}
+                            </Text>
+                          </HStack>
+                        </Box>
+                        <Box as="td" px={6} py={4} fontSize="sm">
+                          <Badge 
+                            colorScheme={
+                              program.cost_category === 'FREE' ? 'green' :
+                              program.cost_category === 'PAID' ? 'red' : 'orange'
+                            } 
+                            size="md"
+                            borderRadius="md"
                           >
-                            {cell.column.columnDef.cell ? 
-                              cell.column.columnDef.cell(cell.getContext()) : 
-                              cell.getValue()
-                            }
-                          </Box>
-                        ))}
+                            {String(program.cost_category || 'Unknown').replace('_', ' ')}
+                          </Badge>
+                        </Box>
+                        <Box as="td" px={6} py={4} fontSize="sm">
+                          <HStack spacing={2}>
+                            <Button
+                              size="sm"
+                              onClick={() => console.log('View program:', program)}
+                              variant="outline"
+                              colorScheme="blue"
+                              borderRadius="md"
+                            >
+                              👁️ View
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              colorScheme="red"
+                              borderRadius="md"
+                            >
+                              ❤️
+                            </Button>
+                          </HStack>
+                        </Box>
                       </Box>
                     ))}
                   </Box>
@@ -510,39 +427,46 @@ const ProgramsTable = () => {
         {/* Cards View */}
         {viewMode === 'cards' && (
           <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-            {filteredPrograms.map((program) => (
-              <Card key={program.id} _hover={{ transform: 'translateY(-2px)', shadow: 'lg' }} transition="all 0.2s">
-                <CardBody>
-                  <VStack spacing={3} align="stretch">
-                    <VStack spacing={1} align="start">
-                      <Text fontWeight="bold" fontSize="lg" noOfLines={2}>
-                        {program.program_name}
+            {filteredPrograms.map((program, index) => (
+              <Card key={program.id || index} shadow="lg" borderRadius="xl" _hover={{ shadow: 'xl', transform: 'translateY(-2px)' }} transition="all 0.2s">
+                <CardBody p={6}>
+                  <VStack align="stretch" spacing={4}>
+                    <VStack align="start" spacing={3}>
+                      <Text fontWeight="bold" fontSize="xl" color="gray.800">
+                        {String(program.program_name || 'Unknown Program')}
                       </Text>
-                      <Text fontSize="sm" color="gray.600" noOfLines={1}>
-                        {program.organization_name}
+                      <Text fontSize="md" color="gray.600">
+                        {String(program.organization?.name || 'Unknown Organization')}
+                      </Text>
+                      <Text fontSize="sm" color="gray.500" noOfLines={3}>
+                        {program.description || 'No description available'}
                       </Text>
                     </VStack>
                     
-                    <Text fontSize="sm" color="gray.700" noOfLines={3}>
-                      {program.description}
-                    </Text>
-                    
-                    <VStack spacing={2} align="stretch">
+                    <VStack spacing={3} align="stretch">
                       <HStack justify="space-between">
-                        <HStack spacing={1}>
-                          <Text fontSize="xs">📍</Text>
-                          <Text fontSize="xs">{program.location}</Text>
+                        <HStack spacing={2}>
+                          <Text fontSize="sm">📍</Text>
+                          <Text fontSize="sm" color="gray.700">
+                            {program.location || 
+                             (program.organization ? 
+                               [program.organization.city, program.organization.state, program.organization.country]
+                                 .filter(Boolean).join(', ') || 'Various' : 
+                               'Various')}
+                          </Text>
                         </HStack>
-                        <HStack spacing={1}>
-                          <Text fontSize="xs">📅</Text>
-                          <Text fontSize="xs">{program.duration_weeks}w</Text>
+                        <HStack spacing={2}>
+                          <Text fontSize="sm">📅</Text>
+                          <Text fontSize="sm" color="gray.700">
+                            {program.duration_weeks ? `${String(program.duration_weeks)}w` : 'N/A'}
+                          </Text>
                         </HStack>
                       </HStack>
                       
                       <HStack justify="space-between">
-                        <HStack spacing={1}>
-                          <Text fontSize="xs">🎓</Text>
-                          <Text fontSize="xs">
+                        <HStack spacing={2}>
+                          <Text fontSize="sm">🎓</Text>
+                          <Text fontSize="sm" color="gray.700">
                             {program.grade_level_min && program.grade_level_max 
                               ? `${program.grade_level_min}-${program.grade_level_max}`
                               : 'N/A'
@@ -554,193 +478,39 @@ const ProgramsTable = () => {
                             program.cost_category === 'FREE' ? 'green' :
                             program.cost_category === 'PAID' ? 'red' : 'orange'
                           } 
-                          size="sm"
+                          size="md"
+                          borderRadius="md"
                         >
-                          {program.cost_category?.replace('_', ' ')}
+                          {String(program.cost_category || 'Unknown').replace('_', ' ')}
                         </Badge>
                       </HStack>
                     </VStack>
                     
-                    <HStack justify="space-between">
+                    <HStack justify="space-between" pt={2}>
                       <Button
-                        size="sm"
-                        onClick={() => setSelectedProgram(program)}
-                        variant="outline"
+                        size="md"
+                        onClick={() => console.log('View program:', program)}
+                        variant="solid"
+                        colorScheme="blue"
+                        borderRadius="md"
+                        flex={1}
                       >
                         👁️ View Details
                       </Button>
-                      <IconButton
-                        size="sm"
-                        icon="❤️"
-                        variant="ghost"
+                      <Button
+                        size="md"
+                        variant="outline"
                         colorScheme="red"
-                      />
+                        borderRadius="md"
+                      >
+                        ❤️
+                      </Button>
                     </HStack>
                   </VStack>
                 </CardBody>
               </Card>
             ))}
           </SimpleGrid>
-        )}
-
-        {/* List View */}
-        {viewMode === 'list' && (
-          <VStack spacing={2} align="stretch">
-            {filteredPrograms.map((program) => (
-              <Card key={program.id} _hover={{ bg: 'gray.50' }} transition="all 0.2s">
-                <CardBody py={3}>
-                  <Flex justify="space-between" align="center">
-                    <VStack spacing={1} align="start" flex={1}>
-                      <Text fontWeight="bold" fontSize="sm">
-                        {program.program_name}
-                      </Text>
-                      <Text fontSize="xs" color="gray.600">
-                        {program.organization_name} • {program.location}
-                      </Text>
-                    </VStack>
-                    
-                    <HStack spacing={4}>
-                      <Text fontSize="xs" color="gray.600">
-                        {program.grade_level_min && program.grade_level_max 
-                          ? `Grades ${program.grade_level_min}-${program.grade_level_max}`
-                          : 'N/A'
-                        }
-                      </Text>
-                      <Text fontSize="xs" color="gray.600">
-                        {program.duration_weeks} weeks
-                      </Text>
-                      <Badge 
-                        colorScheme={
-                          program.cost_category === 'FREE' ? 'green' :
-                          program.cost_category === 'PAID' ? 'red' : 'orange'
-                        } 
-                        size="sm"
-                      >
-                        {program.cost_category?.replace('_', ' ')}
-                      </Badge>
-                      <HStack spacing={1}>
-                        <Button
-                          size="xs"
-                          onClick={() => setSelectedProgram(program)}
-                          variant="ghost"
-                        >
-                          👁️ View
-                        </Button>
-                        <IconButton
-                          size="xs"
-                          icon="❤️"
-                          variant="ghost"
-                          colorScheme="red"
-                        />
-                      </HStack>
-                    </HStack>
-                  </Flex>
-                </CardBody>
-              </Card>
-            ))}
-          </VStack>
-        )}
-
-        {/* Pagination */}
-        {filteredPrograms.length > 0 && (
-          <Flex justify="center" align="center" gap={4}>
-            <Button
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-              size="sm"
-            >
-              First
-            </Button>
-            <Button
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              size="sm"
-            >
-              Previous
-            </Button>
-            <Text fontSize="sm">
-              Page {table.getState().pagination.pageIndex + 1} of{' '}
-              {table.getPageCount()}
-            </Text>
-            <Button
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-              size="sm"
-            >
-              Next
-            </Button>
-            <Button
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-              size="sm"
-            >
-              Last
-            </Button>
-          </Flex>
-        )}
-
-        {/* Program Details */}
-        {selectedProgram && (
-          <Card>
-            <CardBody>
-              <VStack spacing={4} align="stretch">
-                <Flex justify="space-between" align="start">
-                  <VStack align="start" spacing={1}>
-                    <Text fontWeight="bold" fontSize="lg">
-                      {selectedProgram.program_name}
-                    </Text>
-                    <Text color="brand.500" fontWeight="bold">
-                      {selectedProgram.organization_name}
-                    </Text>
-                  </VStack>
-                  <Button size="sm" onClick={() => setSelectedProgram(null)}>
-                    ✕
-                  </Button>
-                </Flex>
-                
-                <Text>{selectedProgram.description}</Text>
-                
-                <Box h="1px" bg="gray.200" w="full" />
-                
-                <SimpleGrid columns={2} spacing={4}>
-                  <Box>
-                    <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                      Location
-                    </Text>
-                    <Text>{selectedProgram.location}</Text>
-                  </Box>
-                  <Box>
-                    <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                      Grade Range
-                    </Text>
-                    <Text>
-                      {selectedProgram.grade_level_min && selectedProgram.grade_level_max 
-                        ? `${selectedProgram.grade_level_min}-${selectedProgram.grade_level_max}`
-                        : 'N/A'
-                      }
-                    </Text>
-                  </Box>
-                  <Box>
-                    <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                      Duration
-                    </Text>
-                    <Text>{selectedProgram.duration_weeks} weeks</Text>
-                  </Box>
-                  <Box>
-                    <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                      Application Deadline
-                    </Text>
-                    <Text>
-                      {selectedProgram.application_deadline 
-                        ? new Date(selectedProgram.application_deadline).toLocaleDateString()
-                        : 'Rolling'
-                      }
-                    </Text>
-                  </Box>
-                </SimpleGrid>
-              </VStack>
-            </CardBody>
-          </Card>
         )}
       </VStack>
     </Container>
