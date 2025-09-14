@@ -17,7 +17,7 @@
 # API Routes
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
+  to = "/.netlify/functions/api-simple/:splat"
   status = 200
 
 # Auth Routes
