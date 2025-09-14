@@ -25,7 +25,6 @@ import {
   getSortedRowModel,
   getPaginationRowModel,
   createColumnHelper,
-  flexRender,
 } from '@tanstack/react-table'
 import {
   Search,
@@ -442,10 +441,8 @@ const ProgramsTable = () => {
                           >
                             {header.isPlaceholder
                               ? null
-                              : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                                )}
+                              : (header.column.columnDef.header || header.column.id)
+                            }
                             {header.column.getIsSorted() === 'asc' && ' ↑'}
                             {header.column.getIsSorted() === 'desc' && ' ↓'}
                           </Box>
@@ -471,10 +468,10 @@ const ProgramsTable = () => {
                             borderColor="gray.200"
                             fontSize="sm"
                           >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
+                            {cell.column.columnDef.cell ? 
+                              cell.column.columnDef.cell(cell.getContext()) : 
+                              cell.getValue()
+                            }
                           </Box>
                         ))}
                       </Box>
