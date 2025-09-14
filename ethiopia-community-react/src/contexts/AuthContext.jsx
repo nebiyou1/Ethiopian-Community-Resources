@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import authService from '../services/supabaseAuth'
+import supabaseAuth from '../services/supabaseAuthSimple'
 
 const AuthContext = createContext()
 
@@ -17,54 +17,39 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Listen for auth state changes
-    const unsubscribe = authService.addListener((user, session) => {
-      setUser(user)
-      setSession(session)
+    const { data: authListener } = supabaseAuth.onAuthStateChange(
+      async (event, session) => {
+        setUser(session?.user || null)
+        setSession(session)
+        setLoading(false)
+      }
+    )
+
+    // Initial check
+    supabaseAuth.getUser().then(currentUser => {
+      setUser(currentUser)
       setLoading(false)
     })
 
-    return unsubscribe
+    return () => {
+      authListener.subscription.unsubscribe()
+    }
   }, [])
 
   const signIn = async (email, password) => {
-    return await authService.signInWithEmail(email, password)
+    return await supabaseAuth.signIn(email, password)
   }
 
-  const signUp = async (email, password, userData) => {
-    return await authService.signUpWithEmail(email, password, userData)
+  const signUp = async (email, password) => {
+    return await supabaseAuth.signUp(email, password)
   }
 
   const signInWithGoogle = async () => {
-    return await authService.signInWithGoogle()
+    return await supabaseAuth.signInWithGoogle()
   }
 
   const signOut = async () => {
-    return await authService.signOut()
-  }
-
-  const resetPassword = async (email) => {
-    return await authService.resetPassword(email)
-  }
-
-  const updateProfile = async (updates) => {
-    return await authService.updateProfile(updates)
-  }
-
-  const addToFavorites = async (programId) => {
-    return await authService.addToFavorites(programId)
-  }
-
-  const removeFromFavorites = async (programId) => {
-    return await authService.removeFromFavorites(programId)
-  }
-
-  const getFavorites = async () => {
-    return await authService.getFavorites()
-  }
-
-  const isFavorite = async (programId) => {
-    return await authService.isFavorite(programId)
+    return await supabaseAuth.signOut()
   }
 
   const value = {
@@ -75,13 +60,7 @@ export const AuthProvider = ({ children }) => {
     signIn,
     signUp,
     signInWithGoogle,
-    signOut,
-    resetPassword,
-    updateProfile,
-    addToFavorites,
-    removeFromFavorites,
-    getFavorites,
-    isFavorite
+    signOut
   }
 
   return (
