@@ -160,40 +160,87 @@ class DatabaseServiceProduction {
         created_at: program.created_at,
         updated_at: program.updated_at,
         
-        // Organization data
+        // Organization data - handle missing gracefully
         organization: program.organizations ? {
           id: program.organizations.id,
-          name: program.organizations.name,
+          name: program.organizations.name || 'N/A',
           slug: program.organizations.slug,
-          type: program.organizations.type,
+          type: program.organizations.type || 'organization',
           website: program.organizations.website,
           city: program.organizations.city,
           state: program.organizations.state_province,
-          country: program.organizations.country
+          country: program.organizations.country || 'USA'
         } : null,
         
-        // Legacy field mappings for backward compatibility
-        organization_name: program.organizations?.name,
-        location_city: program.organizations?.city,
-        location_state: program.organizations?.state_province,
-        website: program.organizations?.website,
-        duration_weeks: program.duration_value,
-        selectivity_percent: program.estimated_acceptance_rate,
+        // Legacy field mappings for backward compatibility - only show if available
+        organization_name: program.organizations?.name || null,
+        location_city: program.organizations?.city || null,
+        location_state: program.organizations?.state_province || null,
+        website: program.organizations?.website || null,
+        duration_weeks: program.duration_value || null,
+        selectivity_percent: program.estimated_acceptance_rate || null,
         
-        // Default values for missing fields
-        cost_category: 'UNKNOWN',
-        grade_level: 'High School',
-        financial_aid: null,
-        citizenship_required: null,
-        application_requirements: null,
-        key_benefits: null,
-        residential_day: null
+        // Only show fields that have meaningful values
+        cost_category: this.getCostCategory(program),
+        grade_level: this.getGradeLevel(program),
+        financial_aid: this.getFinancialAid(program),
+        citizenship_required: this.getCitizenshipRequired(program),
+        application_requirements: this.getApplicationRequirements(program),
+        key_benefits: this.getKeyBenefits(program),
+        residential_day: this.getResidentialDay(program)
       };
     });
   }
 
   getProgramsFromJson(filters) {
     let results = [...(this.jsonData.programs || [])];
+    
+    // Transform JSON data to match expected frontend structure
+    results = results.map(program => ({
+      id: program.id,
+      program_name: program.program_name,
+      slug: this.createSlug(program.program_name),
+      description: this.createDescription(program),
+      short_description: program.key_benefits || program.special_eligibility || null,
+      program_type: program.program_type,
+      target_audience: 'high_school',
+      selectivity_tier: this.getSelectivityTier(program.selectivity_percent),
+      estimated_acceptance_rate: program.selectivity_percent,
+      duration_type: 'weeks',
+      duration_value: program.duration_weeks,
+      rating_average: 0,
+      rating_count: 0,
+      status: 'active',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      
+      // Organization data (derived from program info)
+      organization: {
+        name: this.extractOrganizationFromName(program.program_name),
+        website: program.website,
+        city: this.extractCityFromState(program.location_state),
+        state: program.location_state,
+        country: 'USA'
+      },
+      
+      // Legacy field mappings for backward compatibility
+      organization_name: this.extractOrganizationFromName(program.program_name),
+      location_city: this.extractCityFromState(program.location_state),
+      location_state: program.location_state,
+      website: program.website,
+      cost_category: program.cost_category,
+      grade_level: program.grade_level,
+      duration_weeks: program.duration_weeks,
+      selectivity_percent: program.selectivity_percent,
+      financial_aid: program.financial_aid,
+      citizenship_required: program.citizenship_required,
+      application_requirements: program.application_requirements,
+      key_benefits: program.key_benefits,
+      residential_day: program.residential_day,
+      subject_area: program.subject_area,
+      special_eligibility: program.special_eligibility,
+      application_deadline: program.application_deadline
+    }));
     
     // Apply basic filters
     if (filters.program_type) {
@@ -205,7 +252,8 @@ class DatabaseServiceProduction {
       results = results.filter(p => 
         (p.program_name || '').toLowerCase().includes(searchTerm) ||
         (p.description || '').toLowerCase().includes(searchTerm) ||
-        (p.organization || '').toLowerCase().includes(searchTerm)
+        (p.organization_name || '').toLowerCase().includes(searchTerm) ||
+        (p.subject_area || '').toLowerCase().includes(searchTerm)
       );
     }
     
@@ -452,6 +500,57 @@ class DatabaseServiceProduction {
       organization_types: ['university', 'nonprofit', 'organization', 'government'],
       categories: []
     };
+  }
+
+  // Helper methods to handle missing data gracefully
+  getCostCategory(program) {
+    // Try to get from attributes first, then fallback
+    const costAttr = program.program_attributes?.find(attr => 
+      attr.attribute_definitions?.name === 'cost_category'
+    );
+    return costAttr?.value_string || null; // Don't show if not available
+  }
+
+  getGradeLevel(program) {
+    const gradeAttr = program.program_attributes?.find(attr => 
+      attr.attribute_definitions?.name === 'grade_level_min'
+    );
+    return gradeAttr?.value_string || null;
+  }
+
+  getFinancialAid(program) {
+    const aidAttr = program.program_attributes?.find(attr => 
+      attr.attribute_definitions?.name === 'financial_aid_available'
+    );
+    return aidAttr?.value_boolean ? 'Available' : null;
+  }
+
+  getCitizenshipRequired(program) {
+    const citizenAttr = program.program_attributes?.find(attr => 
+      attr.attribute_definitions?.name === 'citizenship_required'
+    );
+    return citizenAttr?.value_string || null;
+  }
+
+  getApplicationRequirements(program) {
+    const reqAttr = program.program_attributes?.find(attr => 
+      attr.attribute_definitions?.name === 'application_requirements'
+    );
+    return reqAttr?.value_string || null;
+  }
+
+  getKeyBenefits(program) {
+    const benefitsAttr = program.program_attributes?.find(attr => 
+      attr.attribute_definitions?.name === 'key_benefits'
+    );
+    return benefitsAttr?.value_string || null;
+  }
+
+  getResidentialDay(program) {
+    const residentialAttr = program.program_attributes?.find(attr => 
+      attr.attribute_definitions?.name === 'residential_status'
+    );
+    return residentialAttr?.value_string || null;
   }
 }
 
