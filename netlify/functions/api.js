@@ -2,7 +2,7 @@ const { createClient } = require('@supabase/supabase-js');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const databaseService = require('../../services/databaseService');
+const databaseService = require('../../services/databaseService-production');
 
 const app = express();
 
@@ -34,7 +34,7 @@ app.get('/api/programs', async (req, res) => {
     const programs = await databaseService.getAllPrograms(filters);
     res.json({
       success: true,
-      data: programs,
+      programs: programs,
       count: programs.length
     });
   } catch (error) {
@@ -86,14 +86,7 @@ app.get('/api/programs/stats', async (req, res) => {
     const stats = await databaseService.getStatistics();
     res.json({
       success: true,
-      data: {
-        statistics: stats,
-        metadata: {
-          database_name: "ethiopia_community_resources",
-          version: "1.0.0",
-          last_updated: new Date().toISOString()
-        }
-      }
+      data: stats
     });
   } catch (error) {
     res.status(500).json({
