@@ -49,7 +49,7 @@ const Header = () => {
         right={0}
         bottom={0}
         opacity={0.1}
-        backgroundImage="url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2220%22 cy=%2220%22 r=%222%22 fill=%22white%22/%3E%3Ccircle cx=%2280%22 cy=%2280%22 r=%222%22 fill=%22white%22/%3E%3Ccircle cx=%2240%22 cy=%2260%22 r=%221%22 fill=%22white%22/%3E%3Ccircle cx=%2260%22 cy=%2240%22 r=%221%22 fill=%22white%22/%3E%3C/svg%3E')"
+        bg="rgba(255,255,255,0.1)"
       />
       
       <Container maxW="container.xl" position="relative" zIndex={1}>
