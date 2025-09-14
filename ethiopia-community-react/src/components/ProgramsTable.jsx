@@ -313,36 +313,36 @@ const ProgramsTable = () => {
                 
                 <HStack spacing={2}>
                   <Button
-                    leftIcon={<Settings size={16} />}
                     size="sm"
                     variant={showAdvancedFilters ? 'solid' : 'outline'}
                     onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
                   >
+                    <Settings size={16} style={{ marginRight: '8px' }} />
                     Filters {activeFiltersCount > 0 && `(${activeFiltersCount})`}
                   </Button>
                   
                   <Button
-                    leftIcon={<TableIcon size={16} />}
                     size="sm"
                     variant={viewMode === 'table' ? 'solid' : 'outline'}
                     onClick={() => setViewMode('table')}
                   >
+                    <TableIcon size={16} style={{ marginRight: '8px' }} />
                     Table
                   </Button>
                   <Button
-                    leftIcon={<Grid3X3 size={16} />}
                     size="sm"
                     variant={viewMode === 'cards' ? 'solid' : 'outline'}
                     onClick={() => setViewMode('cards')}
                   >
+                    <Grid3X3 size={16} style={{ marginRight: '8px' }} />
                     Cards
                   </Button>
                   <Button
-                    leftIcon={<List size={16} />}
                     size="sm"
                     variant={viewMode === 'list' ? 'solid' : 'outline'}
                     onClick={() => setViewMode('list')}
                   >
+                    <List size={16} style={{ marginRight: '8px' }} />
                     List
                   </Button>
                 </HStack>
@@ -543,10 +543,10 @@ const ProgramsTable = () => {
                     <HStack justify="space-between">
                       <Button
                         size="sm"
-                        leftIcon={<Eye size={14} />}
                         onClick={() => setSelectedProgram(program)}
                         variant="outline"
                       >
+                        <Eye size={14} style={{ marginRight: '6px' }} />
                         View Details
                       </Button>
                       <IconButton
@@ -601,10 +601,10 @@ const ProgramsTable = () => {
                       <HStack spacing={1}>
                         <Button
                           size="xs"
-                          leftIcon={<Eye size={12} />}
                           onClick={() => setSelectedProgram(program)}
                           variant="ghost"
                         >
+                          <Eye size={12} style={{ marginRight: '4px' }} />
                           View
                         </Button>
                         <IconButton

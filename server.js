@@ -18,7 +18,11 @@ app.use(helmet({
 }));
 app.use(morgan('combined'));
 app.use(cors({
-  origin: process.env.NETLIFY_URL || 'http://localhost:3000',
+  origin: [
+    process.env.NETLIFY_URL || 'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:3000'
+  ],
   credentials: true
 }));
 app.use(express.json());
