@@ -17,7 +17,7 @@
     "lint": "echo 'Running linter...' && echo 'Linting completed ✅'",
     "netlify:build": "npm run build:production",
     "setup": "node scripts/setup.js",
-    "migrate:supabase": "node scripts/migrate.js",
+    "migrate:supabase": "node scripts/create-dynamic-schema-simple.js && node scripts/populate-validated-data.js",
     "setup:supabase": "node scripts/setup-supabase.js",
     "deploy:netlify": "netlify deploy --prod",
     "deploy:preview": "netlify deploy",
