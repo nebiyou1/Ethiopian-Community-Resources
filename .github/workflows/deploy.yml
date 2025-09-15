@@ -80,7 +80,7 @@ jobs:
     - name: Install Supabase CLI
       run: |
         # Install Supabase CLI using npm (more reliable than curl)
-        npm install -g @supabase/cli@latest
+        npm install -g supabase@latest
         supabase --version
         
     - name: Login to Supabase
