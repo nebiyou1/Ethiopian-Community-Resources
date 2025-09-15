@@ -25,6 +25,7 @@ import AuthModal from './AuthModal'
 import ProtectedRoute from './ProtectedRoute'
 import { useAuth } from '../contexts/AuthContext'
 import authService from '../services/authService'
+import ClientAPIService from '../services/clientAPIService'
 
 const ProgramsTable = () => {
   const { user, toggleFavorite, isFavorite } = useAuth()
@@ -55,6 +56,14 @@ const ProgramsTable = () => {
   const [density, setDensity] = useState('comfortable') // compact, comfortable, spacious
   const [selectedRows, setSelectedRows] = useState(new Set())
 
+  // Initialize API service
+  const [apiService] = useState(() => new ClientAPIService())
+  
+  // Initialize API service on component mount
+  useEffect(() => {
+    apiService.initialize()
+  }, [apiService])
+
   // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -77,26 +86,22 @@ const ProgramsTable = () => {
   const { data: programs = [], isLoading, error } = useQuery({
     queryKey: ['programs', debouncedFilter, debouncedFilters],
     queryFn: async () => {
-      const apiUrl = 'https://ethiopian-community-resources.netlify.app/api/programs/search'
+      console.log('Fetching programs with client-side API service')
       
-      // Build query parameters
-      const params = new URLSearchParams()
-      if (debouncedFilter) params.append('q', debouncedFilter)
-      if (debouncedFilters.costCategory) params.append('costCategory', debouncedFilters.costCategory)
-      if (debouncedFilters.prestige) params.append('prestige', debouncedFilters.prestige)
-      if (debouncedFilters.gradeLevel) params.append('gradeLevel', debouncedFilters.gradeLevel)
-      if (debouncedFilters.location) params.append('location', debouncedFilters.location)
+      // Convert filters to API format
+      const apiFilters = {}
+      if (debouncedFilters.costCategory) apiFilters.cost_category = debouncedFilters.costCategory
+      if (debouncedFilters.location) apiFilters.location_state = debouncedFilters.location
+      if (debouncedFilters.gradeLevel) apiFilters.grade_level = debouncedFilters.gradeLevel
       
-      const url = `${apiUrl}?${params.toString()}`
-      console.log('Fetching programs from:', url)
-      
-      const response = await fetch(url)
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+      try {
+        const programs = await apiService.searchPrograms(debouncedFilter, apiFilters)
+        console.log('Received programs:', programs.length)
+        return programs
+      } catch (error) {
+        console.error('Error fetching programs:', error)
+        throw error
       }
-      const data = await response.json()
-      console.log('Received programs:', data.programs?.length || 0)
-      return data.programs || []
     },
     staleTime: 5 * 60 * 1000, // 5 minutes - data stays fresh for 5 minutes
     cacheTime: 10 * 60 * 1000, // 10 minutes - cache for 10 minutes

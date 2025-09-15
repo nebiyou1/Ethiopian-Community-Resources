@@ -1,26 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Sun, User, LogOut, LogIn } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '../contexts/AuthContext'
 import AuthModal from './AuthModal'
+import ClientAPIService from '../services/clientAPIService'
 
 const Header = () => {
   const { user, signOut } = useAuth()
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
   
+  // Initialize API service
+  const [apiService] = useState(() => new ClientAPIService())
+  
+  useEffect(() => {
+    apiService.initialize()
+  }, [apiService])
+  
   // Fetch stats data
   const { data: stats, isLoading } = useQuery({
     queryKey: ['programs-stats'],
     queryFn: async () => {
-      const apiUrl = window.location.hostname === 'localhost' 
-        ? '/api/programs/stats'
-        : '/api/programs/stats'
-      
-      const response = await fetch(apiUrl)
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+      console.log('Fetching stats with client-side API service')
+      try {
+        const statsData = await apiService.getStatistics()
+        return { success: true, data: statsData }
+      } catch (error) {
+        console.error('Error fetching stats:', error)
+        throw error
       }
-      return response.json()
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
   })
