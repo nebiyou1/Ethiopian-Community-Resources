@@ -13,7 +13,7 @@
     "build:base": "echo 'Building Ethiopian Community Resources React App...' && cd ethiopia-community-react && npm run build && cd .. && mkdir -p dist && cp -r ethiopia-community-react/dist/* ./dist/ && mkdir -p netlify/functions/docs && cp docs/inputdata.json netlify/functions/docs/",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "echo 'Running unit tests...' && echo 'Unit tests passed ✅'",
-    "test:integration": "echo 'Running integration tests...' && node scripts/test-api.js",
+    "test:integration": "echo 'Running frontend integration tests...' && node scripts/test-frontend.js",
     "lint": "echo 'Running linter...' && echo 'Linting completed ✅'",
     "netlify:build": "npm run build:production",
     "db:init": "node scripts/db-manager.js init",
