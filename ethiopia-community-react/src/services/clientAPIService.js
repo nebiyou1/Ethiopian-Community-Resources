@@ -1,38 +1,27 @@
 // Client-side API service using Supabase directly
 // This replaces the need for Netlify functions
 
+import { supabase } from '../lib/supabase.js';
+
 class ClientAPIService {
   constructor() {
-    this.supabaseUrl = process.env.REACT_APP_SUPABASE_URL || 'https://your-project.supabase.co';
-    this.supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY || 'your-anon-key';
-    this.supabase = null;
+    this.supabase = supabase;
     this.mockData = this.getMockData();
   }
 
   async initialize() {
     try {
-      // Try to initialize Supabase if credentials are available
-      if (this.supabaseUrl && this.supabaseKey && 
-          !this.supabaseUrl.includes('your-project') && 
-          !this.supabaseKey.includes('your-anon-key')) {
-        
-        const { createClient } = await import('@supabase/supabase-js');
-        this.supabase = createClient(this.supabaseUrl, this.supabaseKey);
-        
-        // Test connection
-        const { data, error } = await this.supabase
-          .from('programs')
-          .select('count')
-          .limit(1);
-        
-        if (error) {
-          console.warn('Supabase connection failed, using mock data:', error.message);
-          this.supabase = null;
-        } else {
-          console.log('✅ Supabase connected successfully');
-        }
+      // Test connection to make sure Supabase is working
+      const { data, error } = await this.supabase
+        .from('programs')
+        .select('count')
+        .limit(1);
+      
+      if (error) {
+        console.warn('Supabase connection failed, using mock data:', error.message);
+        this.supabase = null;
       } else {
-        console.log('⚠️ Supabase credentials not configured, using mock data');
+        console.log('✅ Supabase connected successfully');
       }
     } catch (error) {
       console.warn('Supabase initialization failed, using mock data:', error.message);
@@ -121,18 +110,18 @@ class ClientAPIService {
       try {
         let query = this.supabase.from('programs').select('*');
         
-        // Apply filters
+        // Apply filters based on actual database schema
         if (filters.program_type) {
           query = query.eq('program_type', filters.program_type);
         }
-        if (filters.cost_category) {
-          query = query.eq('cost_category', filters.cost_category);
+        if (filters.target_audience) {
+          query = query.eq('target_audience', filters.target_audience);
         }
-        if (filters.location_state) {
-          query = query.eq('location_state', filters.location_state);
+        if (filters.selectivity_tier) {
+          query = query.eq('selectivity_tier', filters.selectivity_tier);
         }
-        if (filters.grade_level) {
-          query = query.eq('grade_level', filters.grade_level);
+        if (filters.status) {
+          query = query.eq('status', filters.status);
         }
         
         const { data, error } = await query;
@@ -184,15 +173,21 @@ class ClientAPIService {
         let query = this.supabase.from('programs').select('*');
         
         if (searchTerm) {
-          query = query.or(`program_name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,organization.ilike.%${searchTerm}%`);
+          query = query.or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%,short_description.ilike.%${searchTerm}%`);
         }
         
-        // Apply filters
+        // Apply filters based on actual database schema
         if (filters.program_type) {
           query = query.eq('program_type', filters.program_type);
         }
-        if (filters.cost_category) {
-          query = query.eq('cost_category', filters.cost_category);
+        if (filters.target_audience) {
+          query = query.eq('target_audience', filters.target_audience);
+        }
+        if (filters.selectivity_tier) {
+          query = query.eq('selectivity_tier', filters.selectivity_tier);
+        }
+        if (filters.status) {
+          query = query.eq('status', filters.status);
         }
         
         const { data, error } = await query;
@@ -237,13 +232,14 @@ class ClientAPIService {
           return this.mockData.stats;
         }
         
-        // Calculate stats from data
+        // Calculate stats from data based on actual database schema
         const stats = {
           total_programs: data.length,
-          total_organizations: new Set(data.map(p => p.organization)).size,
+          total_organizations: new Set(data.map(p => p.organization_id)).size,
           programs_by_type: {},
-          programs_by_cost: {},
-          programs_by_location: {}
+          programs_by_audience: {},
+          programs_by_selectivity: {},
+          active_programs: data.filter(p => p.status === 'active').length
         };
         
         data.forEach(program => {
@@ -251,13 +247,13 @@ class ClientAPIService {
           stats.programs_by_type[program.program_type] = 
             (stats.programs_by_type[program.program_type] || 0) + 1;
           
-          // Count by cost
-          stats.programs_by_cost[program.cost_category] = 
-            (stats.programs_by_cost[program.cost_category] || 0) + 1;
+          // Count by target audience
+          stats.programs_by_audience[program.target_audience] = 
+            (stats.programs_by_audience[program.target_audience] || 0) + 1;
           
-          // Count by location
-          stats.programs_by_location[program.location_state] = 
-            (stats.programs_by_location[program.location_state] || 0) + 1;
+          // Count by selectivity
+          stats.programs_by_selectivity[program.selectivity_tier] = 
+            (stats.programs_by_selectivity[program.selectivity_tier] || 0) + 1;
         });
         
         return stats;
@@ -276,20 +272,19 @@ class ClientAPIService {
       try {
         const { data, error } = await this.supabase
           .from('programs')
-          .select('program_type,cost_category,location_state,grade_level,subject_area');
+          .select('program_type,target_audience,selectivity_tier,status');
         
         if (error) {
           console.warn('Supabase filters query failed, using mock data:', error.message);
           return this.mockData.filters;
         }
         
-        // Extract unique values
+        // Extract unique values based on actual database schema
         const filters = {
           program_types: [...new Set(data.map(p => p.program_type).filter(Boolean))],
-          cost_categories: [...new Set(data.map(p => p.cost_category).filter(Boolean))],
-          locations: [...new Set(data.map(p => p.location_state).filter(Boolean))],
-          grade_levels: [...new Set(data.map(p => p.grade_level).filter(Boolean))].sort((a, b) => a - b),
-          subject_areas: [...new Set(data.map(p => p.subject_area).filter(Boolean))]
+          target_audiences: [...new Set(data.map(p => p.target_audience).filter(Boolean))],
+          selectivity_tiers: [...new Set(data.map(p => p.selectivity_tier).filter(Boolean))],
+          statuses: [...new Set(data.map(p => p.status).filter(Boolean))]
         };
         
         return filters;
@@ -307,7 +302,7 @@ class ClientAPIService {
     return {
       status: 'OK',
       timestamp: new Date().toISOString(),
-      environment: process.env.NODE_ENV || 'production',
+      environment: import.meta.env.MODE || 'production',
       platform: 'client-side-api',
       version: '1.0.0',
       supabase_connected: !!this.supabase,
