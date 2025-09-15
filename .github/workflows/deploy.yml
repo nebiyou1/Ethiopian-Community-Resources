@@ -37,7 +37,13 @@ jobs:
       run: npm test
       
     - name: Build application
-      run: npm run build
+      run: |
+        echo "🔨 Building application..."
+        npm run build
+        echo "📁 Build contents:"
+        ls -la dist/
+        echo "📄 HTML content:"
+        cat dist/index.html
       env:
         NODE_ENV: production
         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -121,6 +127,15 @@ jobs:
         name: build-files
         path: dist/
         
+    - name: Verify build artifacts
+      run: |
+        echo "📁 Downloaded artifacts:"
+        ls -la dist/
+        echo "📄 HTML content:"
+        cat dist/index.html
+        echo "📦 JavaScript files:"
+        ls -la dist/assets/
+        
     - name: Deploy to Netlify
       uses: nwtgck/actions-netlify@v3.0
       with:
@@ -131,6 +146,7 @@ jobs:
         enable-pull-request-comment: true
         enable-commit-comment: true
         overwrites-pull-request-comment: true
+        skip-functions-cache: true
       env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
