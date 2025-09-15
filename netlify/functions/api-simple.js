@@ -1,6 +1,4 @@
-const databaseService = require('../../services/databaseService-production');
-
-// Simple Netlify function handler without Express wrapper
+// Simple API function for Netlify that doesn't depend on complex database services
 exports.handler = async (event, context) => {
   // Set CORS headers
   const headers = {
@@ -26,7 +24,7 @@ exports.handler = async (event, context) => {
 
     console.log(`🔍 Processing ${method} ${path}`);
 
-    // Route handling
+    // Health check endpoint
     if (path === '/api/health') {
       return {
         statusCode: 200,
@@ -35,98 +33,115 @@ exports.handler = async (event, context) => {
           status: 'OK',
           timestamp: new Date().toISOString(),
           environment: process.env.NODE_ENV || 'production',
-          platform: 'netlify-simple'
+          platform: 'netlify-simple',
+          version: '1.0.0'
         })
       };
     }
 
+    // Programs endpoint - return mock data for now
     if (path === '/api/programs') {
-      const programs = await databaseService.getAllPrograms(query);
+      const mockPrograms = [
+        {
+          id: 1,
+          program_name: "Ethiopian Community Resources",
+          organization: "Community Organization",
+          description: "A comprehensive resource platform for the Ethiopian community",
+          grade_level: 12,
+          cost_category: "FREE",
+          program_type: "Resource Platform",
+          subject_area: "Community",
+          location_state: "Various",
+          location_city: "Multiple Cities",
+          website: "https://ethiopian-community-resources.netlify.app",
+          contact_email: "info@ethiopian-community.org"
+        }
+      ];
+
       return {
         statusCode: 200,
         headers,
         body: JSON.stringify({
           success: true,
-          programs: programs,
-          count: programs.length
+          programs: mockPrograms,
+          count: mockPrograms.length,
+          message: "Using mock data - database connection pending"
         })
       };
     }
 
+    // Stats endpoint
     if (path === '/api/programs/stats') {
-      const stats = await databaseService.getStatistics();
       return {
         statusCode: 200,
         headers,
         body: JSON.stringify({
           success: true,
-          data: stats
+          data: {
+            total_programs: 1,
+            total_organizations: 1,
+            programs_by_type: {
+              "Resource Platform": 1
+            },
+            programs_by_cost: {
+              "FREE": 1
+            }
+          }
         })
       };
     }
 
+    // Filters endpoint
     if (path === '/api/programs/filters') {
-      const filterOptions = await databaseService.getFilterOptions();
       return {
         statusCode: 200,
         headers,
         body: JSON.stringify({
           success: true,
-          data: filterOptions
+          data: {
+            program_types: ["Resource Platform"],
+            cost_categories: ["FREE"],
+            locations: ["Multiple Cities"],
+            grade_levels: [12]
+          }
         })
       };
     }
 
+    // Search endpoint
     if (path.startsWith('/api/programs/search')) {
-      try {
-        const searchTerm = query.q || '';
-        console.log(`🔍 Search request: term="${searchTerm}", filters=`, query);
-        const results = await databaseService.searchPrograms(searchTerm, query);
-        console.log(`📊 Search results: ${results.length} programs found`);
-        return {
-          statusCode: 200,
-          headers,
-          body: JSON.stringify({
-            success: true,
-            programs: results,
-            count: results.length,
-            query: query
-          })
-        };
-      } catch (error) {
-        console.error('❌ Search error:', error);
-        return {
-          statusCode: 500,
-          headers,
-          body: JSON.stringify({
-            success: false,
-            error: error.message
-          })
-        };
-      }
+      const searchTerm = query.q || '';
+      console.log(`🔍 Search request: term="${searchTerm}"`);
+      
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          programs: [],
+          count: 0,
+          query: query,
+          message: "Search functionality pending database connection"
+        })
+      };
     }
 
+    // Individual program endpoint
     if (path.match(/^\/api\/programs\/[^\/]+$/)) {
       const id = path.split('/').pop();
-      const program = await databaseService.getProgramById(id);
       
-      if (!program) {
-        return {
-          statusCode: 404,
-          headers,
-          body: JSON.stringify({
-            success: false,
-            error: 'Program not found'
-          })
-        };
-      }
-
       return {
         statusCode: 200,
         headers,
         body: JSON.stringify({
           success: true,
-          data: program
+          data: {
+            id: id,
+            program_name: "Ethiopian Community Resources",
+            organization: "Community Organization",
+            description: "A comprehensive resource platform for the Ethiopian community",
+            message: "Individual program details pending database connection"
+          }
         })
       };
     }
@@ -138,7 +153,15 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({
         error: 'Not Found',
         message: 'The requested resource was not found',
-        path: path
+        path: path,
+        available_endpoints: [
+          '/api/health',
+          '/api/programs',
+          '/api/programs/stats',
+          '/api/programs/filters',
+          '/api/programs/search',
+          '/api/programs/{id}'
+        ]
       })
     };
 
