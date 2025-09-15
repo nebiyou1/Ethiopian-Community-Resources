@@ -70,13 +70,9 @@ jobs:
         npm ci
         cd ethiopia-community-react && npm ci
       
-    - name: Install Supabase CLI
+    - name: Install and verify Supabase CLI
       run: |
         curl -fsSL https://supabase.com/install.sh | sh
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
-        
-    - name: Verify Supabase CLI installation
-      run: |
         export PATH="$HOME/.local/bin:$PATH"
         supabase --version
         
@@ -89,7 +85,9 @@ jobs:
         SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
         
     - name: Seed database with community data
-      run: npm run migrate:supabase
+      run: |
+        export PATH="$HOME/.local/bin:$PATH"
+        node scripts/create-supabase-schema.js
       env:
         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
         SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
