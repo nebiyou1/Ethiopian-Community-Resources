@@ -131,7 +131,24 @@ class ClientAPIService {
           return this.mockData.programs;
         }
         
-        return data || this.mockData.programs;
+        // Map database fields to expected field names
+        const mappedData = (data || []).map(program => ({
+          ...program,
+          program_name: program.name,
+          organization: {
+            name: 'Unknown Organization', // We'll need to fetch this separately
+            city: 'Various',
+            state: 'Various'
+          },
+          cost_category: 'FREE', // Default since we don't have cost data
+          duration_weeks: program.duration_value || null,
+          grade_level: program.target_audience === 'high_school' ? '9-12' : 'Refer to website',
+          application_deadline: null, // We don't have deadline data
+          subject_area: program.program_type || 'General',
+          description: program.description || program.short_description || 'No description available'
+        }));
+        
+        return mappedData;
       } catch (error) {
         console.warn('Supabase query error, using mock data:', error.message);
         return this.mockData.programs;
@@ -156,7 +173,24 @@ class ClientAPIService {
           return this.mockData.programs.find(p => p.id == id);
         }
         
-        return data;
+        // Map database fields to expected field names
+        const mappedProgram = {
+          ...data,
+          program_name: data.name,
+          organization: {
+            name: 'Unknown Organization', // We'll need to fetch this separately
+            city: 'Various',
+            state: 'Various'
+          },
+          cost_category: 'FREE', // Default since we don't have cost data
+          duration_weeks: data.duration_value || null,
+          grade_level: data.target_audience === 'high_school' ? '9-12' : 'Refer to website',
+          application_deadline: null, // We don't have deadline data
+          subject_area: data.program_type || 'General',
+          description: data.description || data.short_description || 'No description available'
+        };
+        
+        return mappedProgram;
       } catch (error) {
         console.warn('Supabase query error, using mock data:', error.message);
         return this.mockData.programs.find(p => p.id == id);
@@ -201,7 +235,24 @@ class ClientAPIService {
           );
         }
         
-        return data || [];
+        // Map database fields to expected field names
+        const mappedData = (data || []).map(program => ({
+          ...program,
+          program_name: program.name,
+          organization: {
+            name: 'Unknown Organization', // We'll need to fetch this separately
+            city: 'Various',
+            state: 'Various'
+          },
+          cost_category: 'FREE', // Default since we don't have cost data
+          duration_weeks: program.duration_value || null,
+          grade_level: program.target_audience === 'high_school' ? '9-12' : 'Refer to website',
+          application_deadline: null, // We don't have deadline data
+          subject_area: program.program_type || 'General',
+          description: program.description || program.short_description || 'No description available'
+        }));
+        
+        return mappedData;
       } catch (error) {
         console.warn('Supabase search error, using mock data:', error.message);
         return this.mockData.programs.filter(p => 
@@ -234,8 +285,9 @@ class ClientAPIService {
         
         // Calculate stats from data based on actual database schema
         const stats = {
-          total_programs: data.length,
-          total_organizations: new Set(data.map(p => p.organization_id)).size,
+          totalPrograms: data.length,
+          freePrograms: data.filter(p => p.status === 'active').length, // Assume active programs are free
+          organizations: new Set(data.map(p => p.organization_id)).size,
           programs_by_type: {},
           programs_by_audience: {},
           programs_by_selectivity: {},
